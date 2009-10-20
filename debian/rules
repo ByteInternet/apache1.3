@@ -267,7 +267,7 @@ $(STAMP_DIR)/build-stamp-perl: $(STAMP_DIR)/configure-stamp-perl
 	@echo -e "\n\n*** apache-perl modules sanity check ***\n\n"
 	find $(SOURCE_DIR)-apache-perl/ \
 		-name "*.so" -exec install -m 644 {} $(P) \;
-	@set -e; echo; cd $(S) && cat $(CURDIR)/debian/module-manifest-perl \
+	@set -e; echo; cd $(V) && cat $(CURDIR)/debian/module-manifest-perl \
 		| xargs -i ls -l --no-group {}; echo
 	touch $(STAMP_DIR)/build-stamp-perl
 
@@ -393,8 +393,6 @@ $(STAMP_DIR)/install-stamp-common: $(STAMP_DIR)/pre-install-stamp-deb
 		debian/apache-common/usr/share/apache/icons/small
 	cp -a $(V)/icons/README \
 		debian/apache-common/$(doc)-common/README.icons
-	cp -a $(V)/icons/small/README.txt \
-		debian/apache-common/$(doc)-common/README.small.icons
 
 	# misc
 	cp -a $(V)/src/include/ap_config.h \
