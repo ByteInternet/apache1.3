@@ -28,28 +28,6 @@ Description: versatile, high-performance HTTP server
  Servlet support, Apache-SSL, and other common extensions.  More
  information is available at http://www.apache.org/.
 
-Package: apache-ssl
-Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, ssl-cert (>= 1.0-7), openssl, mime-support, apache-common (>= ${Source-Version}), apache-common (<< ${next:Major}), perl (>= 5.8.4-2), logrotate (>= 3.5.4-1), libmagic1, lsb-base (>= 2.0)
-Suggests: apache-doc
-Conflicts: apache-modules, libapache-mod-perl (<= 1.17-1), jserv (<= 1.1-3)
-Replaces: apache-modules
-Provides: httpd-cgi, httpd
-Priority: optional
-Description: versatile, high-performance HTTP server with SSL support
- The most popular server in the world, Apache features a modular
- design and supports dynamic selection of extension modules at runtime.
- Some of its strong points are its range of possible customization,
- dynamic adjustment of the number of server processes, and a whole
- range of available modules including many authentication mechanisms,
- server-parsed HTML, server-side includes, access control, CERN httpd
- metafiles emulation, proxy caching, etc.  Apache also supports multiple
- virtual homing.
- .
- Separate Debian packages are available for PHP, mod_perl, Java
- Servlet support, Apache, and other common extensions.  More
- information is available at http://www.apache.org/.
-
 Package: apache-perl
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, mime-support, apache-common (>= ${Source-Version}), apache-common (<< ${next:Major}), libapache-mod-perl (>= 1.29.0.2-9), libapache-mod-perl, libmagic1, logrotate (>= 3.5.4-1), lsb-base (>= 2.0)
