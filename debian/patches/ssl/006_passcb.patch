@@ -1,6 +1,6 @@
-diff -Naurd build-tree.orig/apache_1.3.34/src/include/pass_cb.h build-tree/apache_1.3.34/src/include/pass_cb.h
---- build-tree.orig/apache_1.3.34/src/include/pass_cb.h	1970-01-01 01:00:00.000000000 +0100
-+++ build-tree/apache_1.3.34/src/include/pass_cb.h	2004-05-15 01:10:20.000000000 +0200
+diff -Naurd build-tree.orig/apache_1.3.41/src/include/pass_cb.h build-tree/apache_1.3.41/src/include/pass_cb.h
+--- build-tree.orig/apache_1.3.41/src/include/pass_cb.h	1970-01-01 01:00:00.000000000 +0100
++++ build-tree/apache_1.3.41/src/include/pass_cb.h	2004-05-15 01:10:20.000000000 +0200
 @@ -0,0 +1,10 @@
 +typedef struct
 +    {
@@ -12,9 +12,9 @@ diff -Naurd build-tree.orig/apache_1.3.34/src/include/pass_cb.h build-tree/apach
 +PassCBData *get_pass_cb_data(server_rec *s);
 +int pass_cb(char *buf, int size, int rwflag, void *u);
 +void pass_cb_init(void);
-diff -Naurd build-tree.orig/apache_1.3.34/src/main/http_main.c build-tree/apache_1.3.34/src/main/http_main.c
---- build-tree.orig/apache_1.3.34/src/main/http_main.c	2004-05-15 01:08:57.000000000 +0200
-+++ build-tree/apache_1.3.34/src/main/http_main.c	2004-05-15 01:10:20.000000000 +0200
+diff -Naurd build-tree.orig/apache_1.3.41/src/main/http_main.c build-tree/apache_1.3.41/src/main/http_main.c
+--- build-tree.orig/apache_1.3.41/src/main/http_main.c	2004-05-15 01:08:57.000000000 +0200
++++ build-tree/apache_1.3.41/src/main/http_main.c	2004-05-15 01:10:20.000000000 +0200
 @@ -84,6 +84,8 @@
  #include <sys/prctl.h>
  #endif
