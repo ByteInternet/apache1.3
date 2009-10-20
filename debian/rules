@@ -1,0 +1,802 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+# Made with the aid of dh_make, by Craig Small.
+# Sample debian/rules that uses debhelper. GNU copyright 1997 by Joey Hess.
+# Also some stuff taken from debmake scripts, by Christoph Lameter.
+# And from the X build system by Adam Heath.
+# almost rewritten by the Debian Apache Mainteiner Team.
+
+## Global environment
+
+# upstreams versions (from changelog and upstream dirs)
+# THESE MUST BE CHANGED BEFORE EVERY NEW UPSTREAM RELEASE
+
+SOURCE_VERSION   = $(shell dpkg-parsechangelog | grep ^Version | sed "s/Version: //")
+UPSTREAM_VERSION = $(shell echo $(SOURCE_VERSION) | sed -e "s/-.*//" -e "s/.*://")
+DEB_REVISION     = $(shell echo $(SOURCE_VERSION) | sed -e "s/.*-//")
+
+# apache packages get a version like $(APACHE_MAJOR)$(APACHE_MINOR)-$(DEB_REVISION)
+APACHE_MAJOR = 1.3.41
+APACHE_MINOR =
+APACHE_NEXT_MAJOR = 1.3.$(shell echo $$((`echo $(APACHE_MAJOR) | sed 's/.*\.//'` + 1)))
+
+# mod_perl packages get a version like $(PERL_MAJOR)$(PERL_MINOR)-$(DEB_REVISION)
+# PERL_MINOR needs to get bumped any time $(APACHE_MAJOR)$(APACHE_MINOR) is
+# incremented without PERL_MAJOR changing.
+PERL_MAJOR   = 1.31
+PERL_MINOR   = .0.1
+
+# current version of the apache-ssl patch from apache-ssl.org
+SSL_MAJOR    = 1.3.41
+SSL_MINOR    = 1.59
+
+# current version of the apache-contrib tarball
+CONTRIB_MAJOR= 1.0.8a
+
+# ARCH
+
+BUILD_ARCH:=$(shell dpkg-architecture -qDEB_BUILD_ARCH)
+
+# shortcuts to specific paths
+
+C=$(SOURCE_DIR)-apache/apache-contrib-$(CONTRIB_MAJOR)
+D=libapache-mod-perl-$(PERL_MAJOR)
+S=$(SOURCE_DIR)-apache-ssl/apache_$(APACHE_MAJOR)
+P=$(SOURCE_DIR)-apache-perl/apache_$(APACHE_MAJOR)
+V=$(SOURCE_DIR)-apache/apache_$(APACHE_MAJOR)
+
+inc=usr/include/apache-1.3
+lib=usr/lib/apache/1.3
+doc=usr/share/doc/apache
+man=usr/share/man
+
+# Debian specific
+
+# Uncomment this to turn on verbose modes.
+# export DH_VERBOSE=1
+# export NOISY=1
+export DH_COMPAT=2
+
+include debian/scripts/vars
+
+SHELL=/bin/bash
+BUILDINFO=make dpkg-dev debian-policy debhelper
+PERL := /usr/bin/perl
+LIBPERL := -lperl
+
+# Build *FLAGS
+
+EXTRA_CONFARGS =
+
+ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
+	CONFLAGS = -O0
+	MODPERLCFLAGS = $(CONFLAGS)
+else
+	CONFLAGS = -O1
+	MODPERLCFLAGS = -O2
+endif
+
+COMMONFLAGS = $(CFLAGS) -g -Wall -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64
+CONFLAGS += $(COMMONFLAGS)
+MODPERLCFLAGS += $(COMMONFLAGS)
+
+# all the common CONFARGS should be here from now on and they will apply
+# to all the build-trees
+
+CONFARGS =	--target=apache --with-layout=Debian \
+		--enable-suexec --suexec-caller=www-data \
+		--suexec-userdir=. \
+		--suexec-docroot=/home --includedir=/$(inc) \
+		--without-confadjust --without-execstrip \
+		--enable-shared=max --enable-rule=SHARED_CHAIN \
+		--enable-module=most --enable-module=status \
+		--enable-module=auth_digest --enable-module=log_referer \
+		--enable-module=log_agent --enable-module=auth_db \
+		$(EXTRA_CONFARGS) \
+		--activate-module=src/modules/extra/mod_macro.c
+
+APACHEARGS =	--suexec-logfile=/var/log/apache/suexec.log \
+		$(CONFARGS)
+
+SSLARGS =	--suexec-logfile=/var/log/apache-ssl/suexec.log \
+		$(CONFARGS)
+
+PERLARGS =	--suexec-logfile=/var/log/apache-perl/suexec.log \
+		--activate-module=src/modules/perl/libperl.a \
+		$(CONFARGS) \
+		--disable-shared=perl
+
+## Rules
+
+source.make: $(STAMP_DIR)/source.make
+$(STAMP_DIR)/source.make:
+	@echo -e "\n\n*** unpacking/patching common tree ***\n"
+	$(MAKE) -f debian/sys-build.mk source.make
+	cp -a $(SOURCE_DIR)/apache_$(APACHE_MAJOR)/src/os/unix/{*.h,*inline.c} \
+		$(SOURCE_DIR)/apache_$(APACHE_MAJOR)/src/include/
+	cp $(SOURCE_DIR)/pkg.eapi/*.h $(SOURCE_DIR)/apache_$(APACHE_MAJOR)/src/include/
+	cp $(SOURCE_DIR)/pkg.eapi/*.c $(SOURCE_DIR)/apache_$(APACHE_MAJOR)/src/ap/
+	cp $(SOURCE_DIR)/apache-contrib-$(CONTRIB_MAJOR)/mod_macro/mod_macro.c $(SOURCE_DIR)/apache_$(APACHE_MAJOR)/src/modules/extra
+	mv $(SOURCE_DIR) $(SOURCE_DIR)-apache
+	@echo -e "\n\n*** creating -ssl and -perl trees ***\n"
+	mv $(SOURCE_DIR)-apache/apache-contrib-* .
+	cp -rp $(SOURCE_DIR)-apache $(SOURCE_DIR)-apache-ssl
+	cp -rp $(SOURCE_DIR)-apache $(SOURCE_DIR)-apache-perl
+	mv apache-contrib-* $(SOURCE_DIR)-apache/
+	@echo -e "\n\n*** unpackaing mod_perl ***\n"
+	tar zxvf upstream/flavours/mod_perl-$(PERL_MAJOR).tar.gz > /dev/null
+	mv mod_perl-$(PERL_MAJOR) libapache-mod-perl-$(PERL_MAJOR)
+	@echo -e "\n\n*** applying extra patches to specific trees ***\n"
+	#-apache
+	patch -d $(V) -p0 < $(SOURCE_DIR)-apache/pkg.eapi/eapi.patch
+	#-perl
+	patch -d $(P) -p0 < $(SOURCE_DIR)-apache-perl/pkg.eapi/eapi.patch
+	#-ssl
+	cd $(SOURCE_DIR)-apache-ssl && \
+		tar zxvf ../upstream/flavours/apache_$(SSL_MAJOR)+ssl_$(SSL_MINOR).tar.gz > /dev/null && \
+		for i in `export LC_COLLATE=C && ls ../debian/patches/ssl/0*`; do patch -p1 < $$i; done
+	cp -vpr $(SOURCE_DIR)-apache-ssl/src $(SOURCE_DIR)-apache-ssl/apache_$(APACHE_MAJOR)/
+	rm -fr $(SOURCE_DIR)-apache-ssl/src
+	patch -d $(S) -p1 < $(SOURCE_DIR)-apache-ssl/SSLpatch
+	patch -d $(S) -p0 < $(SOURCE_DIR)-apache-ssl/pkg.eapi/eapi.patch
+	#libapache-mod-perl
+	patch -d $(D) -p1 < debian/patches/mod-perl/DBD::Pg_mem_leak_workaround.diff
+	patch -d $(D) -p1 < debian/patches/mod-perl/debian_libperl_debug_fix.diff
+	patch -d $(D) -p1 < debian/patches/mod-perl/r_dir_config_fix.diff
+	patch -d $(D) -p1 < debian/patches/mod-perl/CVE-2007-1349
+
+$(STAMP_DIR)/configure-stamp: $(STAMP_DIR)/source.make $(STAMP_DIR)/configure-stamp-apache $(STAMP_DIR)/configure-stamp-ssl $(STAMP_DIR)/configure-stamp-perl $(STAMP_DIR)/configure-stamp-mod-perl
+	touch $(STAMP_DIR)/configure-stamp
+
+$(STAMP_DIR)/configure-stamp-apache: $(STAMP_DIR)/source.make
+	@echo -e "\n\n*** Configuring apache ***\n\n"
+
+	cd $(V) && LDFLAGS="$(LDFLAGS)" CFLAGS="$(CONFLAGS)" ./configure $(APACHEARGS)
+
+	@echo -e "\n\n*** Creating apaci (apache) *** \n\n"
+
+	sed -e "s,@PACKAGE@,apache," debian/apaci.append.real > \
+		debian/apaci.append
+	chmod +x debian/ubersed
+	(debian/ubersed $(V)/src/apaci; \
+		cat debian/apaci.append) > debian/apaci
+	install debian/apaci $(V)/src/apaci
+
+	@echo -e "\n\n*** Buiding apxs (apache) *** \n\n"
+
+	cd $(V)/src/support && $(MAKE) apxs
+	set -e; INCL=$$(echo $$(pwd)/$(V)/src/include); \
+	 SBIN=$$(echo $$(pwd)/$(V)/src); sed \
+	 	-e "s;^#!/.*;#!/usr/bin/perl;" \
+		-e "s;\@prefix\@;/usr;" \
+		-e "s;\@sbindir\@;$$SBIN;" \
+		-e "s;\@libexecdir\@;/usr/lib/apache/1.3;" \
+		-e "s;\@includedir\@;$$INCL;" \
+		-e "s;\@sysconfdir\@;/etc/apache;" \
+		-e "s;/httpd;/apache;g" \
+		-e "s;-lm;-lc -lm;" \
+		-e "s;-ldbm -ldb;;" \
+		-e "s;-lndbm -ldb;;" \
+		-e "s;-DTARGET;-DEAPI -DTARGET;" \
+		-e "s;CFG_SYSCONFDIR/\$$CFG_TARGET;CFG_SYSCONFDIR/httpd;g" \
+		$(V)/src/support/apxs > debian/local-apxs; \
+	set -e; INCL=$$(echo $$(pwd)/$(V)/src/include); \
+	 SBIN=$$(echo $$(pwd)/$(V)/src); sed \
+	 	-e "s;$$INCL;/usr/include/apache-1.3;" \
+		-e "s;$$SBIN;/usr/sbin;" \
+		debian/local-apxs > debian/apxs
+	chmod +x debian/{apxs,local-apxs}
+	touch $(STAMP_DIR)/configure-stamp-apache
+
+$(STAMP_DIR)/configure-stamp-ssl: $(STAMP_DIR)/source.make
+	@echo -e "\n\n*** Configuring apache-ssl ***\n\n"
+
+	cd $(S) && LDFLAGS="$(LDFLAGS)" CFLAGS="$(CONFLAGS)" ./configure $(SSLARGS)
+
+	@echo -e "\n\n*** Creating apaci (apache-ssl) *** \n\n"
+
+	sed -e "s,@PACKAGE@,apache-ssl," debian/apaci.append.real > \
+		debian/apaci.append-ssl
+	chmod +x debian/ubersed-ssl
+	(debian/ubersed-ssl $(S)/src/apaci; \
+		cat debian/apaci.append-ssl) > debian/apaci-ssl
+	install debian/apaci-ssl $(S)/src/apaci
+
+	@echo -e "\n\n*** Buiding apxs (apache-ssl) *** \n\n"
+
+	cd $(S)/src/support && $(MAKE) apxs
+	set -e; INCL=$$(echo $$(pwd)/$(S)/src/include); \
+	 SBIN=$$(echo $$(pwd)/$(S)/src); sed \
+	 	-e "s;^#!/.*;#!/usr/bin/perl;" \
+		-e "s;\@prefix\@;/usr;" \
+		-e "s;\@sbindir\@;$$SBIN;" \
+		-e "s;\@libexecdir\@;/usr/lib/apache/1.3;" \
+		-e "s;\@includedir\@;$$INCL;" \
+		-e "s;\@sysconfdir\@;/etc/apache-ssl;" \
+		-e "s;/httpd;/apache-ssl;g" \
+		-e "s;-lm;-lc -lm;" \
+		-e "s;-ldbm -ldb;;" \
+		-e "s;-lndbm -ldb;;" \
+		-e "s;-DTARGET;-DEAPI -DTARGET;" \
+		-e "s;CFG_SYSCONFDIR/\$$CFG_TARGET;CFG_SYSCONFDIR/httpd;g" \
+		$(S)/src/support/apxs > debian/local-apxs-ssl; \
+	set -e; INCL=$$(echo $$(pwd)/$(S)/src/include); \
+	 SBIN=$$(echo $$(pwd)/$(S)/src); sed \
+	 	-e "s;$$INCL;/usr/include/apache-1.3;" \
+		-e "s;$$SBIN;/usr/sbin;" \
+		debian/local-apxs-ssl > debian/apxs-ssl
+	chmod +x debian/{apxs-ssl,local-apxs-ssl}
+	touch $(STAMP_DIR)/configure-stamp-ssl
+
+$(STAMP_DIR)/configure-stamp-perl: $(STAMP_DIR)/source.make
+	@echo -e "\n\n*** Configuring apache-perl ***\n\n"
+
+	cd $(D) && \
+		$(PERL) Makefile.PL INSTALLDIRS=vendor \
+		USE_DSO=0 USE_APACI=1 DO_HTTPD=1 NO_HTTPD=1 PREP_HTTPD=1 \
+		APACHE_SRC=$(shell pwd)$(A)/$(P)/src \
+		PERL_SECTIONS=1 PERL_SSI=1 PERL_METHOD_HANDLERS=1 ALL_HOOKS=1 \
+		PERL_TIE_TABLES=1 PERL_DIRECTIVE_HANDLERS=1 PERL_STACKED_HANDLERS=1 \
+		PERL_TRACE=0 PERL_LOG_API=1 PERL_URI_API=1 PERL_UTIL_API=1 \
+		PERL_TABLE_API=1 PERL_FILE_API=1
+
+	cd $(P) && LDFLAGS="$(LDFLAGS)" CFLAGS="$(CONFLAGS)" ./configure $(PERLARGS)
+
+	@echo -e "\n\n*** Creating apaci (apache-perl) *** \n\n"
+
+	sed -e "s,@PACKAGE@,apache-perl," debian/apaci.append.real > \
+		debian/apaci.append-perl
+	chmod +x debian/ubersed-perl
+	(debian/ubersed-perl $(P)/src/apaci; \
+		cat debian/apaci.append-perl) > debian/apaci-perl
+	install debian/apaci-perl $(P)/src/apaci
+
+	@echo -e "\n\n*** Buiding apxs (apache-perl) *** \n\n"
+
+	cd $(P)/src/support && $(MAKE) apxs
+	set -e; INCL=$$(echo $$(pwd)/$(P)/src/include); \
+	 SBIN=$$(echo $$(pwd)/$(P)/src); sed \
+		-e "s;^#!/.*;#!/usr/bin/perl;" \
+		-e "s;\@prefix\@;/usr;" \
+		-e "s;\@sbindir\@;$$SBIN;" \
+		-e "s;\@libexecdir\@;/usr/lib/apache/1.3;" \
+		-e "s;\@includedir\@;$$INCL;" \
+		-e "s;\@sysconfdir\@;/etc/apache-perl;" \
+		-e "s;/httpd;/apache-perl;g" \
+		-e "s;-lm;-lc -lm;" \
+		-e "s;-ldbm -ldb;;" \
+		-e "s;-lndbm -ldb;;" \
+		-e "s;-DTARGET;-DEAPI -DTARGET;" \
+		-e "s;CFG_SYSCONFDIR/\$$CFG_TARGET;CFG_SYSCONFDIR/httpd;g" \
+		$(P)/src/support/apxs > debian/local-apxs-perl
+	set -e; INCL=$$(echo $$(pwd)/$(P)/src/include); \
+	 SBIN=$$(echo $$(pwd)/$(P)/src); sed \
+	 	-e "s;$$INCL;/usr/include/apache-1.3;" \
+		-e "s;$$SBIN;/usr/sbin;" \
+		debian/local-apxs-perl > debian/apxs-perl
+	chmod +x debian/{apxs-perl,local-apxs-perl}
+	touch $(STAMP_DIR)/configure-stamp-perl
+
+$(STAMP_DIR)/configure-stamp-mod-perl: $(STAMP_DIR)/source.make $(STAMP_DIR)/configure-stamp-apache
+	@echo -e "\n\n*** Configuring libapache-mod-perl ***\n\n"
+
+	# still a small workaround but it avoids a lot of headackes
+	cp debian/local-apxs $(D)/
+	
+	cd $(D) && \
+	$(PERL) Makefile.PL USE_APXS=1 WITH_APXS=`pwd`/local-apxs \
+		PERL_SECTIONS=1 PERL_SSI=1 PERL_METHOD_HANDLERS=1 ALL_HOOKS=1 \
+		PERL_TIE_TABLES=1 PERL_DIRECTIVE_HANDLERS=1 PERL_STACKED_HANDLERS=1 \
+		PERL_TRACE=0 PERL_LOG_API=1 PERL_URI_API=1 PERL_UTIL_API=1 \
+		PERL_TABLE_API=1 PERL_FILE_API=1 \
+		INSTALLDIRS=vendor # PERL_DEBUG=1
+	touch $(STAMP_DIR)/configure-stamp-mod-perl
+
+build: $(STAMP_DIR)/build-stamp
+
+$(STAMP_DIR)/build-stamp: $(STAMP_DIR)/configure-stamp $(STAMP_DIR)/build-stamp-apache $(STAMP_DIR)/build-stamp-ssl $(STAMP_DIR)/build-stamp-perl $(STAMP_DIR)/build-stamp-mod-perl $(STAMP_DIR)/expand-debian
+
+$(STAMP_DIR)/build-stamp-apache: $(STAMP_DIR)/configure-stamp-apache
+	dh_testdir
+
+	@echo -e "\n\n*** Compiling apache daemon and modules ***\n\n"
+	cd $(V) && $(MAKE)
+
+	@echo -e "\n\n*** Compiling experimental modules ***\n\n"
+	export APXS=$(CURDIR)/debian/local-apxs && \
+	cd $(V)/src/modules/experimental/ && \
+	$$APXS -c mod_backtrace.c && \
+	$$APXS -c -I$(CURDIR)/$(V)/src/main/ mod_whatkilledus.c
+
+	@echo -e "\n\n*** Compiling contrib modules ***\n\n"
+	cd $(C) && $(MAKE) APXS=$(CURDIR)/debian/local-apxs
+
+	@echo -e "\n\n*** apache modules sanity check ***\n\n"
+	find $(SOURCE_DIR)-apache/ \
+		-name "*.so" -exec install -m 644 {} $(V) \;
+	@set -e; echo; cd $(V) && cat $(CURDIR)/debian/module-manifest \
+		| xargs -i ls -l --no-group {}; echo
+	touch $(STAMP_DIR)/build-stamp-apache
+
+$(STAMP_DIR)/build-stamp-ssl: $(STAMP_DIR)/configure-stamp-ssl
+	dh_testdir
+
+	@echo -e "\n\n*** Compiling apache-ssl daemon and modules ***\n\n"
+	cd $(S) && $(MAKE)
+
+	@echo -e "\n\n*** apache-ssl modules sanity check ***\n\n"
+	find $(SOURCE_DIR)-apache-ssl/ \
+		-name "*.so" -exec install -m 644 {} $(S) \;
+	@set -e; echo; cd $(S) && cat $(CURDIR)/debian/module-manifest-ssl \
+		| xargs -i ls -l --no-group {}; echo
+	touch $(STAMP_DIR)/build-stamp-ssl
+
+$(STAMP_DIR)/build-stamp-perl: $(STAMP_DIR)/configure-stamp-perl
+	dh_testdir
+
+	@echo -e "\n\n*** Compiling apache-perl daemon and modules ***\n\n"
+	cd $(P) && $(MAKE)
+
+	@echo -e "\n\n*** apache-perl modules sanity check ***\n\n"
+	find $(SOURCE_DIR)-apache-perl/ \
+		-name "*.so" -exec install -m 644 {} $(P) \;
+	@set -e; echo; cd $(S) && cat $(CURDIR)/debian/module-manifest-perl \
+		| xargs -i ls -l --no-group {}; echo
+	touch $(STAMP_DIR)/build-stamp-perl
+
+$(STAMP_DIR)/build-stamp-mod-perl: $(STAMP_DIR)/configure-stamp-mod-perl
+	dh_testdir
+	@echo -e "\n\n*** Compiling libapache-mod-perl ***\n"
+	cd $(D) && $(MAKE) OPTIMIZE="$(MODPERLCFLAGS)"
+	touch $(STAMP_DIR)/build-stamp-mod-perl
+
+expand-debian: $(STAMP_DIR)/source.make $(STAMP_DIR)/expand-debian
+$(STAMP_DIR)/expand-debian:
+	@echo -e "\n\n*** Populating debian/ from debian/pkgtemplates ***\n\n"
+
+	chmod +x debian/scripts/populate
+	debian/scripts/populate $(APACHE_MAJOR) $(PERL_MAJOR) $(DEB_REVISION) $(APACHE_MINOR)
+
+	chmod +x debian/{*post*,*preinst*,*prerm*}
+
+	@echo -e "\n\n*** Checking maintainer scripts ***\n\n"
+	set -e ; for foo in debian/*inst* debian/*ostrm debian/*rerm ; \
+		do echo -n "$$foo " ; sh -n $$foo ; done ; echo
+	
+	@echo -e "\n\n*** Fixing png icons ***\n\n"
+	cd $(V)/icons && for i in *.gif;do convert $$i $${i%.gif}.png;done
+	cd $(V)/icons/small && for i in *.gif;do convert $$i $${i%.gif}.png;done
+	cd debian && uudecode logos.uue && tar -zxf logos.tar.gz
+	for i in `find debian/logos -name *.gif`; do \
+		convert $$i $${i%.gif}.png; done
+	cd debian && uudecode logos.ssl.uue && tar -zxf logos.ssl.tar.gz
+	for i in `find debian/logos.ssl -name *.gif`; do \
+		convert $$i $${i%.gif}.png; done
+
+	touch $(STAMP_DIR)/expand-debian
+
+install: build $(STAMP_DIR)/install-stamp
+$(STAMP_DIR)/install-stamp: $(STAMP_DIR)/pre-install-stamp-deb $(STAMP_DIR)/install-stamp-common $(STAMP_DIR)/install-stamp-dev $(STAMP_DIR)/install-stamp-dbg $(STAMP_DIR)/install-stamp-doc $(STAMP_DIR)/install-stamp-apache $(STAMP_DIR)/install-stamp-ssl $(STAMP_DIR)/install-stamp-perl $(STAMP_DIR)/install-stamp-mod-perl
+	touch $(STAMP_DIR)/install-stamp
+
+$(STAMP_DIR)/pre-install-stamp-deb:
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+	touch $(STAMP_DIR)/pre-install-stamp-deb
+
+$(STAMP_DIR)/install-stamp-utils: $(STAMP_DIR)/pre-install-stamp-deb
+	@echo -e "\n\n*** Installing apache-utils ***\n\n"
+	dh_testdir
+	dh_testroot
+
+	# from apache-ssl
+	install $(S)/src/support/{check_forensic,logresolve,ab,rotatelogs} \
+		debian/apache-utils/usr/sbin
+	debian/ubersed < $(S)/src/support/logresolve.8 \
+		> debian/apache-utils/$(man)/man8/logresolve.8
+	debian/ubersed < $(S)/src/support/ab.8 \
+		> debian/apache-utils/$(man)/man8/ab.8
+	debian/ubersed < $(S)/src/support/rotatelogs.8 \
+		> debian/apache-utils/$(man)/man8/rotatelogs.8
+	install debian/check_forensic.8 debian/apache-utils/$(man)/man8/check_forensic.8
+
+	# from apache
+	install $(V)/src/support/{htpasswd,htdigest,dbmmanage} \
+		debian/apache-utils/usr/bin
+	debian/ubersed < $(V)/src/support/htpasswd.1 \
+		> debian/apache-utils/$(man)/man1/htpasswd.1
+	debian/ubersed < $(V)/src/support/htdigest.1 \
+		> debian/apache-utils/$(man)/man1/htdigest.1
+	debian/ubersed < $(V)/src/support/dbmmanage.1 \
+		> debian/apache-utils/$(man)/man1/dbmmanage.1
+
+	touch $(STAMP_DIR)/install-stamp-utils
+
+$(STAMP_DIR)/install-stamp-common: $(STAMP_DIR)/pre-install-stamp-deb
+	@echo -e "\n\n*** Installing apache-common ***\n\n"
+	dh_testdir
+	dh_testroot
+
+	# default configs
+	cd debian && \
+	for i in apache apache-ssl apache-perl; do \
+		cp -a srm.conf access.conf apache-common/usr/share/apache/default-configs/$$i && \
+		cp -a $$i.httpd.conf apache-common/usr/share/apache/default-configs/$$i/httpd.conf && \
+		cp -a $$i.intro.html apache-common/usr/share/apache/default-configs/$$i/intro.html ; \
+		cp -a $$i.logrotate.conf apache-common/usr/share/apache/default-configs/$$i/logrotate.conf ; \
+	done
+
+	# modules
+	cp -a $$(find $(V) info/ -maxdepth 1 -name "*.info") \
+		$$(find $(V) -maxdepth 1 -name "*.so") \
+		debian/apache-common/$(lib)
+	for mod in $$(cd $(C) && sh -c "find * -maxdepth 0 -type d") ; do \
+		if [ -f $(C)/$$mod/README ] ; then \
+			echo "++ $(C)/$$mod/README" && \
+			cp -a $(C)/$$mod/README \
+				debian/apache-common/$(doc)-common/README.$$mod; \
+		fi; \
+	done
+	rm -f debian/apache-common/$(doc)-common/README.mod_eaccess
+	cp $(C)/mod_eaccess/doc/index.html debian/apache-common/$(doc)-common/mod_eaccess.html
+	cp -v $(C)/*/*.html debian/apache-common/$(doc)-common/
+	cp $(C)/mod_auth_cache*/{ChangeLog,INSTALL,README,TODO} \
+		debian/apache-common/$(doc)-common/mod_auth_cache/
+
+	@echo -e "\n--- sanity: module .info check ---\n"
+	chmod +x debian/scripts/modchk && debian/scripts/modchk
+
+	# scripts
+	chmod +x debian/listconffiles
+	chmod +x debian/listlogfiles
+	cp -a debian/{postinst.common,listconffiles,listlogfiles} \
+	      debian/apache-common/usr/share/apache/
+	chmod +x debian/modules-config
+	cp -a debian/modules-config debian/apache-common/usr/sbin/apache-modconf
+	cp debian/modules-config.8 debian/apache-common/$(man)/man8/apache-modconf.8
+	cd debian/apache-common/usr/sbin && ln -sf apache-modconf modules-config
+	cd debian/apache-common/$(man)/man8 && ln -sf apache-modconf.8 modules-config.8
+
+	# icons
+	cp -a $(V)/icons/*.{gif,png} debian/logos/* \
+		debian/apache-common/usr/share/apache/icons
+	cp -a $(V)/icons/small/*.{gif,png} \
+		debian/apache-common/usr/share/apache/icons/small
+	cp -a $(V)/icons/README \
+		debian/apache-common/$(doc)-common/README.icons
+	cp -a $(V)/icons/small/README.txt \
+		debian/apache-common/$(doc)-common/README.small.icons
+
+	# misc
+	cp -a $(V)/src/include/ap_config.h \
+		debian/apache-common/$(doc)-common/
+	debian/ubersed < $(V)/src/support/suexec.8 \
+		> debian/apache-common/$(man)/man8/suexec.8
+	cp -a debian/apache-common.lintian \
+		debian/apache-common/usr/share/lintian/overrides/apache-common
+	cp -a debian/apache-common.presubj \
+		debian/apache-common/usr/share/bug/apache-common/presubj
+
+	touch $(STAMP_DIR)/install-stamp-common
+
+$(STAMP_DIR)/install-stamp-dev: $(STAMP_DIR)/pre-install-stamp-deb
+	@echo -e "\n\n*** Installing apache-dev ***\n\n"
+	dh_testdir
+	dh_testroot
+
+	# apxs
+	install debian/apxs debian/apache-dev/usr/bin/apxs
+	install debian/apxs-perl debian/apache-dev/usr/bin/apxs-perl
+	install debian/apxs-ssl debian/apache-dev/usr/bin/apxs-ssl
+	debian/ubersed < $(V)/src/support/apxs.8 \
+		> debian/apache-dev/$(man)/man1/apxs.1
+	debian/ubersed-perl < $(P)/src/support/apxs.8 \
+		> debian/apache-dev/$(man)/man1/apxs-perl.1
+	debian/ubersed-ssl < $(S)/src/support/apxs.8 \
+		> debian/apache-dev/$(man)/man1/apxs-ssl.1
+
+	# includes
+	cp -a $(V)/src/include/* debian/apache-dev/$(inc)
+	cp -a $(V)/src/modules/standard/mod_rewrite.h debian/apache-dev/$(inc)/modules/rewrite
+	cp -a $(V)/src/modules/proxy/mod_proxy.h debian/apache-dev/$(inc)/modules/proxy
+
+	# apaci
+	install -m644 debian/apaci debian/apache-dev/$(doc)-dev/apaci
+
+	# misc
+	cp -a debian/README.modules debian/apache-dev/$(doc)-dev/
+
+	touch $(STAMP_DIR)/install-stamp-dev
+
+$(STAMP_DIR)/install-stamp-dbg: $(STAMP_DIR)/pre-install-stamp-deb
+	@echo -e "\n\n*** Installing apache-dbg ***\n\n"
+	dh_testdir
+	dh_testroot
+
+	# daemons
+	install $(V)/src/apache debian/apache-dbg/usr/sbin/apache.dbg
+	install $(P)/src/apache debian/apache-dbg/usr/sbin/apache-perl.dbg
+	install $(S)/src/apache debian/apache-dbg/usr/sbin/apache-ssl.dbg
+
+	debian/ubersed < $(V)/src/support/httpd.8 \
+		> debian/apache-dbg/$(man)/man8/apache.dbg.8
+	debian/ubersed-perl < $(P)/src/support/httpd.8 \
+		> debian/apache-dbg/$(man)/man8/apache-perl.dbg.8
+	debian/ubersed-ssl < $(S)/src/support/httpd.8 \
+		> debian/apache-dbg/$(man)/man8/apache-ssl.dbg.8
+	
+	# misc
+	cp -a debian/apache-dbg.lintian \
+		debian/apache-dbg/usr/share/lintian/overrides/apache-dbg
+	touch $(STAMP_DIR)/install-stamp-dbg
+
+$(STAMP_DIR)/install-stamp-doc: $(STAMP_DIR)/pre-install-stamp-deb
+	@echo -e "\n\n*** Installing apache-doc ***\n\n"
+	dh_testdir
+	dh_testroot
+
+	cp -a $(V)/src/README debian/apache-doc/$(doc)-doc/README.src
+	cp -a $(V)/htdocs/manual/* debian/apache-doc/$(doc)-doc/manual
+	rm -f debian/apache-doc/$(doc)-doc/manual/LICENSE
+	debian/ubersed < $(V)/htdocs/index.html.en \
+		> debian/apache-doc/$(doc)-doc/manual.html
+	ln -s ../../apache/icons debian/apache-doc/$(doc)-doc/icons
+
+	# fixing manual browsing
+	chmod +x debian/scripts/doc_fix
+	debian/scripts/doc_fix debian/apache-doc/$(doc)-doc/manual
+	cd debian/apache-doc/usr/share/doc/apache-doc && ln -fs manual html
+
+	touch $(STAMP_DIR)/install-stamp-doc
+
+$(STAMP_DIR)/install-stamp-apache: $(STAMP_DIR)/pre-install-stamp-deb
+	@echo -e "\n\n*** Installing apache ***\n\n"
+	dh_testdir
+	dh_testroot
+
+	chown www-data:www-data debian/apache/var/cache/apache
+
+	# apache
+	install $(V)/src/apache debian/apache/usr/sbin
+	debian/ubersed < $(V)/src/support/httpd.8 \
+		> debian/apache/$(man)/man8/apache.8
+
+	# apachectl
+	debian/ubersed < $(V)/src/support/apachectl \
+		>  debian/apache/usr/sbin/apachectl
+	chmod +x debian/apache/usr/sbin/apachectl
+	debian/ubersed < $(V)/src/support/apachectl.8 \
+		> debian/apache/$(man)/man8/apachectl.8
+
+	# suexec
+	install -m 4755 $(V)/src/support/suexec \
+		debian/apache/usr/lib/apache/suexec.disabled
+
+	# misc
+	cd debian/apache/usr/sbin && ln -sf apache-modconf apacheconfig
+	cd debian/apache/$(man)/man8 && ln -sf apache-modconf.8.gz apacheconfig.8.gz
+	cp -a debian/apache.httpd.conf debian/apache/$(doc)/examples/httpd.conf
+	cp -a debian/apache.lintian \
+		debian/apache/usr/share/lintian/overrides/apache
+	cp -a debian/apache.presubj \
+		debian/apache/usr/share/bug/apache/presubj
+
+	touch $(STAMP_DIR)/install-stamp-apache
+
+$(STAMP_DIR)/install-stamp-ssl: $(STAMP_DIR)/pre-install-stamp-deb
+	@echo -e "\n\n*** Installing apache-ssl ***\n\n"
+	dh_testdir
+	dh_testroot
+
+	chown www-data:www-data debian/apache-ssl/var/cache/apache-ssl
+
+	# apache-ssl
+	install $(S)/src/apache debian/apache-ssl/usr/sbin/apache-ssl
+	debian/ubersed-ssl < $(S)/src/support/httpd.8 \
+		> debian/apache-ssl/$(man)/man8/apache-ssl.8
+	
+	# apache-sslctl
+	debian/ubersed-ssl < $(S)/src/support/apachectl \
+		>  debian/apache-ssl/usr/sbin/apache-sslctl
+	chmod +x debian/apache-ssl/usr/sbin/apache-sslctl
+	debian/ubersed-ssl < $(S)/src/support/apachectl.8 \
+		> debian/apache-ssl/$(man)/man8/apache-sslctl.8
+
+	# suexec
+	install -m 4755 -s $(S)/src/support/suexec \
+		debian/apache-ssl/usr/lib/apache-ssl/suexec.disabled
+
+	# gcache
+	install $(S)/src/modules/ssl/gcache debian/apache-ssl/usr/lib/apache-ssl/
+
+	# apache-ssl modules
+	install -m 644 $(S)/src/modules/standard/mod_log_config.so \
+		debian/apache-ssl/$(lib)/mod_log_config_ssl.so
+	install -m 644 $(S)/src/modules/standard/mod_mime.so \
+		debian/apache-ssl/$(lib)/mod_mime_ssl.so
+	install -m 644 $(S)/src/modules/standard/mod_auth.so \
+		debian/apache-ssl/$(lib)/mod_auth_ssl.so
+	install -m 644 $(S)/src/modules/ssl/libssl.so \
+		debian/apache-ssl/$(lib)/libssl.so
+	install -m 644 info/020mod_log_config_ssl.info \
+		debian/apache-ssl/$(lib)/
+	install -m 644 info/050mod_mime_ssl.info \
+		debian/apache-ssl/$(lib)/
+	install -m 644 info/390mod_auth_ssl.info \
+		debian/apache-ssl/$(lib)/
+	install -m 644 info/380apache-ssl.info \
+		debian/apache-ssl/$(lib)/
+
+	# ssleay
+	cp -a debian/apache-ssl.ssleay.cnf debian/apache-ssl/usr/share/apache-ssl/ssleay.cnf
+	ln -s ../../../apache-ssl/ssleay.cnf debian/apache-ssl/$(doc)-ssl/examples/
+
+	# html documentation
+
+	cat debian/apache-ssl.docs.html | \
+		sed -e 's/\.gif/\.png/g' >> debian/apache-ssl/$(doc)-ssl/manual/docs.html
+	cp -a debian/logos.ssl/* debian/apache-ssl/$(doc)-ssl/manual/
+
+	# misc
+	cp -a debian/apache.pem.5 debian/apache-ssl/$(man)/man5/apache.pem.5
+	cd debian/apache-ssl/usr/sbin/ && ln -sf apache-modconf apache-sslconfig
+	cd debian/apache-ssl/$(man)/man8 && ln -sf apache-modconf.8.gz apache-sslconfig.8.gz
+	cp -p $(SOURCE_DIR)-apache-ssl/*.SSL $(SOURCE_DIR)-apache-ssl/SECURITY debian/apache-ssl/$(doc)-ssl
+	mv debian/apache-ssl/$(doc)-ssl/LICENCE.SSL debian/apache-ssl/$(doc)-ssl/README.APACHESSL
+	cp -a debian/apache-ssl.lintian \
+		debian/apache-ssl/usr/share/lintian/overrides/apache-ssl
+	cp -a debian/apache-ssl.httpd.conf debian/apache-ssl/$(doc)-ssl/examples/httpd.conf
+	cp -a debian/apache-ssl.presubj \
+		debian/apache-ssl/usr/share/bug/apache-ssl/presubj
+
+	touch $(STAMP_DIR)/install-stamp-ssl
+
+$(STAMP_DIR)/install-stamp-perl:
+	@echo -e "\n\n*** Installing apache-perl ***\n\n"
+	dh_testdir
+	dh_testroot
+
+	chown www-data:www-data debian/apache-perl/var/cache/apache-perl
+
+	# apache-perl
+	install $(P)/src/apache debian/apache-perl/usr/sbin/apache-perl
+	debian/ubersed-perl < $(P)/src/support/httpd.8 \
+		> debian/apache-perl/usr/share/man/man8/apache-perl.8
+
+	# apache-perlctl
+	debian/ubersed-perl < $(P)/src/support/apachectl \
+		> debian/apache-perl/usr/sbin/apache-perlctl
+	chmod +x debian/apache-perl/usr/sbin/apache-perlctl
+	debian/ubersed-perl < $(P)/src/support/apachectl.8 \
+		> debian/apache-perl/usr/share/man/man8/apache-perlctl.8
+
+	# suexec
+	install -m 4755 $(P)/src/support/suexec \
+		debian/apache-perl/usr/lib/apache-perl/suexec.disabled
+
+	# misc
+	cd debian/apache-perl/usr/sbin/ && ln -sf apache-modconf apache-perlconfig
+	cd debian/apache-perl/$(man)/man8 && ln -sf apache-modconf.8.gz apache-perlconfig.8.gz
+	cp -a debian/README-perl.Debian debian/apache-perl/$(doc)-perl/README-perl.Debian
+	cp -a debian/apache-perl.httpd.conf debian/apache-perl/$(doc)-perl/examples/httpd.conf
+	cp -a debian/apache-perl.lintian \
+		debian/apache-perl/usr/share/lintian/overrides/apache-perl
+	cp -a debian/apache-perl.presubj \
+		debian/apache-perl/usr/share/bug/apache-perl/presubj
+
+	touch $(STAMP_DIR)/install-stamp-perl
+
+$(STAMP_DIR)/install-stamp-mod-perl:
+	@echo -e "\n\n*** Installing libapache-mod-perl ***\n\n"
+	dh_testdir
+	dh_testroot
+
+	# mod-perl
+	cd $(D) && \
+	$(MAKE) PREFIX=`pwd`/../debian/libapache-mod-perl/usr/ install_vendor
+	install -m 644 $(D)/apaci/libperl.so debian/libapache-mod-perl/usr/lib/apache/1.3/mod_perl.so
+	install -m 644 info/400mod_perl.info debian/libapache-mod-perl/usr/lib/apache/1.3/400mod_perl.info
+
+	# examples
+	cp -rp $(D)/eg/* debian/libapache-mod-perl/usr/share/doc/libapache-mod-perl/examples
+
+	# includes
+	cd debian/libapache-mod-perl && \
+	mv usr/lib/perl5/auto/Apache/include/modules usr/include/apache-1.3/ && \
+	rm -rf usr/lib/perl5/auto/Apache/include && \
+	ln -sf ../../../../include/apache-1.3 usr/lib/perl5/auto/Apache/include
+	cd debian/libapache-mod-perl/usr/lib/perl5/Apache/ && \
+	sed -e "s,'APXS.*,'APXS' => '/usr/bin/apxs'\,," < MyConfig.pm > MyConfig.pm2 && \
+	mv MyConfig.pm2 MyConfig.pm
+
+	# misc
+	cp debian/libapache-mod-perl.olddebianchangelog debian/libapache-mod-perl/usr/share/doc/libapache-mod-perl/historical-Debian-changelog
+	cp -a debian/libapache-mod-perl.lintian \
+		debian/libapache-mod-perl/usr/share/lintian/overrides/libapache-mod-perl
+
+	# some cleanup (imported from the old maintainer and needs more investigation)
+	find `pwd`/debian/libapache-mod-perl \( -name .packlist -o -name perllocal.pod \) -exec \
+		rm -f '{}' \;
+	find `pwd`/debian/libapache-mod-perl -type f \( -name \*.pm -o -name \*.pl \) \
+		-exec chmod a-x '{}' \;
+	find `pwd`/debian/libapache-mod-perl -type f -name .cvsignore -exec rm '{}' ';'
+	find `pwd`/debian/libapache-mod-perl -type f -name mod_perl.exp -exec rm '{}' ';'
+	-find `pwd`/debian/libapache-mod-perl -type d -print0 | xargs -0 \
+		--no-run-if-empty rmdir -p --ignore-fail-on-non-empty
+	touch $(STAMP_DIR)/install-stamp-mod-perl
+
+# since we know perform install: only once we need to clean up
+# debhelper files since they are not idempotent
+pre-binary:
+	rm -f debian/*.debhelper
+
+# Build architecture-independent files here.
+binary-indep: build install
+	@echo -e "\n\n*** Building architecture indepdendent packages ***\n\n"
+	dh_testdir -i
+	dh_testroot -i
+	dh_installdocs -i -A debian/README.Debian debian/TODO.Debian
+	dh_installexamples -i
+	dh_installmenu -i
+	dh_installdebconf -i
+	dh_installlogrotate -i
+	dh_installcron -i
+	dh_installchangelogs -i $(V)/src/CHANGES
+	dh_link -i
+	dh_compress -i
+	dh_fixperms -i --exclude=suexec.disabled
+	dh_installdeb -i
+	dh_gencontrol -i -- -isp -Vnext:Major=$(APACHE_NEXT_MAJOR)
+	dh_md5sums -i
+	dh_builddeb -i
+
+# Build architecture-dependent files here.
+binary-arch: build install
+	@echo -e "\n\n*** Building architecture specific packages ***\n\n"
+	dh_testdir -a
+	dh_testroot -a
+	dh_installdocs -a -A debian/README.Debian debian/TODO.Debian
+	dh_installexamples -a
+	dh_installmenu -a
+	dh_installinit -a -- defaults 91
+	dh_installdebconf -a
+	dh_installlogrotate -a
+	dh_installcron -a
+	dh_installchangelogs -a $(V)/src/CHANGES
+	(cd debian/libapache-mod-perl/usr/share/doc/libapache-mod-perl && mv Changes changelog)
+	dh_strip -a --exclude=dbg
+	dh_link -a
+#	This avoids a lintian warning by breaking policy -- fun, eh?	
+	dh_compress -a --exclude=log_server_status \
+		--exclude=httpd.conf --exclude=access.conf --exclude=srm.conf
+	dh_fixperms -a --exclude=suexec.disabled --exclude=var/cache/apache
+	dh_installdeb -a
+	dh_shlibdeps -a
+	dh_gencontrol -a -- -isp -Vnext:Major=$(APACHE_NEXT_MAJOR)
+	dh_gencontrol -v -plibapache-mod-perl -- -Vnext:Major=$(APACHE_NEXT_MAJOR) \
+		      -v$(PERL_MAJOR)$(PERL_MINOR)-$(DEB_REVISION)
+	dh_md5sums -a
+	dh_builddeb -a
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f debian/apache{,-ssl,-perl}.{presubj,init,conffiles,config,dirs,docs,examples,lintian,intro.html}
+	rm -f debian/apache{,-ssl,-perl}.{logrotate,postinst,postrm,preinst,prerm,httpd.conf,cron.d,conf.d,logrotate.conf}
+	rm -f debian/apaci{,-ssl,-perl,.append{,-ssl,-perl}}
+	rm -f debian/{apache-common.examples,apache-dev.docs,libapache-mod-perl.docs}
+	rm -f debian/{*.gz,local-apxs*,apxs*} o debian/o debian/buildinfo.Debian
+	rm -rf debian/logos debian/logos.ssl
+	chmod +x debian/{ubersed,modules-config,sys-build.mk,scripts/*.*,scripts/modchk}
+	$(MAKE) -f debian/sys-build.mk source.clean
+	rm -rf $(SOURCE_DIR)-*
+	rm -rf debian.diff debian/stampdir
+	rm -rf $(D)
+	dh_clean
+
+binary: pre-binary binary-indep binary-arch
+	echo -e "\n\n*** HEY THIS IS YOUR LUCKY DAY! ***\n\n"
+
+.PHONY: build clean binary-indep binary-arch binary install

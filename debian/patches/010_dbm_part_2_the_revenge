@@ -1,0 +1,103 @@
+diff -Naurd build-tree.ORIG/apache_1.3.41/src/helpers/find-dbm-lib build-tree/apache_1.3.41/src/helpers/find-dbm-lib
+--- build-tree.ORIG/apache_1.3.41/src/helpers/find-dbm-lib	2002-01-22 08:39:15.000000000 +0100
++++ build-tree/apache_1.3.41/src/helpers/find-dbm-lib	2003-06-29 09:46:15.000000000 +0200
+@@ -13,16 +13,19 @@
+ 	    *-linux*)
+ 		# many systems don't have -ldbm
+ 		DBM_LIB=""
+-		if ./helpers/TestCompile lib ndbm dbm_open; then
++		if ./helpers/TestCompile lib db __db_ndbm_open; then
++		    DBM_LIB="-ldb"
++		    CFLAGS="$CFLAGS -DDB_DBM_HSEARCH=1"
++		elif ./helpers/TestCompile lib db1 dbm_open; then
++		    # For Red Hat 7, if not handled by the ndbm case above
++		    DBM_LIB="-ldb1"
++		    CFLAGS="$CFLAGS -I/usr/include/db1"
++ 		elif ./helpers/TestCompile lib ndbm dbm_open; then
+ 		    DBM_LIB="-lndbm"
+ 		    if ./helpers/TestCompile lib db1 dbm_open; then
+ 			# Red Hat needs this; ndbm.h lives in db1
+ 			CFLAGS="$CFLAGS -I/usr/include/db1"
+ 		    fi
+-		elif ./helpers/TestCompile lib db1 dbm_open; then
+-		    # For Red Hat 7, if not handled by the ndbm case above
+-		    DBM_LIB="-ldb1"
+-		    CFLAGS="$CFLAGS -I/usr/include/db1"
+                 elif ./helpers/TestCompile lib gdbm dbm_open; then
+                     DBM_LIB="-lgdbm"
+                     CFLAGS="$CFLAGS -I/usr/include/gdbm"
+diff -Naurd build-tree.ORIG/apache_1.3.41/src/modules/standard/mod_auth_dbm.c build-tree/apache_1.3.41/src/modules/standard/mod_auth_dbm.c
+--- build-tree.ORIG/apache_1.3.41/src/modules/standard/mod_auth_dbm.c	2002-03-13 22:05:33.000000000 +0100
++++ build-tree/apache_1.3.41/src/modules/standard/mod_auth_dbm.c	2003-06-29 09:46:15.000000000 +0200
+@@ -81,8 +81,15 @@
+ #define dbm_fetch sdbm_fetch
+ #define dbm_close sdbm_close
+ #else
++#ifndef DB_DBM_HSEARCH
++#define DB_DBM_HSEARCH 0
++#endif
++#if DB_DBM_HSEARCH != 0
++#include <db.h>
++#else
+ #include <ndbm.h>
+ #endif
++#endif
+ 
+ /*
+  * Module definition information - the part between the -START and -END
+diff -Naurd build-tree.ORIG/apache_1.3.41/src/modules/standard/mod_rewrite.h build-tree/apache_1.3.41/src/modules/standard/mod_rewrite.h
+--- build-tree.ORIG/apache_1.3.41/src/modules/standard/mod_rewrite.h	2002-03-13 22:05:34.000000000 +0100
++++ build-tree/apache_1.3.41/src/modules/standard/mod_rewrite.h	2003-06-29 09:46:15.000000000 +0200
+@@ -130,7 +130,14 @@
+      * so we also need to know the file extension
+      */
+ #ifndef NO_DBM_REWRITEMAP
++#ifndef DB_DBM_HSEARCH
++#define DB_DBM_HSEARCH 0
++#endif
++#if DB_DBM_HSEARCH != 0
++#include <db.h>
++#else
+ #include <ndbm.h>
++#endif
+ #if defined(DBM_SUFFIX)
+ #define NDBM_FILE_SUFFIX DBM_SUFFIX
+ #elif defined(__FreeBSD__) || (defined(DB_LOCK) && defined(DB_SHMEM))
+diff -Naurd build-tree.ORIG/apache-contrib-1.0.8a/mod_eaccess/mod_eaccess.c build-tree/apache-contrib-1.0.8a/mod_eaccess/mod_eaccess.c
+--- build-tree.ORIG/apache-contrib-1.0.8a/mod_eaccess/mod_eaccess.c	2001-03-05 13:30:48.000000000 +0100
++++ build-tree/apache-contrib-1.0.8a/mod_eaccess/mod_eaccess.c	2003-06-29 09:49:04.000000000 +0200
+@@ -263,11 +263,11 @@
+ #include "util_md5.h"
+ #include "http_conf_globals.h"
+ #include <utime.h>
+-#if defined (__GLIBC__)						&&	\
+-    defined (__GLIBC_MINOR__)					&&	\
+-    __GLIBC__ >= 2						&&	\
+-    __GLIBC_MINOR__ >= 1
+-#include <db1/ndbm.h>
++#ifndef DB_DBM_HSEARCH
++#define DB_DBM_HSEARCH 0
++#endif
++#if DB_DBM_HSEARCH != 0
++#include <db.h>
+ #else
+ #include <ndbm.h>
+ #endif
+diff -Naurd build-tree.ORIG/apache-contrib-1.0.8a/mod_urlcount/mod_urlcount.c build-tree/apache-contrib-1.0.8/mod_urlcount/mod_urlcount.c
+--- build-tree.ORIG/apache-contrib-1.0.8a/mod_urlcount/mod_urlcount.c	1999-08-23 13:18:05.000000000 +0200
++++ build-tree/apache-contrib-1.0.8a/mod_urlcount/mod_urlcount.c	2003-06-29 09:46:15.000000000 +0200
+@@ -112,9 +112,11 @@
+ #include "http_log.h"
+ #include "http_protocol.h"
+ 
+-#if defined(__GLIBC__) && defined(__GLIBC_MINOR__) \
+-    && __GLIBC__ >= 2 && __GLIBC_MINOR__ >= 1
+-#include <db1/ndbm.h>
++#ifndef DB_DBM_HSEARCH
++#define DB_DBM_HSEARCH 0
++#endif
++#if DB_DBM_HSEARCH != 0
++#include <db.h>
+ #else
+ #include <ndbm.h>
+ #endif

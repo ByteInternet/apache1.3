@@ -1,0 +1,11 @@
+--- build-tree.orig/apache_1.3.41/src/support/suexec.h	2002-03-13 22:05:37.000000000 +0100
++++ build-tree/apache_1.3.41/src/support/suexec.h	2003-05-29 02:22:23.000000000 +0200
+@@ -79,7 +79,7 @@
+  *            for suEXEC.  For most systems, 500 or 100 is common.
+  */
+ #ifndef UID_MIN
+-#define UID_MIN 100
++#define UID_MIN 1000
+ #endif
+ 
+ /*

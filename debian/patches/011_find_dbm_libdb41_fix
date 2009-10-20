@@ -1,0 +1,15 @@
+diff -Naurd build-tree/apache_1.3.41.ORIG/src/helpers/find-dbm-lib build-tree/apache_1.3.41/src/helpers/find-dbm-lib
+--- build-tree/apache_1.3.41.ORIG/src/helpers/find-dbm-lib	2003-04-26 23:30:40.000000000 +0200
++++ build-tree/apache_1.3.41/src/helpers/find-dbm-lib	2003-04-26 23:42:30.000000000 +0200
+@@ -13,7 +13,10 @@
+ 	    *-linux* | *-GNU/*)
+ 		# many systems don't have -ldbm
+ 		DBM_LIB=""
+-		if ./helpers/TestCompile lib db __db_ndbm_open; then
++		if ./helpers/TestCompile lib db; then
++		    DBM_LIB="-ldb"
++		    CFLAGS="$CFLAGS -DDB_DBM_HSEARCH=1"
++		elif ./helpers/TestCompile lib db __db_ndbm_open; then
+ 		    DBM_LIB="-ldb"
+ 		    CFLAGS="$CFLAGS -DDB_DBM_HSEARCH=1"
+ 		elif ./helpers/TestCompile lib db1 dbm_open; then

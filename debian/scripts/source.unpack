@@ -1,0 +1,29 @@
+#!/bin/sh
+. debian/scripts/vars
+mkdir -p $STAMP_DIR/upstream/tarballs/ $SOURCE_DIR
+for f in `find upstream/tarballs -maxdepth 1 -type f|sort`;do
+	stampfile=$STAMP_DIR/upstream/tarballs/`basename $f`
+	if [ ! -e $stampfile ];then
+		case $f in
+			*.gz|*.tgz|*.Z)	cmd=zcat;;
+			*.bz)		cmd=bzcat;;
+			*.bz2)		cmd=bz2cat;;
+			*)		cmd=cat;;
+		esac
+		echo -n "Extracting upstream tarball $f"
+		if $cmd $f|(cd ${SOURCE_DIR:-.};tar xvf -) >$stampfile.log;then
+			if [ x$SOURCE_DIR = x ];then
+				mkdir -p $STAMP_DIR/upstream/files/tarballs
+				cp $stampfile.log $STAMP_DIR/upstream/files/tarballs/`basename $f`.list
+			fi
+			echo " successful."
+			touch $stampfile
+		else
+			echo " failed!"
+			exit 1
+		fi
+	else
+		echo "upstream tarball $f already extracted!"
+	fi
+done
+

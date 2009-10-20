@@ -1,0 +1,322 @@
+#
+#    Translators, if you are not familiar with the PO format, gettext
+#    documentation is worth reading, especially sections dedicated to
+#    this format, e.g. by running:
+#         info -n '(gettext)PO Files'
+#         info -n '(gettext)Header Entry'
+#
+#    Some information specific to po-debconf are available at
+#            /usr/share/doc/po-debconf/README-trans
+#         or http://www.debian.org/intl/l10n/po-debconf/README-trans
+#
+#    Developers do not need to manually edit POT or PO files.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: apache\n"
+"Report-Msgid-Bugs-To: debian-apache@lists.debian.org\n"
+"POT-Creation-Date: 2006-08-16 21:44+1000\n"
+"PO-Revision-Date: 2005-04-09 01:26+0300\n"
+"Last-Translator: Matti Pöllä <mpo@iki.fi>\n"
+"Language-Team: Finnish <debian-l10n-finnish@lists.debian.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. Type: note
+#. Description
+#: ../apache-common.templates:1001
+msgid "Old log rotation scripts exists and are modified"
+msgstr "Olemassa olevia lokitiedostojen kierrätysskriptejä muokataan"
+
+#. Type: note
+#. Description
+#: ../apache-common.templates:1001
+msgid ""
+"You have old log rotation scripts in /etc/cron.d and /etc/${flavour}, they "
+"have not been touched, but you might want to remove them to avoid having "
+"your logs rotated multiple times."
+msgstr ""
+"Vanhoja lokitiedostojen kierrätysskriptejä löytyi hakemistoista /etc/cron.d "
+"ja /etc/${flavour}. Niihin ei ole tehty muutoksia, mutta haluat ehkä poistaa "
+"ne välttääksesi lokitiedostojen moninkertaisen kierrättämisen."
+
+#. Type: note
+#. Description
+#: ../apache-common.templates:2001
+msgid "${flavour} has switched to use logrotate"
+msgstr "${flavour} on siirtynyt käyttämään logrotate-ominaisuutta"
+
+#. Type: note
+#. Description
+#: ../apache-common.templates:2001
+msgid ""
+"Some of your logs are stored outside the /var/log/${flavour} directory, so "
+"you should edit /etc/logrotate.d/${flavour} to have them automatically "
+"rotated."
+msgstr ""
+"Jotkut lokitiedostoista on varastoitu hakemiston /var/log/${flavour} "
+"ulkopuolelle. Muokkaa siis tiedostoa /etc/logrotate.d/${flavour} saadaksesi "
+"automaattinen kierrätys toimimaan."
+
+#. Type: note
+#. Description
+#: ../apache-common.templates:3001
+msgid "Handling of config files has been changed"
+msgstr "Asetustiedostojen käsittelytapa on muuttunut"
+
+#. Type: note
+#. Description
+#: ../apache-common.templates:3001
+msgid ""
+"From this release of apache, apache-ssl and apache-perl no more attempts of "
+"fixing users configurations will be done other than for the really essential "
+"ones that would prevent the server to run. Two new files will appear in /etc/"
+"apache{-ssl,-perl}:"
+msgstr ""
+"Tästä apache:n, apache-ssl:n ja apache-perl:in versiosta lähtien käyttäjien "
+"asetuksiin ei yritetä tehdä korjauksia. Ainoastaan palvelimen käynnistymisen "
+"estävät viat asetuksissa käsitellään. Kaksi uutta tiedostoa luodaan "
+"hakemistoon /etc/apache{-ssl,perl}."
+
+#. Type: note
+#. Description
+#: ../apache-common.templates:3001
+msgid ""
+" - modules.config, that will be used by apache-modconf to handle\n"
+"   LoadModules directives;\n"
+" - suggested_corrections that will contain information about\n"
+"   the differences from the users config and the standard Debian\n"
+"   one and how to fix them."
+msgstr ""
+" - modules.config, jota apache-modconf käyttää LoadModules-ohjeiden\n"
+"   käsittelyyn;\n"
+" - suggested_corrections, joka sisältää tietoa käyttäjän omien\n"
+"   asetuksien ja Debianin oletusasetuksien eroista ja siitä, kuinka ne\n"
+"   voi korjata."
+
+#. Type: note
+#. Description
+#: ../apache-common.templates:3001
+msgid ""
+"For more information please refer to /usr/share/doc/apache{-ssl,-perl}/"
+"README.Debian"
+msgstr "Lue lisää tiedostosta /usr/share/doc/apache{-ssl,-perl}/"
+
+#. Type: multiselect
+#. Description
+#: ../apache-common.templates:4001
+msgid "Please select the modules that ${flavour} will load"
+msgstr "Valitse modulit, jotka ${flavour} lataa"
+
+#. Type: boolean
+#. Description
+#: ../apache-common.templates:5001
+msgid "Do you want me to restart ${flavour} now?"
+msgstr "Haluatko käynnistää uudelleen ${flavour}:n?"
+
+#. Type: boolean
+#. Description
+#: ../apache-common.templates:5001
+msgid ""
+"Remember that in order to activate the new configuration ${flavour} has to "
+"be restarted. You can also restart ${flavour} manually executing /etc/init.d/"
+"${flavour} restart"
+msgstr ""
+"Muista, että uusien asetuksien aktivoimiseksi ${flavour} tulee käynnistää "
+"uudelleen. Voit myös käynnistää ${flavour}:n itse komennolla \"/etc/init.d/"
+"${flavour} restart\""
+
+#. Type: boolean
+#. Description
+#: ../apache.templates:1001 ../apache-ssl.templates:1001
+#: ../apache-perl.templates:3001
+msgid "Enable suExec?"
+msgstr "Ota suExec-ominaisuus käyttöön?"
+
+#. Type: boolean
+#. Description
+#: ../apache.templates:1001 ../apache-ssl.templates:1001
+#: ../apache-perl.templates:3001
+msgid ""
+"suExec is a feature of apache where CGI scripts are run by the user who owns "
+"the script.  It is useful if your users have CGI access and don't trust each "
+"other."
+msgstr ""
+"suExec on apache:n ominaisuus, jonka avulla CGI-skriptit ajetaan skriptin "
+"omistavan käyttäjän oikeuksilla.  Siitä on apua, jos CGI:n käyttäjät eivät "
+"luota toisiinsa."
+
+#. Type: boolean
+#. Description
+#: ../apache.templates:2001
+msgid "Would you like to start apache at boot time?"
+msgstr "Haluatko käynnistää apache:n koneen käynnistämisen yhteydessä?"
+
+#. Type: string
+#. Description
+#: ../apache.templates:3001
+msgid "Set the FQDN for apache default server"
+msgstr "Aseta käypä domain-nimi oletuspalvelimelle"
+
+#. Type: string
+#. Description
+#: ../apache.templates:3001 ../apache-ssl.templates:3001
+#: ../apache-perl.templates:5001
+msgid ""
+"If you do not know which is the FQDN (Fully Qualified Domain Name, Ex: www."
+"debian.org) for this computer please ask your network administrator or "
+"otherwise set it temporary to localhost (Note that using localhost might "
+"results in apache printing some harmless warnings)."
+msgstr ""
+"Jos et tiedä, mikä on koneen käypä domain-nimi (FQDN = Fully Qualified "
+"Domain Name, Esim: www.debian.org), kysy verkon ylläpitäjältä tai aseta "
+"väliaikaisesti nimeksi \"localhost\". (Huomaa, että nimeä \"localhost\" "
+"käyttäessä apache voi näyttä varoituksia, joita ei tarvitse huomioida.)"
+
+#. Type: string
+#. Description
+#: ../apache.templates:4001
+msgid "Set the email address of the apache administrator"
+msgstr "Aseta apache:n ylläpitäjän sähköpostiosoite"
+
+#. Type: string
+#. Description
+#: ../apache.templates:5001
+msgid ""
+"Set the directory that will contain the web pages for apache default server"
+msgstr ""
+"Syötä hakemisto, joka sisältää www-sivut oletusarvoiselle apache-palvelimelle"
+
+#. Type: string
+#. Description
+#: ../apache.templates:5001 ../apache-ssl.templates:5001
+#: ../apache-perl.templates:7001
+msgid ""
+"The default is set to /var/www according to the FHS. If you will use a non "
+"default setting the contents of /var/www will NOT be touched/moved."
+msgstr ""
+"Oletuksena käytetään tiedostojärjestelmähierarkian (FHS) mukaisesti "
+"hakemistoa /var/www. Jos käytät jotain muuta asetusta, hakemiston /var/www "
+"sisältöön EI kosketa."
+
+#. Type: string
+#. Description
+#: ../apache.templates:6001
+msgid "Set the TCP port on which the apache server will listen"
+msgstr "Aseta TCP-portti, jota apache-palvelin kuuntelee"
+
+#. Type: string
+#. Description
+#: ../apache.templates:6001 ../apache-perl.templates:8001
+msgid ""
+"If you have more than one server running on the same machine you might want "
+"to set them to listen on different ports, since otherwise one of them will "
+"not work."
+msgstr ""
+"Jos ajat useaa palvelinta samalla koneella, haluat ehkä asettaa ne "
+"kuuntelemaan eri portteja, koska muutoin joku niistä ei toimi."
+
+#. Type: boolean
+#. Description
+#: ../apache-ssl.templates:2001
+msgid "Would you like to start apache-ssl at boot time?"
+msgstr "Haluatko käynnistää apache-ssl:n koneen käynnistämisen yhteydessä?"
+
+#. Type: string
+#. Description
+#: ../apache-ssl.templates:3001
+msgid "Set the FQDN for apache-ssl default server"
+msgstr "Aseta käypä domain-nimi oletusarvoiselle apache-ssl-palvelimelle"
+
+#. Type: string
+#. Description
+#: ../apache-ssl.templates:4001
+msgid "Set the email address of the apache-ssl administrator"
+msgstr "Aseta apache-ssl:n ylläpitäjän sähköpostiosoite"
+
+#. Type: string
+#. Description
+#: ../apache-ssl.templates:5001
+msgid ""
+"Set the directory that will contain the web pages for apache-ssl default "
+"server"
+msgstr ""
+"Aseta hakemisto, joka sisältää oletusarvoisen apache-ssl-palvelimen www-"
+"sivut."
+
+#. Type: note
+#. Description
+#: ../apache-perl.templates:1001
+msgid "Apache-Perl needs to be reconfigured."
+msgstr "Apache-Perl täytyy konfiguroida uudelleen."
+
+#. Type: note
+#. Description
+#: ../apache-perl.templates:1001
+msgid ""
+"This version of apache-perl has been reorganized from the previously "
+"installed version; its configuration files have moved to /etc/apache-perl."
+msgstr ""
+"Tämä apache-perl:in versio on organisoitu uudelleen aiemmin asennettuun "
+"versioon nähden. Asetustiedostot on siirretty hakemistoon /etc/apache-perl."
+
+#. Type: note
+#. Description
+#: ../apache-perl.templates:1001
+msgid ""
+"Please read /usr/share/doc/apache-perl/README.Debian for more information."
+msgstr "Lue lisää tiedostosta /usr/share/doc/apache-perl/README.Debian."
+
+#. Type: note
+#. Description
+#: ../apache-perl.templates:2001
+msgid "Apache-Perl needs a separate PidFile from Apache."
+msgstr "Apache-Perl:llä tulee olla Apache:sta erillinen PidFile."
+
+#. Type: note
+#. Description
+#: ../apache-perl.templates:2001
+msgid ""
+"The installed /etc/apache-perl/httpd.conf contains a reference to apache."
+"pid.  Apache-Perl must have its own PidFile, which should be called /var/run/"
+"apache-perl.pid.  Apache-Perl will not start until this is corrected."
+msgstr ""
+"Asennettu versio tiedostosta /etc/apache-perl/httpd.conf sisältää viitteen "
+"kohteeseen apache.pid. Apache-Perl:illä tulee olla erillinen PidFile-"
+"tiedosto, jonka nimi tulee olla /var/run/apache-perl.pid. Apache-Perl ei "
+"käynnisty ennen kuin tämä on korjattu."
+
+#. Type: boolean
+#. Description
+#: ../apache-perl.templates:4001
+msgid "Would you like to start apache-perl at boot time?"
+msgstr "Haluatko käynnistää apache-perl:in koneen käynnistämisen yhteydessä?"
+
+#. Type: string
+#. Description
+#: ../apache-perl.templates:5001
+msgid "Set the FQDN for apache-perl default server"
+msgstr "Aseta käypä domain-nimi oletusarvoiselle apache-perl-palvelimelle"
+
+#. Type: string
+#. Description
+#: ../apache-perl.templates:6001
+msgid "Set the email address of the apache-perl administrator"
+msgstr "Aseta apache-perl:in ylläpitäjän sähköpostiosoite"
+
+#. Type: string
+#. Description
+#: ../apache-perl.templates:7001
+msgid ""
+"Set the directory that will contain the web pages for apache-perl default "
+"server"
+msgstr ""
+"Aseta hakemisto, joka sisältää www-sivut oletusarvoiselle apache-perl -"
+"palvelimelle."
+
+#. Type: string
+#. Description
+#: ../apache-perl.templates:8001
+msgid "Set the TCP port on which the apache-perl server will listen"
+msgstr "Aseta TCP-portti, jota apache-perl -palvelin kuuntelee"

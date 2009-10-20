@@ -1,0 +1,68 @@
+#! /bin/bash
+
+set -e
+
+case "$1" in
+    install|upgrade)
+
+    if [ "$1" = install -o "$1" = upgrade ] && [ "$2" != "" ]
+    then
+	if [ ! -d /etc/@FLAVOUR@ -a -d /etc/httpd ]
+	then
+	    echo Copying existing configuration from "\`/etc/httpd'" to "\`/etc/@FLAVOUR@'..."
+	    mkdir -m 755 /etc/@FLAVOUR@ &&
+		(cd /etc/httpd; tar cf - .) | (cd /etc/@FLAVOUR@; tar xpf -)
+	fi
+
+	# this should ensure a sane stop of apache upgrading from woody/testing
+	# NOTE: woody prerm script is broken and does not stop apache!
+
+	if [ -x "/etc/init.d/@FLAVOUR@" ]; then
+	    if [ -x /usr/sbin/invoke-rc.d ]; then
+		invoke-rc.d @FLAVOUR@ stop
+	    else
+		/etc/init.d/@FLAVOUR@ stop
+	    fi
+	fi
+	# there might be some @FLAVOUR@ processes still running
+
+	cnt=0
+	while [ "`pidof @FLAVOUR@ | awk '{print $0}'`" ]; do
+	    if [ $cnt -gt 30 ]; then
+		PIDS=`pidof @FLAVOUR@ | awk '{print $0}'`
+		for i in $PIDS; do
+		    kill $i
+		    # we killed apache, possibly because init scripts
+		    # are disable. Track the status and restart it
+		    # at the end of postinst.
+		    touch /etc/@FLAVOUR@/.@FLAVOUR@mustberestarted
+		done
+	    fi
+	    cnt=`expr $cnt + 1`
+	    sleep 1
+	done
+
+	# ugly but this is a template
+	if [ "@FLAVOUR@" = "apache-ssl" ]; then
+	    PIDS=`pidof gcache | awk '{print $0}'`
+	    for i in $PIDS; do
+		kill $i
+	    done
+	fi
+    fi
+
+    ;;
+
+    abort-upgrade)
+    ;;
+
+    *)
+        echo "preinst called with unknown argument \`$1'" >&2
+        exit 0
+    ;;
+esac
+
+#DEBHELPER#
+
+exit 0
+

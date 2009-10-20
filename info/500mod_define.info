@@ -1,0 +1,4 @@
+LoadModule: define_module /usr/lib/apache/1.3/mod_define.so
+Directives:
+ Define
+Description: Support for defining variables in conf

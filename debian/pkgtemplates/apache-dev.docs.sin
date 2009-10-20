@@ -1,0 +1,3 @@
+build-tree-apache/apache_@APACHEMAJOR@/README.configure
+build-tree-apache/apache_@APACHEMAJOR@/src/PORTING
+build-tree-apache/pkg.eapi/README.EAPI

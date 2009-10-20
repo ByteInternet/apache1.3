@@ -1,0 +1,3070 @@
+apache (1.3.41-1) stable; urgency=low
+
+  * New source version.
+
+ -- Allard Hoeve <allard@byte.nl>  Tue, 20 Oct 2009 12:14:33 +0200
+
+apache (1.3.34-4.1.1byte2) stable; urgency=low
+
+  * nu depends on libdb4.6-dev or libdb4.3-dev
+
+ -- Wojtek Burakiewicz <wojtek@byte.nl>  Thu, 06 Aug 2009 15:03:20 +0200
+
+apache (1.3.34-4.1.1byte1) stable; urgency=low
+
+  * Non-maintainer upload.
+  * Byte recompile.
+
+ -- Allard Hoeve <allard@byte.nl>  Fri, 29 Feb 2008 18:48:05 +0100
+
+apache (1.3.34-4.1+etch1) stable; urgency=low
+
+  * Minor security fixes:
+    - CVE-2007-1349: DoS in mod_perl
+    - CVE-2007-3304: potential DoS by sending SIGUSR1 to arbitrary processes
+    - CVE-2006-5752, CVE-2007-6388: XSS in mod_status
+    - CVE-2007-5000: XSS in mod_imap
+
+ -- Stefan Fritsch <sf@debian.org>  Fri, 18 Jan 2008 19:50:44 +0100
+
+apache (1.3.34-4.1byte1) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Byte recompile.
+  * Carry over Byte patches.
+
+ -- Allard Hoeve <allard@byte.nl>  Thu,  8 Mar 2007 12:02:29 +0100
+
+apache (1.3.34-4.1) unstable; urgency=low
+
+  * Non-Mainainer Upload.
+  * Revert 033_-F_NO_SETSID patch and re-fix #244857 in such a way that a
+    local root hole is not created (Closes: #357561)
+
+ -- Matthew Johnson <debian@matthew.ath.cx>  Fri, 23 Feb 2007 11:37:58 +0000
+
+apache (1.3.34-4) unstable; urgency=low
+
+  * Save and restore IFS every time we mangle it in postinst.common, to
+    avoid debconf exploding (closes: #381893, #358543, #383267, #383285)
+  * Updated Debconf translations (closes: #361217, #364354)
+    - Update sv.po, thanks to Daniel Nylander <yeager@lidkoping.net>
+    - Added gl.po, thanks to Jacobo Tarrio <jtarrio@trasno.net>
+
+ -- Adam Conrad <adconrad@0c3.net>  Wed, 16 Aug 2006 21:37:27 +1000
+
+apache (1.3.34-3) unstable; urgency=high
+
+  * Add 908_mod_rewrite_CVE-2006-3747 to resolve an off-by-one 
+    security problem in the ldap scheme handling.  For some
+    RewriteRules this could lead to a pointer being written out
+    of bounds. (closes: #380231)
+  * Add 909_core_CVE-2006-3918 to resolve a potential cross-site 
+    scripting vulnerability in the core of Apache, by HTML escaping 
+    the contents of the Expect header. (closes: #381381)
+  * Added patch from Robin Elfrink to allow Apache to build on
+    Debian/kfreebsd (closes: #292333)
+  * Build-depend (and make apache-dev depend on) libdb4.4 instead of 4.3
+
+ -- Thom May <thom@debian.org>  Tue, 15 Aug 2006 15:56:24 +0200
+
+apache (1.3.34-2) unstable; urgency=medium
+
+  * Add 907_mod_imap_CVE-2005-3352 to resolve a cross-site scripting
+    vulnerability in mod_imap, by escaping untrusted referer headers
+    before outputting HTML; see CVE-2005-3352 (closes: #343466)
+
+ -- Adam Conrad <adconrad@0c3.net>  Fri,  6 Jan 2006 18:00:40 +1100
+
+apache (1.3.34-1) unstable; urgency=low
+
+  * New upstream versions of apache (1.3.34) and eapi (2.8.25-1.3.34)
+    - Drop 035_regex_on_64bit_fix, which was finally merged upstream.
+    - Drop 906_content_length_CAN-2005-2088; has been fixed upstream.
+    - Add ssl/009_openssl098 to fix FTBFS with libssl0.9.8 (closes: #334336) 
+  * Use the apache-ssl 1.3.33+ssl_1.55 tarball, and rearrange how we patch
+    eapi.patch and SSLpatch in the apache-ssl build to minimise our diffs.
+  * Build-depend (and make apache-dev depend on) libdb4.3 instead of 4.2.
+  * First shot at a new lsb-ified init script, still needs work for #309693.
+  * Add italian debconf translation thanks to Marco Gario (closes: #281379)
+  * Recompiling with more recent Perl 5.8.7 in sid, giving mod_perl access
+    to the same CPAN modules as the system perl again (closes: #316642)
+  * Stop building the apache-utils transitional packages (closes: #321824)
+  * Binaries should be built with the latest gcc-4.0 on alpha, resolving
+    segfaults on alpha that I suspect were GCC's fault (closes: #328212)
+  * Build-dep on lsb-release, and use it to determine the platform string.
+  * Muck with postinst and httpd.conf to deal with magic.mime moving AGAIN.
+  * Automate the dependencies on (<< next:Major), so I don't have to touch
+    debian/control on new upstream release, however infrequent those are.
+
+ -- Adam Conrad <adconrad@0c3.net>  Sun, 23 Oct 2005 02:11:49 +1000
+
+apache (1.3.33-8) unstable; urgency=medium
+
+  * Clean up debian/control, replacing hardcoded debconf dependencies with
+    ${misc:Depends} and removing versioned dpkg dependencies, now that the
+    version we want is in all of oldstable, stable, testing and unstable.
+  * Add 906_content_length_CAN-2005-2088, resolving an issue in mod_proxy
+    where, when a response contains both Transfer-Encoding and Content-Length
+    headers, the connection can be used for HTTP request smuggling and HTTP
+    request spoofing attacks; see CAN-2005-2088 (closes: #322607)
+
+ -- Adam Conrad <adconrad@0c3.net>  Tue, 06 Sep 2005 23:25:55 +1000
+
+apache (1.3.33-7) unstable; urgency=medium
+
+  * Add patch from Andreas Jochens to fix FTBFS with gcc-4.0 (closes: #290287)
+  * Use $SSD more consistently in the apache init script (closes: #319998)
+  * Only use ucf when purging if it's currently installed (closes: #315927)
+  * Apply patch from upstream bug #31853 to resolve serious regex matching
+    breakage and segfaults on various 64-bit systems (closes: #298975)
+  * Apply patch from Dann Frazier to fix 'fucntion implicitly converted to
+    pointer' error, which could segfault on 64-bit systems (closes: #308432)
+  * Include updated vi.po, thanks to Clytie Siddall (closes: #313113)
+  * Fix minor typos in apache-modconf(8), thanks A Costa (closes: #320549)
+  * Move libapache-mod-perl from web to perl section to match overrides.
+  * Update to Standards-Version 3.6.2 with no source changes required.
+
+ -- Adam Conrad <adconrad@0c3.net>  Mon,  1 Aug 2005 03:33:23 +1000
+
+apache (1.3.33-6.15) stable-security; urgency=low
+
+  * Non-maintainer upload.
+  * Fix SETSID bug.
+
+ -- Allard Hoeve <allard@byte.nl>  Thu,  8 Mar 2007 11:10:01 +0100
+
+apache (1.3.33-6.14) stable-security; urgency=low
+
+  * Non-maintainer upload.
+  * Fix CVE-2006-3747.
+    - Off-by-one error in mod_rewrite.c
+    - debian/patches/907_off-by-one_CVE-2006-3747
+
+ -- Allard Hoeve <allard@byte.nl>  Sun, 30 Jul 2006 13:44:05 +0200
+
+apache (1.3.33-6.13) stable-security; urgency=low
+
+  * libdb4.3!
+
+ -- Allard Hoeve <allard@byte.nl>  Wed, 19 Jul 2006 18:01:38 +0200
+
+apache (1.3.33-6.12) stable-security; urgency=low
+
+  * Sta uidstyle weer toe!
+
+ -- Allard Hoeve <allard@byte.nl>  Thu, 13 Jul 2006 16:25:00 +0200
+
+apache (1.3.33-6.11) stable-security; urgency=low
+
+  * PHPRC voor PHP4 en PHP5 gescheiden. Laat in suexec toe.
+    - PHPRC4
+    - PHPRC5
+
+ -- Allard Hoeve <allard@byte.nl>  Thu, 13 Jul 2006 16:09:07 +0200
+
+apache (1.3.33-6.10) stable-security; urgency=low
+
+  * Fix logrotation:
+    - Oude logs onleesbaar.
+    - access.log met spatie erachter.
+
+ -- Allard Hoeve <allard@byte.nl>  Thu, 15 Jun 2006 14:15:57 +0200
+
+apache (1.3.33-6.9) stable-security; urgency=low
+
+  * Logrotate dagelijks
+  * Logrotate ook access.log
+
+ -- Allard Hoeve <allard@byte.nl>  Tue, 30 May 2006 10:35:57 +0200
+
+apache (1.3.33-6.8) stable-security; urgency=low
+
+  * Log ook de VirtualHost bij errors
+  * Sta ook $ENV{PHPRC} toe in suexec
+
+ -- Allard Hoeve <allard@byte.nl>  Fri,  7 Apr 2006 15:36:28 +0200
+
+apache (1.3.33-6.7) stable-security; urgency=low
+
+  * /var/log/@FLAVOUR@ should be root:www-data.
+
+ -- Allard Hoeve <allard@byte.nl>  Fri,  3 Mar 2006 13:57:36 +0100
+
+apache (1.3.33-6.6) stable-security; urgency=low
+
+  * /var/log/@FLAVOUR@ is now no longer world-readable.
+
+ -- Allard Hoeve <allard@byte.nl>  Fri, 24 Feb 2006 13:00:43 +0100
+
+apache (1.3.33-6.5) stable-security; urgency=low
+
+  * 401 full URL logging is now informational.
+
+ -- Allard Hoeve <allard@byte.nl>  Tue,  4 Oct 2005 17:05:18 +0200
+
+apache (1.3.33-6.4) stable-security; urgency=low
+
+  * Remove UCF stuff. No more questions about local.conf,
+    modules.conf, httpd.conf, phew! Missed one earlier.
+
+ -- Allard Hoeve <allard@byte.nl>  Mon, 12 Sep 2005 17:27:03 +0200
+
+apache (1.3.33-6.3) stable-security; urgency=low
+
+  * Resync with Debian 1.3.33-6sarge1
+
+ -- Allard Hoeve <allard@byte.nl>  Fri,  9 Sep 2005 11:19:11 +0200
+
+apache (1.3.33-6.2) unstable; urgency=low
+
+  * FollowSymlinks is bij Byte ongewenst. 
+    - Wordt automatisch SymlinksIfOwnerMatch. 
+    - 104_byte_followsymlinks_is_unsafe toegevoegd.
+
+ -- Allard Hoeve <allard@byte.nl>  Sat, 16 Jul 2005 02:35:55 +0200
+
+apache (1.3.33-6.1) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Configureer Apache met --suexec-userdir=., zodat 
+    securebyte.nl werkt.
+
+ -- Allard Hoeve <allard@byte.nl>  Fri,  3 Jun 2005 16:43:09 +0200
+
+apache (1.3.33-6) unstable; urgency=low
+
+  * Update fi.po to remove a few dozen unfortunate linefeeds that
+    didn't belong and were breaking debconf (closes: #308548)
+
+ -- Adam Conrad <adconrad@0c3.net>  Wed, 11 May 2005 01:58:54 -0600
+
+apache (1.3.33-5) unstable; urgency=low
+
+  * Translation updates targetted at Sarge:
+    - fi.po, courtesy of Matti Pöllä <mpo@iki.fi> (closes: #303814)
+    - vi.po, from Clytie Siddall <clytie@riverland.net.au> (closes: #307742)
+
+ -- Adam Conrad <adconrad@0c3.net>  Mon,  9 May 2005 19:13:46 -0600
+
+apache (1.3.33-4.3) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Lower the urgency of 404 errors even more
+    - Properly name the patch that does so accordingly
+  * Do not run ucf for httpd.conf, modules.conf and access.conf
+
+ -- Allard Hoeve <allard@byte.nl>  Tue,  1 Mar 2005 17:56:55 +0100
+
+apache (1.3.33-4.2) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Add 103_byte_404_logging_now_just_a_notice to get rid of 404 errors in 
+    the error_log.
+
+ -- root <root@bonomel.byte.nl>  Thu, 24 Feb 2005 12:49:32 +0100
+
+apache (1.3.33-4.1) unstable; urgency=low
+
+  * Non-maintainer upload.
+
+ -- Allard Hoeve <allard@byte.nl>  Mon, 21 Feb 2005 11:51:20 +0100
+
+apache (1.3.33-4) unstable; urgency=low
+
+  * Update rules, scripts/populate, pkgtemplates/flavours.postinst to make
+    vesion handling in packaging scripts more intuitive, and to avoid the
+    mistakes that both thom and I previously made on the last upload.  New
+    uploads of debian revisions (by the security team, for example) now no
+    longer require touching debian/rules, updating the changelog is enough.
+    New upstream releases of any tarballs still require mangling debian/rules,
+    but it's now well documented.  Incidentally, version mismatches between
+    reality and what debian/rules had in it were responsible for odd failures
+    in apache-modconf, which should now be fixed (closes: #291526)
+  * Bump the PERL_MINOR revision from .0.2 to .0.3 to bring the debian
+    revisions in sync and make the above changes work as expected.
+  * Make apache-utils an empty package, depending on apache2-utils.  Also,
+    make apache-common depend on apache2-utils now.
+
+ -- Adam Conrad <adconrad@0c3.net>  Sat,  5 Feb 2005 23:47:20 -0700
+
+apache (1.3.33-3.1) unstable; urgency=low
+
+  * Non-maintainer upload.
+
+ -- Allard Hoeve <allard@byte.nl>  Fri, 21 Jan 2005 17:30:46 +0100
+
+apache (1.3.33-3) unstable; urgency=low
+
+  * (Thom May)
+    - Security fix - fix tempfile usage in check_forensic (Closes: #290974)
+  * (Adam Conrad)
+    - Mangle the debian/rules so that the libapache-mod-perl version number
+      is defined in the variables at the top, rather than deep in the
+      binary-arch target where it can get missed.
+
+ -- Adam Conrad <adconrad@0c3.net>  Wed, 19 Jan 2005 18:31:25 -0700
+
+apache (1.3.33-2.2) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Fix listlogfiles to not complain about pipes
+
+ -- Allard Hoeve <allard@byte.nl>  Fri, 19 Nov 2004 13:21:12 +0100
+
+apache (1.3.33-2.1) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Byte release
+
+ -- Allard Hoeve <allard@byte.nl>  Thu, 18 Nov 2004 17:08:18 +0100
+
+apache (1.3.33-2) unstable; urgency=low
+
+  * (Fabio M. Di Nitto)
+    - Remove Build-Dep on figlet. (Closes: #280869)
+  * (Adam Conrad)
+    - Add patch 904_security_htpasswd_user_buffer_overflow to fix a
+      potential buffer overflow in htpasswd, exploitable when passing
+      it unvalidated input from a CGI (who does this?)
+  * Fabio: Apparently a lot of people do since they are panicing everywhere.
+
+ -- Fabio M. Di Nitto <fabbione@fabbione.net>  Thu, 18 Nov 2004 11:03:48 +0100
+
+apache (1.3.33-1.1) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Byte release
+
+ -- Allard Hoeve <allard@byte.nl>  Thu, 18 Nov 2004 17:05:20 +0100
+
+apache (1.3.33-1) unstable; urgency=low
+
+  * (Adam Conrad <adconrad@0c3.net>)
+    - Add patch 515_dbm_read_hash_or_btree, to allow dbmmanage and mod_auth_db
+      to read DB_BTREE databases created by php4's dba layer (closes: #215145)
+    - Add debian/watch file, for QA version tracking purposes.
+    - Add myself to uploaders, since I now have CVS access.
+    - Add patch 034_ab.8_formatting_error to fix a missing line in the ab(8)
+      manpage (closes: #274430)
+
+  * (Fabio M. Di Nitto)
+    - New apache upstream release.
+    - Apply patch to listconffile to skip some crap while parsing directories.
+      Thanks Peter!
+
+ -- Fabio M. Di Nitto <fabbione@fabbione.net>  Sun, 07 Nov 2004 17:24:53 +0100
+
+apache (1.3.31-7.1) unstable; urgency=low
+
+  * Byte release, please see 1.3.31-5.1
+
+ -- Allard Hoeve <allard@byte.nl>  Mon,  1 Nov 2004 10:23:12 +0100
+
+apache (1.3.31-7) unstable; urgency=high
+
+  * SECURITY UPDATE to fix a buffer overflow in mod_include
+  * added patch 000_stolen_from_HEAD_CAN-2004-0940, backported from upstream
+    CVS (CAN-2004-0940)
+  * Same security update as for Ubuntu, Fabio asked me to upload and add
+    myself to Uploaders.
+
+ -- Martin Pitt <mpitt@debian.org>  Fri, 29 Oct 2004 10:18:38 +0200
+
+apache (1.3.31-6.1) unstable; urgency=low
+
+  * Byte release, see 1.3.31-5.1
+
+ -- Allard Hoeve <allard@byte.nl>  Mon, 20 Sep 2004 17:25:50 +0200
+
+apache (1.3.31-6) unstable; urgency=medium
+
+  * (Fabio M. Di Nitto)
+    - Add lynx | www-browser dependency to apache-common and make apachectl
+      use /etc/alternatives/www-browser.
+      (Closes: #269009)
+    - Add missing "be" in default config. (Closes: #270214)
+    - Add missing \ in forensic log directive. (Closes: #270224)
+    - Respect system CFLAGS and LDFLAGS. (Closes: #270635)
+    - Disable SSLCACertificatePath in default installation. (Closes: #267430)
+
+ -- Fabio M. Di Nitto <fabbione@fabbione.net>  Thu, 09 Sep 2004 07:09:15 +0200
+
+apache (1.3.31-5.1) unstable; urgency=low
+
+  * Move logrotation from logrotate.d to logrotate.conf and cron.d
+  * Suexec patching
+
+ -- Allard Hoeve <allard@byte.nl>  Sun,  5 Sep 2004 10:40:59 +0200
+
+apache (1.3.31-5) unstable; urgency=medium
+
+  * (Fabio M. Di Nitto)
+    - Make logrotate file permissions consistent with 511_log_files_permission.
+      (See bug #243487)
+
+ -- Fabio M. Di Nitto <fabbione@fabbione.net>  Mon, 30 Aug 2004 07:18:56 +0200
+
+apache (1.3.31-4) unstable; urgency=high
+
+  * (Fabio M. Di Nitto)
+    - Save and restore apache* running status across upgrades.
+    - Force stopping apache in preinst to not break upgrades from woody.
+      (Closes: #258113)
+    - Add index.php to default DirectoryIndex on new installations. 
+      (Closes: #211877)
+    - Backport keepalive fix from upstream. Thanks Philip <if@glyf.org>
+      (Closes: #263425)
+    - Fix typo in apache-modconf. (Closes: #267620)
+    - Stop shipping pam_limit support for suexec. It never worked as expected:
+      + remove debian/patches/016_suexec_pam_support.
+      + rediff debian/patches/018_suexec_reopenlog.
+      + drop libpam0g-dev builddep.
+      + cleanup configfiles across upgrades.
+    - Stop shipping apache-ssl-keynote and drop libkeynote-dev
+      builddep. (Closes: #237763)
+    - Update apache-ssl html documentation.
+    - Update apache-ssl to 1.55 version with patches/ssl/008_1.53_to_1.55.
+    - Package cleanup:
+      + Remove obsoleted IPv6 patches that do not apply/build since 1.3.29.
+        They were never part of the official Debian build.
+
+ -- Fabio M. Di Nitto <fabbione@fabbione.net>  Mon, 16 Aug 2004 11:58:57 +0200
+
+apache (1.3.31-3) unstable; urgency=high
+
+  * (Fabio M. Di Nitto)
+    - Urgency high thanks to bash3.0
+    - Added Turkish po-debconf translation thanks to
+      Recai Oktas <roktas@omu.edu.tr> (Closes: #257566)
+    - Added AddDefaultCharset notes in README.Debian as discussed
+      in #257775
+    - Added /var/lib/apache/mod-bandwidth directory permission notes
+      (Closes: #257108)
+    - Changed default environment PATH to include /usr/local/bin and
+      get rid of *sbin*. (Closes: #258602)
+    - Added Czech translation. Thanks to Jan Outrata <outrataj@upcase.inf.upol.cz>
+      (Closes: #259169)
+    - Change apache-modconf to make bash3.0 happy. (Closes: #262582)
+
+ -- Fabio M. Di Nitto <fabbione@fabbione.net>  Sun, 01 Aug 2004 08:02:46 +0200
+
+apache (1.3.31-2.1) unstable; urgency=low
+
+  * Byte Release
+
+ -- Allard Hoeve <allard@byte.nl>  Thu,  8 Jul 2004 12:30:29 +0200
+
+apache (1.3.31-2) unstable; urgency=high
+
+  * (Amaya)
+    - The "I really really want to upload apache" release
+  * (Fabio M. Di Nitto)
+    - Backported CAN-2004-0492 fix from upstream cvs.
+    - Applied patch from Colm Buckley and Pierfrancesco Caci to
+      listconffiles to deal better with whitespaces and tabs.
+      (Closes: #251048)
+    - Fixed apache-modconf grep environment. (Closes: #250408)
+    - Placeholders are now generated for each apache package.
+      (Closes: #199045)
+    - Added patch 514_nice_proxy_cache_cleanup to lower proxy cache cleanup
+      priority. (Closes: #234652)
+
+ -- Amaya Rodrigo Sastre <amaya@debian.org>  Thu, 24 Jun 2004 10:24:27 +0200
+
+apache (1.3.31-1) unstable; urgency=low
+
+  * (Fabio M. Di Nitto)
+    - New apache upstream release:
+      + Removed all patches stolen from CVS HEAD
+      + Removed 004_custom_response_segfaults patch (accepted by upstream)
+      + Rediffed 500_configure_hashbang, 507_usr_bin_perl_owns_you
+      + Updated licence from Apache 1.1 to Apache 2.0
+      + Upstream fixes also two bugs tracked in Debian BTS
+        (Closes: #235425, #165155)
+    - Enabled mod_log_forensic
+      + Added check_forensic to apache-utils and manpage written by us
+      + Added 035mod_log_firensic.info
+      + Modified 511_log_files_permission
+      + Added 513_GNU_xargs to fix check_forensic use of xargs
+      + Updated default configs to support forensic in new installations
+        (Note this might break tools that parse log files blindly)
+    - Enabled EXPERIMENTAL modules: mod_backtrace and mod_whatkilledus
+      + Updated default configs with proper notes
+      + Added extra notes in README.Debian
+    - Build against new perl (Closes: #248730, #249632) and possibly for
+      the last time.
+    - Relaxed dependencies on perl. Everything should be working on perl
+      side now.
+    - Applied patch to htdigest from Steve Kemp (Closes: #247926)
+    - Lintian cleanup:
+      + apache-doc now reccomends w3m | www-browser
+    - Added note in README.Debian for the init.d scripts chicken/egg problem
+      that affect restart functionality. (Closes: #227491)
+
+ -- Fabio M. Di Nitto <fabbione@fabbione.net>  Sat, 08 May 2004 06:50:52 +0200
+
+apache (1.3.29.0.2-7) unstable; urgency=medium
+
+  * (Fabio M. Di Nitto)
+    - Fixed htpasswd patch to properly initialise the extra fields buffer.
+      (Closes: #247458)
+
+ -- Fabio M. Di Nitto <fabbione@fabbione.net>  Wed, 05 May 2004 11:17:03 +0200
+
+apache (1.3.29.0.2-6) unstable; urgency=low
+
+  * (Fabio M. Di Nitto)
+    - Updated dependency for new perl 5.8.4 (Closes: #247011)
+    - Updated patch 033_-F_NO_SETSID to include mod_proxy
+    - Added patch 512_htpasswd_do_not_trash_extra_fields
+      (Closes: #51833)
+    - Documented and remarked apache-ssl upstream LoadModule order
+      change.
+
+ -- Fabio M. Di Nitto <fabbione@fabbione.net>  Mon, 03 May 2004 06:39:44 +0200
+
+apache (1.3.29.0.2-5) unstable; urgency=low
+
+  * (Fabio M. Di Nitto)
+    - Backported CAN-2003-0987 fix from upstream cvs
+    - Backported CAN-2004-0174 fix from upstream cvs
+    - Added patch 033_-F_NO_SETSID to use setpgrp(2) instead of setsid(2)
+      (Closes: #244857)
+    - modules-config/apache-modconf now asks to restart only if
+      the daemon is running. It reduces of several magnitudes
+      the amount of prompts upgrading from woody to sarge and
+      it avoids the daemons to be wronly restared during the
+      upgrade process that would lead to failures
+    - Added simple man page for apache.pem(5) (Closes: #129571)
+    - Removed old apache_not_to_run entry from README.Debian
+      (Closes: #244191)
+    - Create /var/www only if nothing is there
+      (Closes: #243866)
+    - Added 511_log_files_permission to open all new log files
+      with 640 permission (Closes: #243487)
+    - Fixed postinst.common to support arbitrary newaliases
+      (Closes: #243918)
+    - mod_auth_cache should be the first one to be loaded
+      (Closes: #243993)
+    - suexec enabled by default for a smooth woody to sarge upgrade
+      (Closes: #239416)
+    - Added notes about mod_perl authentication mechanism to
+      README.Debian (Closes: #242985)
+    - Enhanced stop procedure while upgrading from woody
+      (Closes: #242270)
+    - New path to install the place holder from. The old one was not
+      Policy compliant
+    - Added reportbug notes for apache, apache-perl, apache-ssl and
+      apache-common
+    - Enforced version depends on ucf and debconf to ensure woody to
+      sarge upgrades
+    - Removed old entry from init.d scripts (Closes: #242367, #243354)
+    - Fixed modules-config/apache-modconf update_config to avoid
+      duplicate modules.conf entries (Closes: #238624)
+    - Provides: httpd-cgi in reference to #117916
+    - Added query option to modules-config/apache-modconf
+    - Safer libapache-mod-perl postrm script
+    - Renamed modules-config to apache-modconf
+      (Closes: #228791, #230167)
+    - Removed apache-perl-ctl since noone should be using it anymore
+      (See also 1.3.27.1-1 changelog below)
+    - Update apache-perl control file to reflect apache and apache-ssl
+      + Priority: optional
+      + Suggests: apache-doc
+      + Added missing dependecy on logrotate
+    - Moved manual in apache-doc where it belongs
+    - Reverted patch 508_apxs_in_many_guises and shipped again the 3
+      flavours of apxs
+    - Added patch ssl/007_ab_ssl to enable SSL support in ab
+    - Fixed typo in apache-common.templates
+    - Wrapping file names in ucf interaction (Closes: #238607)
+    - Updated default configs:
+      + Changed default ServerAdmin to webmaster@localhost
+      + Removed README.* from IndexIgnore and added proper comments
+        (Closes: #219694)
+    - Added Greek translation thanks to Konstantinos Margaritis
+      (Closes: #240440)
+    - Lowered apache-ssl and mod_auth_ssl priority to respect old setups
+      and new upstream requirements
+      (Closes: #239378)
+    - Temporary blacklisted apache_ssl_keynote (#237763)
+    - Update German translation thanks to Alwin Meschede (Closes: #241760)
+    - Added Polish translatin thanks to Emil Nowak (Closes: #243108)
+  * (Matthew Wilcox)
+    - Added 031_autoindex_indexes patch from Miquel van Smoorenburg to
+      allow IndexOptions +- Indexes to override Options +- Indexes.
+      (Closes: #219112)
+    - Added 032_autoindex_generator to put a <META NAME="generator"> tag in
+      the output from autoindex (Closes: #150621)
+
+ -- Fabio M. Di Nitto <fabbione@fabbione.net>  Wed, 21 Apr 2004 17:37:37 +0200
+
+apache (1.3.29.0.2-4) unstable; urgency=medium
+
+  * (Fabio M. Di Nitto)
+    - Updated mod_access to cvs head (CAN-2003-0993)
+    - Backported http_log security fix from cvs head (CAN-2003-0020)
+    - Updated and enabled again r->dir_config patch
+    - Disabled SSLNoV2 from apache-ssl in default installation since it might
+      create problems in some setups.
+    - Changed mod-auth-ssl load priority to fix BasicAuthentication.
+      (Closes: #237151)
+  * (Matthew Wilcox)
+    - Fixed typo in 030_autoindex_studly
+
+ -- Fabio M. Di Nitto <fabbione@fabbione.net>  Tue, 09 Mar 2004 15:22:54 +0100
+
+apache (1.3.29.0.2-3) unstable; urgency=low
+
+  * (Fabio M. Di Nitto)
+    - Reverting last change to the init script since it is not needed
+      anymore
+    - Modified listconffiles to exclude *.dpkg*
+    - Fixed typo in postinst.common (Closes: #236936)
+    - Temporary reverted path to mod_perl that causes segfault
+      (Closes: #236882, #236982)
+  * (Thom May)
+    - Added patch 510_debian_exclude to skip *.dpkg* files.
+
+ -- Fabio M. Di Nitto <fabbione@fabbione.net>  Tue, 09 Mar 2004 07:17:59 +0100
+
+apache (1.3.29.0.2-2) unstable; urgency=medium
+
+  * (Fabio M. Di Nitto)
+    - apache-dev is arch: all
+    - Fixed postinst.common config file name parsing and reinforced ucf
+      dependency
+      (Closes: #236757, #236760)
+    - Added check for conf.d/*dpkg inside init scripts to print a warning
+      in case there might be some leftovers.
+    - Urgency medium because we need to avoid -1 to propagate into sid
+      as fast as we can.
+
+ -- Fabio M. Di Nitto <fabbione@fabbione.net>  Mon, 08 Mar 2004 09:18:27 +0100
+
+apache (1.3.29.0.2-1) unstable; urgency=low
+
+  * (Fabio M. Di Nitto)
+    - Introduced better checks for values returned by debconf frontens
+      and rollback to defaults if empty (Closes: #234091)
+    - Introduced ucf to preserve users configurations across upgrades
+      (Closes: #227232, #235976, #234650)
+    - Fixed several overlapping problems with postrm scripts
+      (Closes: #232668)
+    - New apache-ssl upstream [CAN-2004-0009]
+      (Closes: #232630)
+    - Make modules-config less paranoid about .so/.info relationship
+      (Closes: #226833, #234706)
+    - Updated default apache-ssl conf for new SSLNoV2 directive
+    - Rebuilt and enforced dependencies against perl 5.8.3
+      (Closes: #231387)
+    - Switched logrotate scripts to use invoke-rc.d and Co.
+      (Closes: #234731)
+    - Added (for real this time) mod-perl r->dir_config('foo') patch. Thanks Don.
+      (Closes: #226131)
+    - Modified init scripts and postinst to handle in a better way the start
+      at boot. (Closes: #228355)
+    - Added link to netcraft.com in the default placeholder and a few lines
+      in the README.Debian
+    - Modified init scripts to clean mod-bandwidth/link/ after each stop
+      (Closes: #229000)
+    - More init scripts cleanup. It shouldn't leak environment information
+      (Closes: #229653, #230991)
+    - Added check for MIMEMagicFile to suggested corrections
+      (Closes: #230718)
+    - Added da.po thanks to Claus Hindsgaul (Closes: #233097)
+  * (Tollef Fog Heen)
+    - Stop linking against so many DB libs. (Closes: #45268)
+  * (Matthew Wilcox)
+    - Ship rotatelogs in apache-utils. (Closes: #219378)
+    - Add mod_autoindex patch. (Closes: #233694)
+
+ -- Fabio M. Di Nitto <fabbione@fabbione.net>  Sun, 07 Mar 2004 13:15:09 +0100
+
+apache (1.3.29.0.1-5) unstable; urgency=low
+
+  * (Fabio M. Di Nitto)
+    - Switched all scripts to use bash
+      (Closes: #230016, #230038)
+
+ -- Fabio M. Di Nitto <fabbione@fabbione.net>  Wed, 28 Jan 2004 07:19:21 +0100
+
+apache (1.3.29.0.1-4) unstable; urgency=low
+
+  * (Fabio M. Di Nitto)
+    - Fixed symlink creation in mod-perl postinst (Closes: #225047)
+    - Added SSLCacheServerPort check to suggested correction (Closes: #224390)
+    - Added mod-perl r->dir_config('foo') patch. Thanks Don. (Closes: #226131)
+    - Upgrade to libdb4.2 (Closes: #228451)
+    - Updated spanish translation thanks to Javier (Closes: #228329)
+    - Applied patch to mod_usertrack (Closes: #227997)
+    - Removed mod_uniqe_id from the default setup (Closes: #228033, #228667)
+    - Added workaround for a buggy prerm script in woody to ensure smooth
+      upgrades (Closes: #227357, #225015)
+    - Fixed libapache-mod-perl Depends list (Closes: #228946)
+    - Fixed listconffiles to support filenames enclosed in "" and ''
+      (Closes: #228537, #225608)
+    - Modified modules-config to fully support upgrades from woody and
+      in non-interactive mode
+    - apache-common shows configuration changes only when upgrading
+      (Closes: #229027, #229553)
+    - Added symlink from apache-doc to apache/manual (Closes: #229764)
+    - Added patch 102_inetdfix to nullify output while processing
+      configuration directories (consistent with apache2 and policy)
+      (Closes: #225634, #229728)
+  * (Thom May)
+    - Kill an echo -n that was causing problems on dash
+
+ -- Fabio M. Di Nitto <fabbione@fabbione.net>  Tue, 27 Jan 2004 18:23:49 +0100
+
+apache (1.3.29.0.1-3) unstable; urgency=low
+
+  * (Fabio M. Di Nitto)
+    - Added version dependency on sed (Closes: #224233)
+    - Fixed typo in modules-config (Closes: #224260)
+    - Temporary disabled suexec pam_limits support
+
+ -- Fabio M. Di Nitto <fabbione@fabbione.net>  Tue, 16 Dec 2003 18:51:54 +0100
+
+apache (1.3.29.0.1-2) unstable; urgency=low
+
+  * (Fabio M. Di Nitto)
+    - Fixed compilation options for suexec
+    (Closes: #223810, #223902, #224035)
+    - Fixed apache-perl postinst and modules-config (Closes: #223829)
+
+ -- Fabio M. Di Nitto <fabbione@fabbione.net>  Thu, 11 Dec 2003 21:05:37 +0100
+
+apache (1.3.29.0.1-1) unstable; urgency=low
+
+  * (Matthew Wilcox)
+    - new upstream versions for:
+      + mod_allowdev
+      + mod_roaming
+    - Updated copyright file to include apache-contrib module licences
+  * (Fabio M. Di Nitto)
+    - new debian/rules
+      + reorganized all the sections (more logical order)
+      + vars are all at the beginning
+      + removed hardencoded versions other than in the global vars section
+      + new ipv6 build method
+      + no more source handling outside source.make
+      + moved all the stamp to STAMP_DIR
+      + new target: expand-debian that will take care of generating
+        maintainer scripts and as much as possible in automatic way
+      + reorganized targets for libapache-mod-perl
+      + modules check after building for all the flavours
+      + removed old targets that were obsolete/broken
+      + install now performs only once
+      + install targets are now per package
+      + make use of dh_installlogrotate
+      + moved debian/modchk to debian/scripts/modchk
+      + use of debian/script/populate to create all common stuff
+    - created debian/pkgtemplates to store common templates
+    - updated module-manifests
+    - updated apache-contrib tarball
+      + it now contains contrib/ and mod_auth_cache
+      + it does not build mod_macro as DSO since it is compiled in
+      + removed mod_layout and mod_random (they are in external packages)
+    - Added /etc/apache{-ssl,perl}/conf.d support (Closes: #192489, #112553)
+    - Updated apache, apache-perl and apache-ssl default configs
+      (Closes: #136634, #215904, #144644, #170854)
+    - Applied patch to fix suexec log reopen bug (Closes: #153528)
+    - Applied and customized patch to enable PAM limits support for suexec
+      (add dependency on libpam0g, Closes: #89484)
+    - Enabled SSLExportClientCertificates support in apache-ssl
+    - Enabled apache_ssl_keynote_module only for apache-ssl
+      (add dependency on libkeynote0)
+    - apache-common should depends on a specific version of apache-utils
+    - Added README.modules to apache-dev to provide a simple guideline
+      for apache modules maintainers (Closes: #218119)
+    - Fixed typo in libapache-mod-perl.{postinst,prerm}
+    - Modified modules-config to handle apache-perl specific loadmodule
+      order. (Closes: #104268)
+    - Stop calling db_stop in modules-config and redirected the restart output
+      to /dev/null and avoid debconf to hang in certain situations
+      (Closes: #221133, #221138, #223576)
+    - modules-config now checks for modules <-> info files consistency
+      (Closes: #220041, #214773)
+    - Fixed example for Allow directive (Closes: #172527)
+    - Add all the include files and place them where they belong to.
+      We now provide a complete -dev environtment like all the other distro.
+      (Closes: #109460)
+    - Fixed wrong apxs path in MyConfig.pm
+    - Stop shipping mod_macro as DSO since it is statically compiled.
+    - Simplified debian/scripts/doc_fix
+    - workaround a dh_installdocs bug
+      (README.Debian and TODO.Debian were missing in some packages)
+    - libapache-mod-perl does not need to Recommends apache-perl
+    - Added apache-ssl html documentation from http://apache-ssl/docs.html
+    - Updated apache-doc doc-base to point to the real documentation
+      instead of a placeholder
+  * (Thom May)
+    - Itaglish -> English translation of README.modules ;)
+
+ -- Fabio M. Di Nitto <fabbione@fabbione.net>  Sat, 06 Dec 2003 17:14:26 +0100
+
+apache (1.3.29-1) unstable; urgency=low
+
+  * (Fabio M. Di Nitto)
+    - New upstream release
+      + renamed 017_uncrack_proxy_ftp to 017_uncrack_proxy_ftp_eapi_bit
+        since the patch has been applied upstream
+      + removed 502_debian_ps_is_brutal since the patch has been applied
+        upstream
+      (Closes: #218188, #218233)
+    - modules-config does not rely on /usr/share/doc anymore (Closes: #218042)
+    - Update nl.po from Tim Dijkstra (Closes: #218305)
+    - Update ru.po from Ilgiz Kalmetev (Closes: #219097)
+    - postinst.common cleanup and listconffiles fix
+      (Closes: #215776, #214905)
+
+ -- Fabio M. Di Nitto <fabbione@fabbione.net>  Wed, 05 Nov 2003 18:41:49 +0100
+
+apache (1.3.28.0.1-1) unstable; urgency=low
+
+  * (Fabio M. Di Nitto)
+    - New apache-ssl upstream (Closes: #217001, #216202)
+    - Remove ssl/005_tls1_aes_support.patch
+      (it has been accepted upstream)
+    - Added ssl/006_passcb.patch - check README.Debian for details
+      (Closes #69122, #136052)
+    - Blacklisted mod_perl (DSO) from apache-perl (Closes #215748)
+    - Rewritten modules handling code in modules-config to be more
+      friendly during upgrades avoiding useless questions and to
+      avoid resorting of modules.conf
+      (Closes: #215826, #216242, #216468, #215890, #217109, #217784, #217718)
+    - Update fr.po from Christian Perrier (Closes: #215768)
+    - Update pt_BR.po from Andre Luis Lopes (Closes: #216592)
+    - apache-dev ships also apache-perl.dbg and apache-ssl.dbg
+    - Fixed creation of mod-bandwidth dirs (Closes: #216402)
+    - Fixed .postrm scripts to remove apache* files from /etc/default
+    - Mentioned -F switch in apache* man pages (Closes: #211296)
+    - postinst.common now uses httpd.conf to build config files list
+      (Closes: #216887)
+  * (Matthew Wilcox)
+    - Amend intro.html as discussed in #199045.  Bug not closed, but
+      demoted to wishlist (pending action on other issues).
+    - Add patch 505_limit_my_servers_hard to point users to src/apaci
+      which is where they find the real definition of HARD_SERVER_LIMIT
+      (Closes: #171408)
+    - Update pt.po from Bruno Rodrigues (Closes: #216213)
+    - Update ru.po from Ilgiz Kalmetev (Closes: #214381)
+    - Update ja.po from Kenshi Muto (Closes: #216479)
+    - mod_proxy now honours ContentBase by Ard van Breemen (Closes: #148300)
+    - Various changes to apache.init, apache-perl.init and apache-ssl.init:
+      + Convert from bash to POSIX sh.
+      + Delete the SUEXEC variable because it wasn't used.
+      + Add a comment to the inetd check.
+      + Check that apache & apachectl are executable, not just present
+        (Closes: #146049)
+      + Pass LANG=C only to apachectl, not to apache.
+      + Only restrict the PATH setting for apachectl too.
+      + Don't use --exec to stop the daemon, rely on the --pidfile.
+      + Use $NAME throughout to make the differences between the scripts
+        as small as possible.
+      + Add a comment to indicate that users shouldn't mess with the
+        variables at the start of the script.  (Closes: #151703, #160974)
+      + Make force-reload do the same thing as reload.
+      + Send a HUP for restart, then attempt to start the daemon if
+        that fails.  (Closes: #158993)
+    - Split logresolve, ab, htpasswd, htdigest and dbmmanage from
+      apache-common into the new package apache-utils.
+      (Closes: #179448, #87193)
+    - Don't install logrotate any more since we don't use it.
+    - Take ab from the -ssl build so it supports https.  (Closes: #185157)
+    - Convert all the .gif files to .png and change intro.html to use them.
+      (Closes: #192157)
+    - Move .dbg binaries for apache, apache-ssl and apache-perl to new
+      package apache-dbg.
+    - If the "Please don't remove this" line is removed, assume the user
+      does not need our help configuring modules.  (Closes: #217035, #217914)
+    - Tweak build system to not mess around with build-tree symlinks.
+    - Repack logos.tar.gz / logos.uue to remove the old Debian 2.1 banners.
+      (Closes: #184445)
+  * (Thom May)
+    - Change rc.d startup time from the default to 91, in the name of
+      consistency.
+
+ -- Fabio M. Di Nitto <fabbione@fabbione.net>  Tue, 28 Oct 2003 18:15:21 +0100
+
+apache (1.3.28-4) unstable; urgency=low
+
+  * (Fabio M. Di Nitto)
+    - Changed the code to parse config files to not yell when including
+      empty directories (Closes: #215351)
+    - Fixed (again) parsing of Port (Closes: #215217, #215211, #215557)
+    - modules-config prompts only when required (Closes: #215560)
+
+ -- Fabio M. Di Nitto <fabbione@fabbione.net>  Tue, 14 Oct 2003 14:19:04 +0200
+
+apache (1.3.28-3) unstable; urgency=low
+
+  * (Fabio M. Di Nitto)
+    - Fixed suexec handling in apache{-perl,-ssl}.config
+    - Fixed detection of multiple entries in config files (Closes: #214966)
+    - Finished to applies suggestions about templates (Closes: #214525)
+      (thanks to Christian Perrier)
+    - Fixed modules-config to use LANG=C while parsing modules list that
+      should prevent arbitrary reordering of the list.
+      (Closes: #215047)
+    - Fixed parsing of Port (Closes: #215011)
+
+ -- Fabio M. Di Nitto <fabbione@fabbione.net>  Fri, 10 Oct 2003 14:52:48 +0200
+
+apache (1.3.28-2) unstable; urgency=low
+
+  * (Fabio M. Di Nitto)
+    - Fixed creation of /var/www (Closes: #214469, #214826)
+    - Do not use /tmp for temporary files (Closes: #214515)
+    - Fixed line calculation in modules-config
+      (Closes: #214555, #214665, #214687, #214807)
+    - Improved modules-config man page
+    - Fixed all the postinst mess.
+      (Closes: #214465, #214487, #214531, #214728, #214780, #214866, #214899)
+    - Corrected Typo (Closes: #214517)
+    - Fixed mod_log_referer info file (Closes: #214858)
+    - Fixed default index.html installation (Closes: #214841, #130234)
+    - Fixed postinst.common to recognize and parse config directories
+      (Closes: #214861)
+    - Added header to modules.conf to avoid confusion (Closes: #214913)
+
+ -- Fabio M. Di Nitto <fabbione@fabbione.net>  Wed, 08 Oct 2003 18:10:06 +0200
+
+apache (1.3.28-1) unstable; urgency=low
+
+  * (Thom May)
+    - Remove 016_fix_ia64_segfault
+  * (Fabio M. Di Nitto)
+    - New upstream releases (Closes: #210041)
+    - libapache-mod-perl switched to use modules-config
+    - No more attempts to fix users config will be done.
+      Changes that should be done will be only suggested.
+      (Closes: #205887, #136972, #162395)
+    - Fixed mod_bandwith paths (Closes: #213815, #182429, #146749)
+    - Got rid of /etc/apache{-perl,-ssl}/apache_not_to_be_run in favour
+      of debconf.
+    - Got rid of apacheconfig* in favour of modules-config and debconf
+      (Closes: #207453, #209276, #68978, #90107, #132060, #158391, #173775)
+      (Closes: #141344, #144964, #150543, #150625, #150711, #150646, #197990)
+      (Closes: #155750, #158194, #158391, #176083, #184366, #137541, #208054)
+      Thanks Joey H. it wouldn't be possible without you
+    - Recompiled with new perl 5.8.1
+      (Closes: #213397, #213411, #213414, #213575, #213613, #213974, #214052)
+    - Cleaned apache-ssl.preinst (Closes: #212812)
+    - Added AES support to apache-ssl (Closes: #211872)
+    - Removed mod_fastcgi from apache-contrib source. It is non-free
+    - Fixed apache{-ssl,-perl]}.config to check correct suexec path
+      (Closes: #200511, #208842)
+    - Removed ssl-certificate
+    - I must thank here Brian "laotse" Knox for his support during
+      this release cycle that avoided me a couple of tons of RTFM ;).
+
+ -- Fabio M. Di Nitto <fabbione@fabbione.net>  Mon, 06 Oct 2003 07:58:37 +0200
+
+apache (1.3.27.1-3) unstable; urgency=low
+
+  * (Fabio M. Di Nitto)
+    - Documented correctly mod_autoindex behaviour for HEADER and README
+      (Closes: #60486, #184792)
+    - Modified IndexIgnore in default config to match the real behaviour
+      of mod_autoindex (Closes: #184073)
+    - Renamed br.po to pt_BR.po (Closes: #207133)
+    - Update pt_BR.po (Closes: #205839)
+    - Fixed postinst.common to work Non-Interactively (Closes: #207453)
+    - apache-ssl now depends on ssl-cert to be fully Policy compliant
+      (Closes: #156081, #135240)
+    - Bumped standard version to 3.6.1
+  * (Tollef Fog Heen)
+    - Add || true to db_input in postinst_common to not crash if db_input
+      returns "Question is skipped"
+    - Add \b in apacheconfig{,-ssl,-perl} to not freak out on Alias
+      /documents and such (Closes: #163085)
+
+ -- Fabio M. Di Nitto <fabbione@fabbione.net>  Wed, 03 Sep 2003 14:00:53 +0200
+
+apache (1.3.27.1-2) unstable; urgency=low
+
+  * Fixed debian/scripts/doc_fix permissions at build time
+
+ -- Fabio M. Di Nitto <fabbione@fabbione.net>  Thu, 14 Aug 2003 14:33:03 +0200
+
+apache (1.3.27.1-1) unstable; urgency=low
+
+  * The "Yes, we know there is a new upstream release" upload.
+  * (Fabio M. Di Nitto)
+    - Applied patch to fix libperl debug path (Closes: #203715)
+    - Switched templates to use po-debconf (Closes: #187867)
+      Thanks to all the translators that have been so fast and responsive!
+    - Added ServerTokens directive in the default config (Closes: #170732)
+    - Nullified output of /etc/init.d/apache-ssl (Closes: #153104)
+    - Added --norestart option to apacheconfig* (Closes: #126632)
+    - Moved examples to apache-common
+    - New Standard-Version: 3.6.0
+    - lintian cleanup (only 2 overrides left)
+    - We now link against libpthread (Closes: #199001, #203095)
+    - Fixed the documentation hell (Closes: #144457, #139848, #143806)
+    - More strict dependencies against apache-common
+      (Closes: #199355, #199964, #202812, #202929, #204016)
+    - Updated contrib tarball
+    - Fixed apachessl.postinst (Closes: #199059)
+    - libapache-mod-perl is now shipped with apache to be able to build
+      all the apache-* packages in sync
+    - apache-perl merge: now it will be built in sync with apache
+      (Closes: #142737)
+    - libapache-mod-perl now suggests apache-dev (Closes: #96859)
+    - apache-perl now uses logrotate.d
+    - apache-perl is now a standalone package
+    - apache-perl-ctl shipped as a symlink to apache-perlctl
+      to maintain a coherent name scheme
+    - Fixed init scripts for apache, apache-ssl and apache-perl 
+      (Closes: #201545)
+    - apache-ssl source is shipped in a proper and sane way
+  * (Tollef Fog Heen)
+    - Bump email_max in apache-ssl.ssleay.cnf to 255 (Closes: #150853)
+    - Only remove the old conffiles in /etc/apache and /etc/cron.d if
+      they are unchanged.  (Closes: #194334, #169104)
+    - Start debhelperizing a little, includes using debhelper for the
+      restart stuff, so close the bugs related to apache not restarting
+      properly.  (Closes: #136260, #172883, #142213)
+    - Run apachectl configtest before restarting.  (Closes: #114472, #63202)
+    - s/Handlers/Handles/ in 500mod_roaming.info (Closes: #165573)
+    - Uncrackify proxy_ftp.c (Closes: #57316)
+  * (Thom May)
+    - Set LockFile for Apache-SSL so it doesn't conflict with Apache's
+      (Closes: #170759)
+    - Fix segfault on ia64 (Thanks to dann frazier <dannf@hp.com>) 
+      (Closes: #200698)
+    - Make logrotate rotate log files with 644 permissions. (Closes: #132296)
+    - Add notes to Readme.Debian regarding to the change of rotation perms,
+      and also about how to make mod_auth_system work right. (Closes: #32429)
+    - Add SymLinksIfOwnerMatch for cgi-bin (Closes: #201087)
+    - Fixup apxs to detect how it's called and modify the correct config
+      (Closes: #31592)
+    - Fix up apache to respect a SHOULD in 2616 (Closes: #151384)
+    - Turn off UseCanonicalName - it's a fairly advanced option and most 
+      users will not need it, or will only need it for certain VirtualHosts at
+      worse. (Closes: #172597)
+
+ -- Fabio M. Di Nitto <fabbione@fabbione.net>  Wed, 13 Aug 2003 18:05:38 +0200
+
+apache (1.3.27.0-2) unstable; urgency=low
+
+  * (Fabio M. Di Nitto)
+    - moved suexec from apache-common to apache
+    - ssl-certicate updated by Andrea Mennucci (Closes: #175849)
+    - added ssl-certicate man page (Closes: #129570)
+    - fixed a bunch of linda/lintian warnings
+    - update mime.types for ogg application (RFC3534)
+    - apache-ssl merge: now it will be built in sync with apache
+    - updated Debian standards to 3.5.10
+    - png icons are fixed at build time (Closes: #150612)
+    - do not restart apache in logrotate if it was not running before
+      (Closes: #134691)
+    - updated mod_eaccess to 2.3.3.9
+      (Closes: #190341)
+    - updated languages in httpd.conf (Closes: #144723)
+      Thanks to Pierfrancesco Caci <pf@caci.it> for the patch
+    - Closing bugs related to/fixed by NMU's (apache-ssl)
+      Normal	(Closes: #176061, #176077)
+  * (Thom May)
+    - document suexec's default config
+    - stop copying suexec.{c,h} to /usr/share/doc/apache (Closes: #47395)
+  * (Tollef Fog Heen)
+    - Ask about suExec on install (closes: #161639, #153523, #63217)
+    - Bump MINUID in suexec.h to 1000 (closes: #74228)
+    - Get rid of /usr/doc/apache-ssl symlink
+    - Don't create /etc/apache{,-ssl}/conf symlink
+    - libmagic1 is now a dependency to support correctly mod_mime_magic,
+      also fix default path to magic file in httpd.conf.
+      (Closes: #186574)
+    - Postinst cleanup and factoring of common parts.  Get rid of
+      pre-potato transition stuff. (Closes: #196945)
+    - Stop echoing in postrm, since it confuses debconf.
+    - Move adduser calls to apache-common also make the adduser and
+      addgroup calls non-conditional.
+
+ -- Fabio M. Di Nitto <fabbione@fabbione.net>  Thu, 26 Jun 2003 15:31:43 +0200
+
+apache (1.3.27.0-1) unstable; urgency=low
+
+  * (Thom May)
+    - fix Section: for apache-dev to devel from web
+  * (Fabio M. Di Nitto)
+    - version bumping to get mod_throttle removed from the .orig.tar.gz
+
+ -- Fabio M. Di Nitto <fabbione@fabbione.net>  Mon, 28 Apr 2003 15:13:06 +0200
+
+apache (1.3.27-1) unstable; urgency=low
+
+  * (Fabio M. Di Nitto)
+    - Added note to README.Debian on how to configure mod_auth_dbm
+      (Closes: #156873, #25990)
+    - Modified init script to honour user decision to start or not
+      Apache at boot time. (Closes: #163909, #135017)
+    - Applied patches to use libdb4.1 (closes: #125922, #79301)
+      Thanks to Pierfrancesco Caci <pf@caci.it> for his time testing them
+    - Applied patch to fix libdb detection on hurd (Closes: #147079)
+    - Fixed typo in httpd.conf (Closes: #159938)
+    - Closing bugs related to/fixed by NMU's
+      Wishlist  (Closes: #173183, #159073, #135154, #135103)
+      Normal    (Closes: #173178, #170856, #155247)
+      Important (Closes: #166486, #136401, #136399)
+      Serious   (Closes: #161888, #142637, #108298)
+      Grave     (Closes: #163880, #163288)
+      NMU       (Closes: #175255)
+  * (Thom May)
+    - Removed mod-throttle due to licensing restrictions (Closes: #180961)
+      Also closes: #185321, #60328, #178357, #147435 which are all related
+      to mod_throttle 
+    - Document potential interactions with suexec 
+    - Explicitly disable MultiViews for systemwide cgi-bin, and comment in
+      README.Debian about the need to do this elsewhere. (Closes: #93413)
+    - Add security team's patches for htpasswd and htdigest (Closes: #167752)
+  * (Tollef Fog Heen)
+    - Use id -u and id -g instead of grepping /etc/{passwd,group} in
+      postinst for checking whether www-data user and groups exists.
+    - Fix so apache compiles with dash as /bin/sh (closes: #142032)
+    - Update intro.html.  (Thanks to Josip Rodin for updated page!)
+      (closes: #188730, #167118, #165510)
+    - Add suggests for file and fix path to magic.mime (closes: #159000)
+    - Fix owner of /var/cache/apache (closes: #132472)
+    - Fix description to mention just PHP, not any specific version
+      (closes: #164513)
+
+ -- Fabio M. Di Nitto <fabbione@fabbione.net>  Mon, 28 Apr 2003 13:59:42 +0200
+
+apache (1.3.27-0.1) unstable; urgency=high
+
+  * NMU
+  * New upstream release
+    - Fixes memory scoreboard permission issue (CAN-2002-0839) 
+      (closes: #163228)
+    - Fixes XSS vulnerability in default error page (CAN-2002-0840) 
+      (closes: #163880)
+    - Fixes overflowes in ab.c, benchmarking tool (CAN-2002-0843)
+  * Only modify /etc/aliases if we are doing a fresh install, not on
+    upgrades. (closes: #108298)
+  * Move /var/state/apache/mod_bandwidth to /var/lib/apache/mod_bandwidth
+    (closes: #142637)
+  * Add dependency on mime-support to apache-common (closes: #166486)
+  * Use tempfile instead of possibly overwrite-any-file construct in
+    postinst.  (closes: #155247)
+  * Bump HARD_SERVER_LIMIT to 4096 in debian/apaci.append 
+    (closes: #135154, #173183)
+  * Add IfModule wrapper around ExtendedStatus (closes: #135103
+  * Fix path to mod_mime_magic's magic file (closes: #173178, #170856)
+  * Add /images/ as alias to /usr/share/images/ (closes: #159073).
+    Indices are turned off to not trivially reveal what packages are
+    installed.
+  * Strip quotes from included filenames. (closes: #136401)
+
+ -- Tollef Fog Heen <tfheen@debian.org>  Sat,  4 Jan 2003 02:15:47 +0100
+
+apache (1.3.26-1.1) unstable; urgency=low
+
+  * NMU
+  * The "Shouldn't you be in Whoville stealing Christmas?" release.
+  * Applied patch from Ryan Murray to use db2's db185-compat functions
+    instead of glibc's (nonexistant) db1 library.
+    - Edited patch to include the same hack for mod_urlcount and mod_eaccess
+      from apache-contrib
+    - Closes: #143085 #156159 #156390 #156373 #155981
+
+ -- Adam Conrad <adconrad@0c3.net>  Mon, 12 Aug 2002 21:08:40 -0600
+
+apache (1.3.26-1) unstable; urgency=high
+
+  * The "This mission is too important for me to allow you to jeopardize
+    it." release.
+  * New upstream release.
+  * Fixes security bug, Closes: #150287
+
+ -- Matthew Wilcox <willy@debian.org>  Wed, 19 Jun 2002 11:40:02 -0600
+
+apache (1.3.24-3) unstable; urgency=high
+
+  * The "I've just picked up a fault in the AE35 unit. It's going to go 100%
+    failure in 72 hours." release.
+  * Thanks for the NMU, Steve.  Add -f to mimetypes symlink creation.
+    Closes: #142300
+  * Patch mod_proxy with all the fixes from CVS.  Grumble.  Closes: #144520
+
+ -- Matthew Wilcox <willy@debian.org>  Mon, 29 Apr 2002 14:46:48 -0600
+
+apache (1.3.24-2.1) unstable; urgency=low
+
+  * "I think you know what the problem is just as well as I do."
+  * symlinking fixed in postinst, package will install on autobuilders,
+    everybody's happy (closes: #142300).
+
+ -- Steve Langasek <vorlon@debian.org>  Mon, 15 Apr 2002 15:59:08 -0500
+
+apache (1.3.24-2) unstable; urgency=high
+
+  * The "Without your space helmet, Dave, you're going to find that rather
+    difficult" release.
+  * Fix timestamp in previous changelog entry.
+  * Every time upstream releases a new version, we have to update our
+    control file.  Closes: #141965
+  * Add a #! to apache-common.postinst.  Closes: #141866
+
+ -- Matthew Wilcox <willy@debian.org>  Tue,  9 Apr 2002 11:34:00 -0600
+
+apache (1.3.24-1) unstable; urgency=low
+
+  * The "I am putting myself to the fullest possible use, which is all
+    I think that any conscious entity can ever hope to do." release.
+  * New upstream release.
+  * Update EAPI patch from mod_ssl 2.8.8-1.3.24
+  * Update mod_auth_cache to 0.1.1
+  * Change ubersed to reference /etc/mime.types instead of
+    /etc/apache/mime.types.  Move mime.types symlink maintenance from
+    apache to apache-common.  Closes: #130256
+  * Really change apacheconfig script to match directives
+    case-insensitively.  Closes: #131104
+  * Call stat after we open the file in apacheconfig.  Patch courtesy
+    of Thom May.  Closes: #131548
+  * Fix tpyo in doc-base file.
+  * Patch mod_bandwidth to use a FHS-compliant directory.  Ensure it is
+    created at installation time.  Closes: #111216
+  * Patch configure to not quote thetarget.  Closes: #133612
+  * Change apache-dev's priority to extra because libdb2-dev is in extra now.
+  * Add a dependency on dpkg (>> 1.9.0) because apache now uses
+    start-stop-daemon --retry.  Closes: #138900
+  * Remove one '../' from the icons symlink.  Closes: #136554
+  * add `|| true' to the apache restart line in postinst.
+
+ -- Matthew Wilcox <willy@debian.org>  Mon,  8 Apr 2002 09:37:35 -0600
+
+apache (1.3.23-1) unstable; urgency=high
+
+  * The "I know I've made some very poor decisions recently, but I
+    can give you my complete assurance that my work will be back to
+    normal." release.
+  * New upstream release.
+    - mod_auth_mysql & mod_auth_pgsql tarballs removed.
+    - dbm_ll_over_the_shop patch reworked.
+    - negotiation patch removed (incorporated in this release)
+    - removed KEYS, README-WIN.TXT and WARNING-WIN.TXT from doc/apache/
+    - use patch included in upstream pkg.eapi instead of duplicating it.
+  * Change apacheconfig script to match directives case-insensitively.
+    Closes: #131104
+  * Remove superfluous `$' in postinst.  Remove quotes from logs.  Remove
+    logs which are piped to commands.  Closes: #130717, #130603
+  * Behave graciously if this is a fresh install and there are no
+    configuration files yet.  Closes: #130696
+  * Rename dbase.off to apache-doc.doc-base to let dh_installdocs work its
+    magic.  Closes: #31173
+  * Remove `pointless debmakeism' from debian/rules -- buildinfo.Debian is
+    no more and the apache-doc postinst/prerm are halved.
+
+ -- Matthew Wilcox <willy@debian.org>  Wed,  6 Feb 2002 17:46:45 -0700
+
+apache (1.3.22-6) unstable; urgency=medium
+
+  * The "Look Dave, I can see you're really upset about this" release.
+  * Exclude suexec from dh_fixperm.  Closes: #126706 #127605 #127323
+  * Depend on a sufficiently recent version of logrotate to support
+    sharedscripts.  Closes: #124339
+  * Split out mod_auth_mysql & mod_auth_pgsql into separate packages.
+    Closes: #78670 #88338 #116650 #118843
+  * Rewrite init script to use start-stop-daemon instead of using
+    apachectl.  Closes: #126743 #126827 #128909
+  * Forward-port suexec changes to 1.3.22 rather than replace 1.3.22's
+    suexec with a patched one from 1.3.9.
+  * Add a wildcard match for SSL_* to suexec's acceptable variables for
+    the benefit of mod_ssl users.  Closes: #40226
+  * Update debian/copyright with the Apache Software Licence.  Add
+    the names of some contributors.  Update acknowledgement text.
+  * Add patch from Apache PR#8334 to eliminate one potential cause of
+    segmentation faults.  Closes: #117471
+  * Add patch from Apache CVS to revert mod_negotiation behaviour to
+    that of 1.3.20.  Closes: #122806
+  * Patch courtesy of Steve Stock <steve@technolope.org> to apacheconfig
+    to read all config files, including those mentioned through the Include
+    directive.  Closes: #12094 #59998 #105820 #129372
+  * Add note to README.Debian about default logfile permissions.
+  * Remove old /etc/cron.daily/apache and /etc/apache/cron.conf if they
+    exist.  Also remove cron.conf example and references in apacheconfig.
+    Closes: #129742
+  * Add delaycompress to logrotate file (fixes part of #128148).
+  * Lintian cleanups.  Closes: #92882
+    - Change apache-common control from Replaces: apache to
+      Replaces: apache (<= 1.3.1-1).
+    - Change /usr/share/doc/apache/icons symlink to point to
+      ../../../apache/icons instead of /usr/share/apache/icons.
+    - Add overrides for suexec and apache.dbg
+    - Change permissions on apaci to 644
+    - Remove /usr/share/doc/apache/manual/LICENSE
+    - Remove /usr/share/doc/apache/INSTALL.gz
+
+ -- Matthew Wilcox <willy@debian.org>  Tue, 22 Jan 2002 09:23:20 -0700
+
+apache (1.3.22-5) unstable; urgency=low
+
+  * The "I honestly think you ought to calm down; take a stress pill
+    and think things over." release.
+  * Change the apache postinst to eliminate bashisms.  Thanks to
+    Gergely Nagy <algernon@bonehunter.rulez.org> for suggesting a fix.
+    Closes: #124061
+  * Replace $((t--)) with $((t-=1)) since the version of bash distributed
+    with potato does not recognise $((t--)).  Closes: #124114
+  * Add `AddIcon /icons/deb.gif .deb' to httpd.conf.  Closes: #66347
+  * Change -fpic to -fPIC in apache_1.3.22/src/Configure (patch is
+    debian_requires_fPIC) to conform to Policy 11.2.  Closes: #123128
+  * Clarify ServerRoot description.  Closes: #92138
+  * Change the sed expression which replaces CFG_TARGET.conf with
+    httpd.conf in apxs.  It now does what it was intended to do.
+    Closes: #102376
+  * Strip CFG_SYSCONFDIR instead of CFG_PREFIX from the start of module
+    directives.  Patch courtesy of Yves Arrouye <yvesa@mac.com>.
+    Closes: #103403
+
+ -- Matthew Wilcox <willy@debian.org>  Sat, 15 Dec 2001 20:00:46 -0700
+
+apache (1.3.22-4) unstable; urgency=low
+
+  * The "This sort of thing has cropped up before and it has always
+    been due to human error." release.
+  * Remove suidregister calls from apache-common postinst & postrm.
+    Distribute suexec as mode 4755 instead.  Closes: #84886, #119201.
+  * Integrate new mod_autoindex features from upstream.  Patch courtesy of
+    Kestutis Kupciunas <kkupciunas@alna.lt>.  Closes: #100677 #116221
+    #118518 #119711
+  * Redo init.d script based on work from John Rowland Lenton
+    <jlenton@yahoo.com> and Grant Bowman <grantbow@svpal.org>.  Now traps
+    the output from apachectl and only prints it on error.  Also waits
+    up to 30 seconds for apache to stop on a restart instead of a fixed
+    4 seconds.  Closes: #63541, #78041, #79342, #83820, #110456, #121513
+  * Change capitalisation of Order, Deny and Allow in 210mod_access.info
+    to match that in httpd.conf.  Closes: #121104, #102799
+  * Actually make SUBVERSION `Debian GNU/Linux' instead of
+    `Debian-GNU/Linux'.  Make Martin Michlmayr happy.
+  * Switch to using logrotate instead of custom apache cronjob.  Insert
+    chunk of code from Adam Heath <adam@doogie.org> in postinst to
+    check for logfiles outside /var/log/apache and echo a warning.
+    Closes: #109535, #120195, #123193, #44524, #67255, #90033, #106951,
+    #110409, #114976, #119351
+  * Add patches from Adam Heath <adam@doogie.org> to use the build system
+    better and fix a bug in apachebench.  Closes: #64317
+  * Enable mod_auth_digest.  Closes: #108752
+  * Make apache init script exit 1 on failure.  Closes: #75452
+  * Add icons/small to debian package.  Also add .png versions of .gif files.
+    Closes: #123596
+  * Add a call to /etc/init.d/apache restart in postinst.
+
+ -- Matthew Wilcox <willy@debian.org>  Fri, 14 Dec 2001 11:30:48 -0700
+
+apache (1.3.22-3) unstable; urgency=low
+
+  * New maintainer.
+  * The "My god... it's full of bugs" release.  Incorporates previous NMU.
+    Closes: #120713, #116509, #117616, #96159
+  * Alternative way of clearing apachectl's environment based on Alexander
+    Hvostov's patch.  Closes: #112986, #113387, #114720, #115224, #115766
+    #116971, #117243, #119617, #122055, #110856
+  * Specify PG_LIB in debian/rules to make us link against libpg.  Closes:
+    #121245, #122752
+  * Temporarily disable mod_auth_pgsql so I don't violate any crypto
+    regs.  It'll be back as soon as we have crypto-in-main.
+  * Add -O1 to CONFLAGS.  This turns on inlining for modules when requested.
+    Closes: #120243, #121214, #121268, #122054, #76160, #72911
+  * Change SERVER_SUBVERSION to "Debian GNU/{Linux,Hurd}".  Closes: #114601
+
+ -- Matthew Wilcox <willy@debian.org>  Sat,  8 Dec 2001 21:17:07 -0700
+
+apache (1.3.22-2.1) unstable; urgency=medium
+
+  * NMU to close RC bugs before woody.
+  * Add a build-dep on libexpat1-dev and make apache-dev depend on
+    libexpat1-dev.  Closes: #120713, #116509
+  * Add libdb2-dev to apache-dev's Depends.  Closes: #117616
+
+ -- Matthew Wilcox <willy@debian.org>  Mon, 26 Nov 2001 21:08:12 -0700
+
+apache (1.3.22-2) unstable; urgency=low
+
+  * Removed mod_random and mod_layout, now in separate packages, closes:
+    #116614.
+
+ -- Johnie Ingram <johnie@debian.org>  Mon, 22 Oct 2001 15:24:44 -0700
+
+apache (1.3.22-1) unstable; urgency=low
+
+  * The "Comeback Special" release.
+  VERSION T1A (sat)
+  * New upstream version.
+  * Corrected spelling of behavior in intro.html, closes: #108051, #91907.
+  * Default ownership of logfiles is root/adm, perms 640 (closes:
+    #112675).
+  * Removed spurious echo -nes from init script, closes: #92626.
+  * Includes NMU 1.3.20-1.1, closes: #102170, #72468, #98220.
+  * Obsoleted debian patches:
+    - ab_round_robin_support
+  * Historical bugs:
+    - Access files are not downloadable since 1.3.12, closes: #63162.
+    - Configuration problem fixed in 1.3.14-2.2, closes: #64704.
+    - Perl packages satisfy perl dependency, closes: #64547.
+    - PostgresSQL now buys "www-data", closes: #62922.
+    - Fixed "uninit value in concatenation" in 1.3.20 and other mysterious
+      perl problems, closes: #113887, #65335.
+    - Restarts after libc upgrade, closes: #72530.
+    - Uses libgdbm instead of ndbm.h, closes #74780.
+    - Cron script uses apachectl instead of SIGHUP, closes: #96033.
+  VERSION T1B (wed)
+  * Updated mod_ssl EAPI patch to 2.8.5-1.3.22.
+  * Updated mod_throttle to 3.1.2, closes: #72911, #114857.
+  * Put mysql and pgsql modules back, closes: #97544, #91264.
+  * Moved most supplemental modules to upstream/tarballs.
+  * Added more module documentation to apache-common.
+  * Added mod_auth_cache.
+  * Removed unnecessary -ldb1 from apxs.
+
+ -- Johnie Ingram <johnie@debian.org>  Fri, 19 Oct 2001 01:21:00 -0700
+
+apache (1.3.20-1.1) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Clear environment in init.d script to prevent leaking priviledged
+    info. (closes: Bug#98220)
+  * Change default logfile perms to 640; owned by root.adm. (closes: #72468)
+  * Allow building with libgdbmg1-dev installed. (closes: Bug#102170)
+
+ -- Jonathan McDowell <noodles@earth.li>  Wed, 15 Aug 2001 23:46:21 +0100
+
+apache (1.3.20-1) unstable; urgency=low
+
+  * New upstream version.
+  * Included patch from Marcus Brinkmann for hurd compile, closes:
+    #100296.
+  * MaxSpareServers set down to 10 in default config for 32MB operation,
+    closes: #98384.
+  * Added MultiViews to location /doc/, closes: #95020.
+  * Switched to /usr/share/doc (finally), closes: #58061.
+  * Fixed bug in apacheconfig on upgrade ("use of uninitialized value in
+    concatenation"), broken by 1.3.9-13.1, closes: #88178, #92133, #92653,
+    #71834, #75758, #83673, #83796.
+  * Fixed typo in cron.daily ("unary operator expected"), closes: #94147.
+
+ -- Johnie Ingram <johnie@debian.org>  Tue, 12 Jun 2001 12:45:54 -0700
+
+apache (1.3.19-1) unstable; urgency=low
+
+  * New upstream version (apache, eapi), closes: #88177, #84678, #78527.
+  * Removed stray strace invocation from debian/rules, closes: #90214,
+    #90418, #90732.
+
+ -- Johnie Ingram <johnie@debian.org>  Mon, 26 Mar 2001 09:20:55 -0800
+
+apache (1.3.14-3) unstable; urgency=low
+
+  * Non-NMU, closes: #80210, #79364, #81699, #75087, #87676, #64123.
+  * Moved mysql and postgres support to separate packages, closes:
+    #83830, #87676.
+  * Fixed link to BTS from default start page, closes: #86618, #74521.
+  * Upgraded priority of apache-dev from extra to optional,
+    closes: #84168.
+  * Fixed apacheconfig regex so AddType directives with over one character
+    of whitespace are recognized, closes: #88922.
+  * Uses single config file (since 1.3.12-2), closes: #79929.
+
+ -- Johnie Ingram <johnie@debian.org>  Fri, 16 Mar 2001 12:04:42 -0800
+
+apache (1.3.14-2.3) unstable; urgency=low
+
+  * Non-maintainer upload
+  * Re-build on i386 to fix broken Depends: line in 1.3.14-2.2, closes: #87676
+
+ -- Paul Bame <bame@debian.org>  Mon, 26 Feb 2001 13:54:50 -0700
+
+apache (1.3.14-2.2) unstable; urgency=low
+
+  * Non-maintainer upload
+  * don't kill all processes named 'apache', closes: #75087
+  * remove lingering AddDefaultCharsetName from older Debian package,
+  	closes: #81699
+
+ -- Paul Bame <bame@debian.org>  Sat, 24 Feb 2001 13:02:07 -0700
+
+apache (1.3.14-2.1) unstable; urgency=low
+
+  * NMU (maintainer is not able only recompile it in one month)
+  * and that closes: #80210, #79364
+
+ -- Petr Cech <cech@debian.org>  Fri, 26 Jan 2001 11:47:47 +0100
+
+apache (1.3.14-2) unstable; urgency=low
+
+  * Fixed typedef of regoff_t in regex2.c from off_t to int, fixing php4
+    incompatibility with the LFS apache, closes: #78780, #78902.
+  * MODULE API CHANGE: please recompile and depend on:
+      apache-common (>= 1.3.14-2)
+  * Removed LDAP support from apache-common (now in separate package).
+  * Debhelper still in Build-Depends, closes: #72963.
+  * Slight woody incompatibility fixed by new libc, closes: #72527, #72654.
+  
+ -- Johnie Ingram <johnie@debian.org>  Wed,  6 Dec 2000 15:07:29 -0800
+
+apache (1.3.14-1) unstable; urgency=medium
+
+  * [RC, security] New upstream version, fixing mod_rewrite problem,
+    closes: #74708, #75174.
+    * mod_ssl EAPI patch 2.7.1-1.3.14
+    * apache-contrib 1.0.8 (same)
+    * mod_auth_ldap 1.4.6
+    * fix for rewrite security fix of 1.3.14
+  * Recompile on potato, reopens: #72572.
+  * Added debhelper to Build-Depends, closes: #69101.
+  * Linked mod_auth_mysql to mysqlclient dynamically, closes: #76534.
+  * Moved adduser stuff from preinst to postinst, added explicit
+    dependency on adduser, closes: #76796.
+  * Includes drow's miraculous perl 5.6 workaround in apacheconfig,
+    closes: #77180, #78382, #78281, #78286, #76704, #74755.
+  * Added NameWidth=* to default httpd.conf, closes: #71824.
+  * Clarified punctuation in intro.html, closes: #63780.
+  * Clarified README.Debian wording, closes: #66656.
+  * Fixed invocation of DBS in debian/rules reset target; added sed in
+    configure-stamp to delete -ndbm from apxs (otherwise the linker
+    segfaults, fun).
+
+ -- Johnie Ingram <johnie@debian.org>  Thu, 30 Nov 2000 10:33:48 -0800
+
+apache (1.3.12-2.2) unstable; urgency=low
+
+  * NMU with maintainer permission.
+  * Recompile on woody (Closes: #72572)
+  * Avoid using /m in apacheconfig, as it makes perl 5.6 very unhappy.
+  * Build with libmysqlclient10-dev and update build-depends.
+  * Build Apache with CFLAGS="-D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64",
+    to make mod_perl happier.
+  * Add EXTRA_CONFARGS and CONFCMD patch for mod_perl.
+
+ -- Daniel Jacobowitz <dan@debian.org>  Mon, 27 Nov 2000 20:48:07 -0500
+
+apache (1.3.12-2.1) unstable; urgency=low
+
+  * NMU for new libdb2/glibc
+
+ -- Ben Collins <bcollins@debian.org>  Wed, 27 Sep 2000 13:35:15 -0400
+
+apache (1.3.12-2) unstable; urgency=low
+
+  * Merge changes in 1.3.9-13.1, closes: #62741, #62721, #60257,
+  * AddDefaultCharset fix from Torsten Landschoff closes: #67258, #67497,
+    #65888, #66067, #67052, #67062, #67070, #67073, #68756, #62732,
+    #62721, #63418.
+  * Added note explaining why index.html is owned by root.root, closes:
+    #61978.  README.Debian is still cryptic however.
+  * Conflicts with jservs that dont do EAPI (<= 1.1-3), closes: #65610.
+  * Apxs no longer requires apache to compile, closes: #65631.
+  * Uses single httpd.conf file by default (6.E plus enhancements by
+    Richard Hwang); apaheconfig modified to tolerate this, closes:
+    #57295.
+  
+ -- Johnie Ingram <johnie@debian.org>  Thu, 10 Aug 2000 09:42:38 -0700
+
+apache (1.3.12-1) unstable; urgency=low
+
+  * New upstream version, closes: #60586.
+    * mod_ssl EAPI patch 2.6.3-1.3.12
+    * apache-contrib 1.0.8
+    * mod_auth_ldap 1.4.2
+
+ -- Johnie Ingram <johnie@debian.org>  Sun, 16 Apr 2000 09:40:00 -0500
+
+apache (1.3.9-13.2) stable; urgency=high
+
+  * Non-maintainer upload by Security Team
+  * Applied patch from Greg K-H from WireX fixing insecure creation of
+    tempfiles in htpasswd and htdigest.
+  * Added one more incarnation of 'chmod +x debian/ubersed' was required
+  * Backported security patch from 1.3.13 that fixes a bug in mod_rewrite
+    that enables an attacker to be able to access any file on the web
+    server.
+
+ -- Martin Schulze <joey@debian.org>  Thu, 25 Jan 2001 23:44:06 +0100
+
+apache (1.3.9-13.1) frozen; urgency=low
+
+  * [RC] debian/scripts/source.unpack: Add "-f -" to call of tar since 
+    older versions defaulted to /dev/rmt0 instead of stdin for the 
+    archive path (closes: #62741).
+  * [RC] debian/srm.conf: Fixed default character set configuration
+    (closes: #62721).
+  * [RC] debian/apacheconfig: Don't mess with the DocumentRoot by 
+    default (closes: #60257).
+
+ -- Torsten Landschoff <torsten@debian.org>  Sat, 29 Apr 2000 10:10:55 +0200
+
+apache (1.3.9-13) frozen unstable; urgency=medium
+
+  * [RC, security] Backported security fix for Cross Site Scripting issue
+    (CERT Advisory CA-2000-02) from apache 1.3.11 patch.
+  * Added default charset iso-8859-1 to initial configs.
+  * [RC, critical] Perl dependency reordered to "perl5 | perl", closes:
+    #61421, #62427, #60575.
+  * Postinst no longer complains on missing /etc/aliases, closes: #60575.
+  * Cron script detects logfile lines with whitespace, closes: #59995.
+  * Fixed apxs filename edited when enabling modules (missing /g in rules
+    sed); suppressed linking to -ldbm, closes: #53172.
+  * The apxs in apache-dev no longer needs apache binary, closes: #47221.
+  * Perms registered for suexec changed to 4755 from 4555, closes: #60147.
+  * Added text from beleagured Debian Webmasters to intro.html, making it
+    clear the project is not responsible for installations, closes:
+    #61414.
+  * LICENSE file of manual included since 1.3.9-1, closes: #42940, #60994,
+    #60995.
+
+ -- Johnie Ingram <johnie@debian.org>  Sun, 16 Apr 2000 08:29:56 -0500
+
+apache (1.3.9-12) frozen unstable; urgency=low
+
+  * [RC] Cron script avoids killing itself, closes: #59365, #59647,
+    #59672, #59659, #59694.
+  * [RC] Order of mod_rewrite and mod_alias loading fixed, closes: #47038,
+    #52893, #58465.
+  * [RC] Deleted line 284 of debian/rules (suid suexec), set it
+    unexecutable by default, closes: #59588, #44096.
+  * Loophole in console message policy exploited, closes: #23848,
+    #39304, #47033, #58848.
+  * Webmaster mail alias is added if needed, so apacheconfig doesn't
+    ask about this during package install, closes: #38068.
+  * Option --manual-modules added to apacheeconfig, so default (and
+    correct in amost all cases) is to work module magic automatically,
+    closes: #38068, #45301.
+  * New full-auto mode added to apacheconfig for postinst "initial setup"
+    use: unlike mere --update, httpd.conf and srm.conf are installed, no
+    questions are asked, and some backups are omitted.
+  * Added LANG=C to init script, so apache doesn't write unparsable
+    logfiles, closes: #42202.
+  * Apacheconfig does not attempt to set non-/var/www documentroot (since
+    1.3.9 T3B), closes: #27701, #38066, #51733.
+  * All incorrect manpage references to "httpd" are corrected by ubersed,
+    closes: #54465.
+  * Apacheconfig script does not stop apache if it isn't running.
+  * Included improved suexec from Robert Varga that understands <--#exec
+    with parameters (ported from 1.3.3), and includes HTTPS and
+    REDIRECT_HTTPS vars, closes: #47951.
+
+ -- Johnie Ingram <johnie@debian.org>  Thu,  9 Mar 2000 05:15:12 -0600
+
+apache (1.3.9-11) frozen unstable; urgency=low
+
+  * Reversed openldap2 patch, potato uses v1; closes: #49849, #58168.
+  * Added debhelper tag to apache-common postinst, so doc symlink
+    management works.
+  * Added info file for mod_auth_mysql, closes: #56862.
+  * Updated version of mod_throttle, closes: #52683.
+  * Fixed example logfile locations in httpd.conf, closes: #49113.
+  * Removed info files for modules not included in apache-common, closes:
+    #55750, #58732.
+  * Default srm.conf AddLanguage corrected from .jp to .ja, closes: #58134.
+  * Added sharutils to Build-Depends (due to uudecode in rules).
+  * Removed AuthAuthoritative from mod_auth_sys info (it duplicates
+    command in mod_auth), closes: #45708.
+  * Cron script reloads apache with a -HUP, if possible, instead of using
+    apachectl which may have undesired side effects, closes: #57333.
+  * Disabled phf.apache.org error in default access.conf, closes: #51732.
+  * Group for new /var/www directory changed from www-data to root,
+    closes: #53498.
+  * Default srm.conf restricts /doc/ to localhost, closes: #34099. 
+  
+ -- Johnie Ingram <johnie@debian.org>  Sat, 26 Feb 2000 13:49:08 -0600
+
+apache (1.3.9-10) unstable; urgency=low
+
+  * Systemwide mime types file is used, closes: 45428.
+  * The setenvif module is loaded by default, so running apacheconfig
+    isn't necessary (a problem discovered by doogie).
+
+ -- Johnie Ingram <johnie@debian.org>  Sat, 30 Oct 1999 21:09:43 -0500
+
+apache (1.3.9-8) unstable; urgency=low
+
+  * Made ubersed executable, fixing random default-config problems,
+    closes: #44151, #45566, #45557.
+
+ -- Johnie Ingram <johnie@debian.org>  Mon, 20 Sep 1999 18:01:34 -0500
+
+apache (1.3.9-7) unstable; urgency=low
+
+  * Compile fix for the DBS from Daniel Jacobowitz.
+
+ -- Johnie Ingram <johnie@debian.org>  Tue, 14 Sep 1999 23:10:35 -0500
+
+apache (1.3.9-6) unstable; urgency=low
+
+  * Need for mod_proxy should now be detected correctly (newer directives
+    weren't ilsted), closes: #44929.
+  * Compilation of mod_auth_ldap is optional.
+
+ -- Johnie Ingram <johnie@debian.org>  Sun, 12 Sep 1999 21:13:08 -0500
+
+apache (1.3.9-5) unstable; urgency=low
+
+  * Included auth_ldap from Rudedog's software laboratories.
+  * Creates /var/www during initial install again, closes: #44549.
+  * ScriptAlias problem was non-bug, closes: #44525, #43926.
+
+ -- Johnie Ingram <johnie@debian.org>  Fri, 10 Sep 1999 06:47:19 -0500
+
+apache (1.3.9-4) unstable; urgency=low
+
+  * Updated to conform to the final determination of the Technical
+    Committee (re FHS transition); built with new debhelper.
+  * The mkdir of 'debian/stampdir/upstream' uses -p, closes: #44453.
+  * Included EAPI 2.4.2.
+
+ -- Johnie Ingram <johnie@debian.org>  Mon,  6 Sep 1999 04:40:23 -0500
+
+apache (1.3.9-3) unstable; urgency=low
+
+  * Added debhelper-hack detection.
+  * Fixed sanity-check failure during creation of www-data user, closes:
+    #43866, #43951, #43876, #43905, #42381.
+  * Added patch to ab from doogie so it can test round-robin DNS webserver
+    clusters.
+
+ -- Johnie Ingram <johnie@debian.org>  Thu,  2 Sep 1999 02:17:11 -0500
+
+apache (1.3.9-2) unstable; urgency=low
+
+  * Fixed problem with grep for detection of www-data user (#43866).
+
+ -- Johnie Ingram <johnie@debian.org>  Tue, 31 Aug 1999 13:44:25 -0500
+
+apache (1.3.9-1) unstable; urgency=low
+
+  VERSION T1A (fri):
+  * New upstream version, which "incorporates over 60 significant
+    improvements to the server."
+  * Packaging modernized to use 100% debhelper technology.
+  * Corrected control file -- apxs is in apache-dev, not apache-common.
+  * Include latest EAPI patch from modssl 2.3.11 (NMU, miquels), closes:
+    #42983.
+  * Fixed various and sundry issues in apxs and internal build apxs,
+    closes: #41646, #41775, #32085, #32704, #35630.
+  * Daemon with debugging symbols included with apache-dev, a feature
+    requested by March Eichin, closes: #42098.
+  * Corrected section number in ab and apachectl manpage.
+  * Redundant files removed from apache-common and apache-doc, closes: #32881
+    (icons/README omitted, icon link in index.html changed, file moved to
+    manual.html, icon symlink create; intro.html can't be moved).
+  * The suexec binary is enabled, suid, standard, and no longer a
+    conffile, closes: #40802, #14880, #15191, #23490, etc. etc.
+  * The suexec source includes ap_config.h, and DOC_ROOT is /var/www,
+    closes: #41151.
+  * Section of apache-doc changed to "doc" from "web", #38925 forwarded.
+  * LICENSE file of manual included for linking purposes, closes: #42940.
+  * Frontpage support is best done by a separate mod-openasp module,
+    closes: #35904.
+  * Instructions for enabling effect of -DSECURITY_HOLE_PASS_AUTHORIZATION
+    at runtime added to README.Debian, closes: #39171.
+  * Discussion of security of /cgi-bin/ referred to debian-devel (all
+    webservers are affected), closes: #43227.
+  * Various inetd-mode bugs fixed upstream, closes: #22036 (but inetd mode
+    is still not recommended).
+  * Updated to Standards-Version 3.0.1.0.
+  
+  VERSION T2A (fri):
+  * Removed errant bashism from postinst; fixed perl, apxs, lintian errors.
+
+  VERSION T2B (sat):
+  * The apacheconfig script corrects the /doc/ Alias for FHS compliance,
+    closes: #42374.
+  * Included modified version of mod_autoindex and sample htaccess;
+    user-visible changes:
+    * FancyIndexing uses a white background a images with border=0.
+    * New Directives: SidebarName, BodyName, FooterName.
+    * New IndexOptions: StudlyIndexing, BodyColor=, TextColor=,
+      HeaderColor=, FooterColor=, SideColor=, ReadmeColor=.
+    * Output uses HTML 4.0 transitional with CSS tags.
+  * Files named *core (notably gnome-core) are no longer assigned core.gif
+    icon by the default conf (fix is */core), closes: #34167, #43070.
+  * Added official open-use Debian logos; converted one of these into
+    deb.gif for deb files; updated intro.html.
+  * Updated default IndexIgnore to mask README and HEADER instead of
+    all README*, closes: #40468.
+  * Deletion of /var/www written off as impossible, closes: #42285
+    (possible apache-ssl bug, however).
+  * The install assumes you want to use a valid config, closes: #35618,
+    #35044.
+  * CVS was added to default IndexIgnore in 1.3.6-10, closes: #37609.
+  * Fixed __ucmpdi2 error when using apxs -c on mod_auth_mysql and others,
+    closes: #41918, #41130.
+  * Auth modules using SQL databases are statically linked to client libs.
+  * Init script no longer traps the signals mod_jserv needs, closes:
+    #32450.
+  * Cron script rotates rewrite.log if needed, closes: #33247.
+  * APACHE_DAY_TO_RUN (and DAYS) may now be set to "none", closes: #41037.
+
+  VERSION T3A (sun):
+  * Packaging updated to use elite doogie DBS technology.
+
+  VERSION T3B (mon):
+  * Wrote manpage for apacheconfig, closes: #13168.
+  * ServerName problem unreproducable by submitter, closes: #34399.
+  * UserDir in default srm.conf fixed, closes: #34282.
+  * Throttle module omitted (no new upstream version available),
+    closes: #40183, #36864, #36918.
+  * Questions about DocumentRoot and Port suppressed during install,
+    closes: #38066.
+  * Default access.conf uses SymlinksIfOwnerMatch for home, and forbids
+    retrieval of .htaccess files, closes: #35823, #41101.
+  * Apacheconfig will not muck with access.conf and srm.conf on update if
+    the sysadmin has merged everything into a single file, closes: #35083.
+  * Included modified docs on mod_roaming, which is no longer a separate
+    package, closes: #41312, #31842, #35200, #32432.
+  * Fixed bug which could cause mod_env to be omitted from the config.
+  * The bug that apache continues running when ulimits prohibit logfile
+    growth is more properly an issue with su, if a bug at all; closes: #35303.
+
+ -- Johnie Ingram <johnie@debian.org>  Tue, 31 Aug 1999 02:29:55 -0500
+
+apache (1.3.6-15.2) unstable; urgency=low
+
+  * Non-maintainer upload
+  * Compiled against glibc 2.0.7 (slink) by request of real maintainer
+  * Include latest EAPI patch from modssl 2.3.11 fixing bug #42983
+
+ -- Miquel van Smoorenburg <miquels@cistron.nl>  Mon, 16 Aug 1999 10:58:51 +0200
+
+apache (1.3.6-15.1) unstable; urgency=low
+  
+  * Non-maintainer upload fixing grave #41646.
+  * Fixed the substitution of SBIN when generating debian/apxs. The was a
+    '/' too much at the end so the path wasn't replaced.
+  
+ -- Roman Hodek <Roman.Hodek@informatik.uni-erlangen.de>  Thu, 12 Aug 1999 12:59:17 +0200
+  
+apache (1.3.6-15) unstable; urgency=low
+
+  * Corrected compile patch, allowing apache to build again, closes:
+    #41621, #41646.
+
+ -- Johnie Ingram <johnie@debian.org>  Tue, 20 Jul 1999 22:20:49 -0400
+
+apache (1.3.6-14) unstable; urgency=low
+
+  * More perl fixes, closes: #41123.
+  * Applied patch from Daniel Jacobowitz, fixing his inability to compile
+    apache.  :-)
+
+ -- Johnie Ingram <johnie@debian.org>  Mon, 12 Jul 1999 15:21:01 -0400
+
+apache (1.3.6-13) unstable; urgency=low
+
+  * Updated for new perl policy.
+  * Added mod_auth_pgsql.
+
+ -- Johnie Ingram <johnie@debian.org>  Sat, 10 Jul 1999 14:04:33 -0400
+
+apache (1.3.6-12) unstable; urgency=low
+
+  * Linked with newer mysql client lib from Flood, so it works with
+    Potato MySQL.
+
+ -- Johnie Ingram <johnie@debian.org>  Fri, 11 Jun 1999 14:32:56 -0400
+
+apache (1.3.6-11) unstable; urgency=low
+
+  * Applied glibc 2.1 fixes from Joel Klecker, closes: #38328, important).
+  * Fixed ServerType regex in init script, closes: #37187.
+  
+ -- Johnie Ingram <johnie@debian.org>  Thu,  3 Jun 1999 13:57:51 -0400
+
+apache (1.3.6-10) unstable; urgency=low
+
+  * Added CVS to default IndexIgnore, closes: #37609.
+
+ -- Johnie Ingram <johnie@debian.org>  Thu, 13 May 1999 09:55:36 -0400
+
+apache (1.3.6-9.1) unstable; urgency=low
+
+  * glibc 2.1 fixes.
+
+ -- Joel Klecker <espy@debian.org>  Tue, 25 May 1999 20:31:16 -0700
+
+apache (1.3.6-9) unstable; urgency=low
+
+  * Removed lynx suggestion, closes: #36820.
+
+ -- Johnie Ingram <johnie@debian.org>  Wed, 28 Apr 1999 10:46:55 -0400
+
+apache (1.3.6-8) unstable; urgency=low
+
+  * Removed conflict with php3, no longer necessary.
+
+ -- Johnie Ingram <johnie@debian.org>  Mon, 26 Apr 1999 04:35:00 -0400
+
+apache (1.3.6-7) unstable; urgency=low
+
+  * Added mod_throttle 2.06 by Anthony Howe.
+  * Added pre-rotation script feature to cron.conf.
+
+ -- Johnie Ingram <johnie@debian.org>  Mon, 12 Apr 1999 11:42:52 -0400
+
+apache (1.3.6-6) unstable; urgency=low
+
+  * Added ExtendedStatus to directive list for mod_status, a problem found
+    by Daniel Jacobowitz.
+
+ -- Johnie Ingram <johnie@debian.org>  Fri,  9 Apr 1999 01:03:01 -0400
+
+apache (1.3.6-5) unstable; urgency=low
+
+  * Again closes: #35447, #35542, #35323, #35344.
+
+ -- Johnie Ingram <johnie@debian.org>  Wed,  7 Apr 1999 10:23:43 -0400
+
+apache (1.3.6-4) unstable; urgency=low
+
+  * Another attempt to remove the mysql-base dependency, closes: #35447,
+    #35542.
+
+ -- Johnie Ingram <johnie@debian.org>  Sun,  4 Apr 1999 18:34:19 -0400
+
+apache (1.3.6-3) unstable; urgency=low
+
+  * Removed spurious dependency on mysql-base, closes: #35323, #35344.
+  * Removed apachectl.8 and httpd.8 from apache-common, closes: #35316.
+
+ -- Johnie Ingram <johnie@debian.org>  Wed, 31 Mar 1999 09:53:29 -0500
+
+apache (1.3.6-2) unstable; urgency=low
+
+  * Corrected bug in apxs that made it not use -DEAPI for modules, closes:
+    #33643.
+  * Moved apxs manpage to correct package.
+  * Note: The init script hasn't depended on start-stop-daemon --pidfile
+    in a while, which closes: #4580.
+
+ -- Johnie Ingram <johnie@debian.org>  Tue, 30 Mar 1999 11:28:16 -0500
+
+apache (1.3.6-1) unstable; urgency=low
+
+  * New upstream version.
+  * Fixed location of config file (CFG_TARGET) in apxs, closes: #30500,
+    #31848.
+  * Re-added glibc 2.1 fixes from Christian Meder.
+  * Added "ExtendedStatus on" directive to default config.
+  * The apxs utility is in apache-dev and uses the correct ld -lc
+    incantation, closes: #31471, #31848, #32705.
+  * Numerous modules addded from Engelschall apache-contrib sources.  The
+    apache-common package:
+    * Absorbs and replaces libapache-mod-put at version 1.2-1:
+      Michael Alan Dorman <mdorman@debian.org> assembled this package from
+      original sources by Lyonel VINCENT <vincent@hpwww.ec-lyon.fr>.
+    * Absorbs and replaces libapache-mod-roaming at version 1.0.0-1:
+      This package was debianized by Johnie Ingram (johnie@debian.org)
+      on Sun,  3 Jan 1999 23:09:49 -0500.
+    * Absorbs and replaces libapache-mod-auth-sys at version 1.10-4.2:
+      Michael Alan Dorman <mdorman@debian.org> assembled this package from
+      original sources by Franz Vinzenz <vinzenz@ntb.ch>.
+  * The ab utility can now output HTML, closes: #33322.
+  * Acknowledges NMU of libapache-mod-put by John Goerzen, closes: #28135.
+  * Acknowledges NMUs of libapache-mod-auth-sys by me, closes: #30617,
+    #30887.
+  (Changes since test release 1.)
+  * Automagically fixes the Group directive if needed, so Apache will work
+    on glibc 2.1 i386 systems, closes: #34743, #34776.
+  * Compiled in mod_macro and added HTML docs.
+
+ -- Johnie Ingram <johnie@debian.org>  Wed, 24 Mar 1999 03:18:46 -0500
+
+apache (1.3.5-1) unstable; urgency=low
+
+  * New upstream version.
+  * The apxs utility is in /usr/bin, closes: #34761.
+  * Bugs fixed in previous releases: slink dependency on apache-common >=
+    1.3.4, closes: #33372.
+
+ -- Johnie Ingram <johnie@debian.org>  Mon, 22 Mar 1999 00:10:11 -0500
+
+apache (1.3.4-5) unstable; urgency=low
+
+  * Added support for EAPI, by popular demand, closes: #31820.
+
+ -- Johnie Ingram <johnie@debian.org>  Mon, 15 Feb 1999 18:01:09 -0500
+
+apache (1.3.4-4) unstable; urgency=low
+
+  * Removed exit 0 from cron.daily, closes: #32893.
+  * User directories no longer allow symlinks by default (config patches
+    from Ben Collins and Torsten Landschoff, closes: #32204, important);
+    updated docs.
+
+ -- Johnie Ingram <johnie@debian.org>  Thu, 11 Feb 1999 12:26:44 -0500
+
+apache (1.3.4-3) unstable; urgency=low
+
+  * The apache-dev package depends on apache, closes: #28202.
+  * Accept-Language: * bug fixed upstream, closes: #29895.
+  * Includes os-linline.c (since 1.3.4-1), closes: #31375.
+  * FTP proxy response fixed upstream, closes: #27958.
+  * Eliminated more lintian warnings.
+
+ -- Johnie Ingram <johnie@debian.org>  Tue,  2 Feb 1999 14:37:18 -0500
+
+apache (1.3.4-2) unstable; urgency=low
+
+  * Removed the apache-1.3.4/o file, noticed by Daniel Jacobowitz.
+  * Closes Accept-Language: * bug (#29895).
+  * Bugs in 1.3.4-1 prerelease that were fixed by the 1.3.4-1 real upload
+    but unfortunately left undocumented as being fixed: #31735 #31848.
+
+ -- Johnie Ingram <johnie@debian.org>  Wed, 13 Jan 1999 04:12:57 -0500
+
+apache (1.3.4-1) unstable; urgency=low
+
+  * New upstream version, fixing Accept-Language: * bug (#29895).
+  * The apache-dev package now includes os-inline.c (#31735).
+  * Removed possible bashism from apache postinst.
+
+ -- Johnie Ingram <johnie@debian.org>  Tue, 12 Jan 1999 18:15:09 -0500
+
+apache (1.3.3-5) frozen unstable; urgency=low
+
+  * Tweaked init script to understand comments when checking ServerType
+    (#31503, important).
+  * Tweaked dbmmanage to remove `-' deprecation warning (#31762).
+  * Hardcoded server limit set to 512 (#30670).
+  * The apacheconfig program now waits for apache to terminate before
+    starting it again (#31600).
+  * Install script now adds the magic LoadModule line to httpd.conf if for
+    some reason it is completely deleted (#23696).
+  * Cron script intercepts the truly ancient "#-1" User/Group before
+    giving it to savelog (#28200).
+  * Closes #29830 and #28566, rotation of logs in Included files.
+  * Included db1/db.h fix from Sparc upload (#30403).
+  * Closes #27234, feature Options +NoSuExec (patch withdrawn by author
+    via IRC).
+  * Bugs fixed in previous releases, or non-bugs: #23755 (RTLD_NOW),
+    #26318 (suidness of suexec), #25987 #25991 (dbmmanage, reported
+    working in 31762 above).
+
+ -- Johnie Ingram <johnie@debian.org>  Tue, 12 Jan 1999 16:20:02 -0500
+
+apache (1.3.3-4) frozen unstable; urgency=low
+
+  * Linked with libc6 2.0.7u-6.
+  * Stripped debugging symbols from loadable modules in apache-common.
+  * Included patch to cron.daily from Jason Gunthorpe so it also rotates
+    logfiles in configuration files added by the "Include" directive
+    (#29830), fixing #28566.
+
+ -- Johnie Ingram <johnie@debian.org>  Thu, 26 Nov 1998 14:49:09 -0500
+
+apache (1.3.3-3.1) frozen unstable; urgency=low
+
+  * non maintainer, sparc only upload
+  * ndbm.h has moved to db1/ndbm.h with glibc2.1
+
+ -- Christian Meder <meder@isr.uni-stuttgart.de>  Sat, 28 Nov 1998 03:00:34 +0
+
+apache (1.3.3-3) unstable; urgency=low
+
+  * Suppressed "futile" error during fresh install (#25690).
+  * Config program does hard restart instead of graceful, so modules are
+    reloaded (#23251, also fixes #22443).
+  * Removed erroneous Meta tags from example srm.conf (#24623).
+  * Brian White confirms that removing "application/x-compress" and
+    "application/x-gzip" from mime.types was correct (20809).
+  * Bugs fixed in previous versions, or non-bugs: #22546 (DirectoryIndex
+    doesn't work), #24776 (mod_rewrite possibly broken).
+  * The apache-common package correctly overwrites htpasswd from apache
+    (#22695).
+
+ -- Johnie Ingram <johnie@debian.org>  Mon, 12 Oct 1998 20:46:47 -0400
+
+apache (1.3.3-2) unstable; urgency=low
+
+  * Fixed syntax error in debian/rules (#26942).
+  * Config programs configures ServerName on initial install again
+    (#25161, also fixes #22870).
+  * Bugs fixed prior to this release: #23573, #26127 (suidregistration of
+    htpasswd), #24415 (suexec and conf.h), #23461 (usr/tmp, fixed in
+    1.2.1), #22410 (apachectl non-Linux portability, fixed in 1.3.1).
+  * Build process tweaked to be compatible with debhelper from hamm.
+  * Modified example mime.types so compressed PS files are correctly sent
+    as "application/postscript, encoding x-gzip" instead of merely
+    gzipped data (20809, forwarded to mime-support for final resolution).
+
+ -- Johnie Ingram <johnie@debian.org>  Mon, 12 Oct 1998 14:45:50 -0400
+
+apache (1.3.3-1) unstable; urgency=low
+
+  * New upstream version.
+  * Closes t1k bug by IRC request (#25641).
+
+ -- Johnie Ingram <johnie@debian.org>  Wed,  7 Oct 1998 15:31:29 -0400
+
+apache (1.3.2-3) unstable; urgency=low, closes=27316
+
+  * Added -O2 at Daniel Jacobowitz's behest.
+  * Compiled with libc6 2.0.7t-1 because 2.0.7u of slink blows chunks
+    (#27316).
+
+ -- Johnie Ingram <johnie@debian.org>  Thu,  1 Oct 1998 20:44:21 -0400
+
+apache (1.3.2-2) unstable; urgency=low, closes=27143 27167 25095 26151
+
+  * Depends on apache-common (>= 1.3.2) (#27143, #27167) and conflicts
+    with older versions of php3 and libapache-mod-perl (#25095).
+  * Applied patch from Julian Gilbey so the APACHE_CHOWN_LOGFILES option
+    in cron.conf is documented (#26151).
+
+ -- Johnie Ingram <johnie@debian.org>  Mon, 28 Sep 1998 12:42:31 -0400
+
+apache (1.3.2-1) unstable; urgency=low
+
+  * Use dh_clean in clean-comon target.
+  * Enabled SHARED_CHAIN for more proper linking of the shared modules.
+  * Remove --enable-rule=STATUS; it's no longer applicable.
+  * Clean up the http_protocol.c.{orig,rej} mess and remove the no longer
+    needed debian/Configuration.
+  * Use uudecode instead of munpack; egcs has some scheduling issues with
+    compiling munpack at the moment.
+  * Remove the hack in 1.3.1-3 in favor of the Apache Group's solution.
+  * Non-maintainer upload; -1 by request of Johnie Ingram.
+  * New upstream release.
+
+ -- Daniel Jacobowitz <dan@debian.org>  Tue, 22 Sep 1998 16:05:21 -0400
+
+apache (1.3.1-3) unstable; urgency=high
+
+  * Patched against denial of service vulnerability discovered by
+    Dag-Erling Smoergrav, where repeated, identical headers consumes O(n^2)
+    memory.
+
+ -- Johnie Ingram <johnie@debian.org>  Fri,  7 Aug 1998 22:03:24 -0400
+
+apache (1.3.1-2) unstable; urgency=low, closes=19497 25125 25016
+
+  * Common files split off into separate apache-common package (#19497),
+    at the behest of the Policy Manager and apache-ssl maintainer.
+  * Conflicts with php3 (<= 3.0-2) (#25125, cf. 25079, 25080) and
+    libapache-mod-perl (<< 1.15).
+  * Made clean target more aggressive, and removed docs on Bugs now fixed
+    upstream, making debian diff (somewhat) smaller.
+  * Fixed autodetection of need for mod_mime_magic.
+  * Removed duplicate manpage htdigest.8 and obsolete binaries unescape
+    and inc2shtml.
+  * Default srm.conf now handles more languages (#25016).
+  * Fixed version reply.
+
+ -- Johnie Ingram <johnie@debian.org>  Wed,  5 Aug 1998 04:18:47 -0400
+
+apache (1.3.1-1) unstable; urgency=low
+
+  * New upstream version.
+
+ -- Johnie Ingram <johnie@debian.org>  Wed, 22 Jul 1998 18:03:21 -0400
+
+apache (1.3.0-4) unstable; urgency=low, closes=23753 23534 23361
+
+  * Fixed suid unregistration of htpasswd in postinst (#23753).
+  * Added patch from Dan Jacobowitz for mod_perl shared library support.
+  * The apacheconfig program no longer considers mod_perl obsolete.
+  * Closes #23534 and #23361, fixed in 1.3.0-3.
+
+ -- Johnie Ingram <johnie@debian.org>  Sun, 21 Jun 1998 14:58:54 -0400
+
+apache (1.3.0-3) unstable; urgency=low, closes=23534
+
+  * The apacheconfig program no longer indirectly depends on gcc (#23534).
+
+ -- Johnie Ingram <johnie@debian.org>  Mon, 15 Jun 1998 14:55:30 -0400
+
+apache (1.3.0-2) frozen unstable; urgency=low, closes=23221 23277 22066 22609 16623 22174 22771 22858 23109 23361
+
+  * The apxs program has the correct perl path (#23221, important).
+  * Conflicts with php (<= 3.0rc4-2) (#23277, important).
+  * The config program asks about mod_proxy again, since it now works.
+  * CustomLog nicknames finally work inside VirtualHost containers
+    thanks to patch from Christof Damian (#22066) and the Apache Group.
+  * Added patch to apxs from Gergely Madarasz so PHP can build (23361).
+  * This fixes all (2) release-critical bugs, 8 packaging bugs, an
+    upstream bug in mod_log_config and a buffer overflow in the ftp proxy.
+    It also works with PHP 3.0 without needing a -HUP ever 30 minutes.    :-) 
+
+ -- Johnie Ingram <johnie@debian.org>  Thu, 11 Jun 1998 10:40:45 -0400
+
+apache (1.3.0-1) frozen unstable; urgency=low, closes=22609 16623 22174 22771 22858 23109
+
+  * New upstream version (#22858, #23109).
+  * Merged patch from Alpha non-maintainer upload by Paul Slootman
+    (#22609).
+  * Closes #16623, fixed with apacheconfig savviness added at 1.3b6-2.
+  * Fixed user and group in default httpd.conf (again) (#22174).
+  * Includes fix from Jules Bean so loadable modules are found in the
+    correct order, and apxs uses correct include directory.
+  * Doesn't configure in the non-existent mod_rewrite on sparc.
+  * Removed dependency on base-passwd (>=2.0.3.2), which guaranteed
+    nothing about the existence of www-data user and group.
+  * Added FollowSymLinks option to /usr/lib/cgi-bin parameters.
+  * The apxs program is now fully configured (#22771).
+  * Added mod_throttle 1.0.
+
+ -- Johnie Ingram <johnie@debian.org>  Fri,  5 Jun 1998 00:54:37 -0400
+
+apache (1.3b7-0) local; urgency=low, closes=22609 16623 22174 22771
+
+  * New upstream version: Apache development version 19980523070028.
+
+ -- Johnie Ingram <johnie@debian.org>  Sat, 23 May 1998 08:15:13 -0400
+
+apache (1.3b6-3.1) frozen unstable; urgency=low
+
+  * Non-maintainer upload for Alpha
+  * don't build module unique_id, as that code is (self-admittedly) broken
+    for 64-bit architectures.
+
+ -- Paul Slootman <paul@debian.org>;  Mon, 18 May 1998 23:16:32 +0200
+
+apache (1.3b6-3) frozen unstable; urgency=low, closes=22074 21525 21532 21708 21778 21893
+
+  * Closed huge gaping suexec security hole with patch from Gergely
+    Madarasz (#21525).
+  * Fixed typo in apaci build file (#22074), correcting version replies.
+  * The config program now asks only the questions it needs to during
+    upgrades, avoiding the more lengthier queries, as recommended by
+    Andreas Jellinghaus.
+  * Added Options Indexes for /usr/doc in access.conf (#21708).
+  * Fixed typo in postinst (#21532).
+  * Improved cron script so it can rotate the apache logfile just once a
+    month, or even only once a year, by popular demand (#21893).
+  * Closed #21778, as mod_log_referer (sic) is replaced by mod_log_config.
+
+ -- Johnie Ingram <johnie@debian.org>  Wed,  6 May 1998 08:35:03 -0400
+
+apache (1.3b6-2) frozen unstable; urgency=low, closes=20438 20569 18187 18768 18188 17350 15344 17517 18310 16146 15693 19169 18098 18553 19616
+
+  * New upstream version, release candidate for 1.3.0.
+       * The dynamic loading that Debian has done for years is now
+         officially supported.
+       * Better support for HTTP/1.1-style virtual hosts.
+       * A number of bugfixes and internal performance enhancements.
+  * Changes from 1.3b6-1 release candidate of Tuesday:
+       * Added APACI configuration fixes from Scott K. Ellis.
+       * Linked shared modules against libc6 as per policy.
+       * The init.d script uses apachectl internally.
+       * The proxy module appears broken, so activation is no longer
+         attempted.
+       * Updated provided conf files, adding highperformance.conf example. 
+       * Fixed Powered-by-Apache graphic in /usr/doc/apache/icons/.
+  * The configuration program now adds all features with LoadModule
+    directives, and in the order recommended for Debian by Lars Eilebrecht
+    of the Apache Group (fixing mystifying stuff like #19169).
+  * Install scripts no longer attempt to edit /etc/passwd directly,
+    which wasn't reliable anyway (#18588).
+  * Added text to make it clearer that "corrected" paths are not
+    saved to the config files until the very end (#18187).
+  * Standard configuration no longer stores icons in /usr/doc (#18188,
+    #15344), but asks before correcting icon directory Alias and cgi-bin
+    ScriptAlias (#18187).
+  * The apachectl script now uses correct paths (#19616).
+  * Uses better regular expression in init.d from Nicholas Lichtmaier.
+  * It is now possible to backspace during the selection of Y or N
+    within apacheconfig (#18310), which also fixes operation on sparc.
+  * Configuration program no longer attempts to reconfigure a
+    correctly-configured configuration during an upgrade (#17350, #18768,
+    #18187).
+  * Binds to port 80 even without an explicit Port directive (#18553).
+  * The cron.daily script now correctly parses the obsolete and insecure
+    Group number "#-1" in httpd.conf (#16146, #15693).
+  * Fixed details of logfile locations in apache manpage (#20438).
+  * The init.d script now uses the "graceful restart" reload method.
+  * Closes #20569: log files listed multiple times are only aged once.
+  * Updated initial site webpage.
+  * Added yet more debhelperization, eliminating lintian errors.
+  * Updated to Standards-Version 2.4.1.0.
+  * Closes #18098 -- there is no demand for a 1.2.6 package, and only
+    this 1.3.x has been tested in hamm).
+  * Closes #18128 -- the postinst should not offer an inetd option, as the
+    Apache Group has made it clear this "does not work propery -- avoid if
+    at all possible.".
+  * Demotes #20655 to severity fixed (apache no longer needs the non-free
+    msql.h header to compile, mod_so replaces mod_dl, and dpkg-dev
+    1.4.0.22 can extract the source package).
+  * Released as -2 because a derivative of a -1 test release somehow found
+    its way into Incoming.
+
+ -- Johnie Ingram <johnie@debian.org>  Fri, 24 Apr 1998 12:53:42 -0400
+
+apache (1.3b5-3) frozen unstable; urgency=low
+
+  * Log files listed multiple times are only aged once (#20569).
+
+ -- Johnie Ingram <johnie@debian.org>  Sun, 22 Feb 1998 01:48:41 -0500
+
+apache (1.3b5-2) unstable; urgency=low, closes=18487 18459
+
+  * Fixed regex for detection of ServerType inetd configuration (#18487,
+    #18459).
+
+ -- Johnie Ingram <johnie@debian.org>  Sun, 22 Feb 1998 01:24:27 -0500
+
+apache (1.3b5-1) unstable; urgency=low, closes=15285 16503 16952 18176
+
+  * New upstream version: fixes mod_speling, (#16952), works with inetd
+    (#15285).
+  * Final fix of no2slash() bug: was O(n^2) in the length of the input,
+    now O(n), fixing flakiness of 1.3b3-9 (#16503).
+  * Applied cosmetic patch to init.d messages from David Rocher (#18176).
+  * Added mod_so for testing, to eventually replace mod_dlopen.
+  * Init script will not attempt to start apache if it is configured to
+    run from inetd (15285).
+
+ -- Johnie Ingram <johnie@debian.org>  Thu, 19 Feb 1998 22:03:34 -0500
+
+apache (1.3b3-13) unstable; urgency=low
+
+  * Added coypright file to apache-doc, and added apachectl manpage, to
+    make lintian happier.
+
+ -- Johnie Ingram <johnie@debian.org>  Tue, 10 Feb 1998 01:50:30 -0500
+
+apache (1.3b3-12) unstable; urgency=low, closes=15950 16123 16129 17902 15056
+
+  * Added restart and force-reload targets to init.d script.
+  * Module mod_auth_dbm is now included as a shared library (#15950,
+    #16123, #16129).
+  * The apachectl program now uses correct paths (#17902), and uses a
+    fully-qualified domain name instead of "localhost" to appease squid
+    proxies (#15056).
+  * Included htdigest binary (cf. 17902).
+  * No longer uses the deprecated dh_installdebfiles debhelper command.
+  * Updated to Standards-Version 2.4.0.0.
+
+ -- Johnie Ingram <johnie@debian.org>  Mon,  9 Feb 1998 10:43:29 -0500
+
+apache (1.3b3-11) unstable; urgency=low
+
+  * The install script now runs suidregister before starting apache
+    instead of after (#17078).
+  * Cron script now exits with status 0 (#16699, #16829).
+  * Config program now understands that the MimeMagicFile directive
+    indicates the need for mod_mime_magic (#16616).
+  * Removed src/buildmark.c.rej from patch.
+  
+ -- Johnie Ingram <johnie@debian.org>  Mon, 19 Jan 1998 02:31:11 -0500
+
+apache (1.3b3-10) unstable; urgency=low, closes=16468
+
+  * Updated patch to prevent denial-of-service vulnerability (#16468) --
+    previous patch could cause malloc-related problems.
+
+ -- Johnie Ingram <johnie@debian.org>  Fri,  2 Jan 1998 09:48:20 -0500
+
+apache (1.3b3-9) unstable; urgency=low, closes=8924 12022 15000 15053 15270 15299 15470 15737 15958 15988 16073 16176
+
+  * Removed versioned dependency on perl, no longer necessary (now
+    installs without forcing on sparc).
+  * Applied patch for compliance with policy 2.3.0.1 section 3.6 (#15958).
+  * Removed bashisms from cron daily script (#16073) and apachconfig
+    program (#15988).
+  * Now installs link to shutdown apache at sequence 20 instead of 91
+    (#15737).
+  * Closed Bug #15470, fixed in 1.3b3-3.
+  * Logfile directory now owned by root.root (#12022, cf. 15053), and cron
+    script does not chown the logfiles by default.
+  * Closed #15053, as the point of running apache as www-data instead of
+    nobody is so parts of the site can be safely writable by the server.
+  * Install program now uses interactive copy to avoid overwriting
+    index.html (#15000, #16176).
+  * Tweaked mod_include description in apacheconfig to make it clearer
+    that this module must be loaded for XBitHack to work in .htaccess
+    files (#15299).
+  * Closed #15270, as mod_browser is replaced by the more flexible module
+    mod_setenvif (and the appropriate config file automatically changed).
+  * Added link to Debian Documentation site in default index.html (#8924).
+  * Config program now defaults to fully automagic configuration.
+  * Happy new year.
+  
+ -- Johnie Ingram <johnie@debian.org>  Thu,  1 Jan 1998 03:32:04 -0500
+
+apache (1.3b3-8) unstable; urgency=high
+
+  * Added patch to prevent denial-of-service vulnerability.
+
+ -- Johnie Ingram <johnie@debian.org>  Wed, 31 Dec 1997 18:24:10 -0500
+
+apache (1.3b3-7) unstable; urgency=low, closes=15930
+
+  * Removed unofficial sparc tweak.
+  * Added official tweak to conf.h from Dean Gaudet for multiple
+    architecture support (os-linux/1542, fixed in 1.3b4).
+  * Added temporary fix from Jason Gunthorpe (#15930) for incorrect
+    logging of "critical memmap failure" errors (this will be fixed in
+    1.3b4).
+  
+ -- Johnie Ingram <johnie@debian.org>  Fri, 19 Dec 1997 08:54:38 -0500
+
+apache (1.3b3-6) unstable; urgency=low
+
+  * Corrected broken link which occured if apache-doc is not installed.
+  * Fixed packaging bugs discovered on powerpc architecture.
+
+ -- Johnie Ingram <johnie@debian.org>  Thu, 11 Dec 1997 14:25:03 -0500
+
+apache (1.3b3-5) unstable; urgency=low
+
+  * Tweaked to autocompile on sparc architecture (mod_auth_db disabled on
+    arch due to db.h from the twilight zone, sparc patch sent upstream).
+
+ -- Johnie Ingram <johnie@debian.org>  Wed, 10 Dec 1997 11:25:04 -0500
+
+apache (1.3b3-4) unstable; urgency=low, closes=11736 12042 12091 12093 12101 12600 12988 14895 15602
+
+  * Replaces the obsolete apache-modules package, removed from
+    ftp.debian.org by the archive manager (#14982), closing #11736,
+    #12042, #12091, #12093, #12101, #12600, #12988, and #14895.
+  * Outdated apache package no longer in project/experimental (#15602,
+    cf. 14981).
+
+ -- Johnie Ingram <johnie@debian.org>  Thu,  4 Dec 1997 06:01:26 -0500
+
+apache (1.3b3-3) unstable; urgency=low
+
+  * Corrected code typo in log rotation cron script.
+
+ -- Johnie Ingram <johnie@debian.org>  Thu, 27 Nov 1997 17:37:55 -0500
+
+apache (1.3b3-2) unstable; urgency=low
+
+  * Added ability to quit out of the manual module configuration and
+    proceed with autoconfig, at the request of Joey Hess on IRC.
+
+ -- Johnie Ingram <johnie@debian.org>  Thu, 27 Nov 1997 15:09:16 -0500
+
+apache (1.3b3-1) unstable; urgency=low, closes=11880 12190
+
+  * New upstream version.
+  * Init script no longer uses killall (#12190).
+  * Closed #11880 (apache stops responding), fixed in upstream version.
+
+ -- Johnie Ingram <johnie@debian.org>  Thu, 27 Nov 1997 11:56:37 -0500
+
+apache (1.3b2-5) unstable; urgency=low, closes=10352 14829 14888 11834
+
+  * Debian makefile garnished with debhelper commands.
+  * All manpages are now compressed (#14888).
+  * Logfile rotation time and frequency is now fully customizable, thanks
+    to code from Craig Sanders of the temporary autonomous zone (#14829),
+    also fixing #10352.
+  * Added patch so cron script parsing of apache config files is not as
+    fragile (#11834).
+
+ -- Johnie Ingram <johnie@debian.org>  Mon, 24 Nov 1997 22:41:15 -0500
+
+apache (1.3b2-4) unstable; urgency=low, closes=13465 14811 14880 14887 15191 15175
+
+  * Missing www-data user no longer crashes the preinst (#13465).
+  * Cron script calls reload to reload the daemon (#14811).
+  * The suexec utility is no longer a conffile (#14880, #15191).
+  * Development package includes os.h (#15136).
+  * Config program detects and corrects obsolete directory name
+    /var/log/apache-httpd (#15139), and old modules: mod_browser (#14887)
+    and mod_perl (#15175).
+
+ -- Johnie Ingram <johnie@debian.org>  Mon, 24 Nov 1997 15:29:45 -0500
+
+apache (1.3b2-3) unstable; urgency=low, closes=9905
+
+  * Cron script uses #!/bin/sh again -- you just can't win (#9905).
+
+ -- Johnie Ingram <johnie@debian.org>  Wed, 12 Nov 1997 16:22:52 -0500
+
+apache (1.3b2-2) unstable; urgency=low, closes=14806
+
+  * Fixed default configuration files so new installations will succeed
+    (#14806).
+  * Corrected GIF link in new-installation webpage.
+  * Restored obsolete modules mod_log_referer and mod_log_agent.
+  * Fixed bug in detection of necessity for loading mod_rewrite module.
+
+ -- Johnie Ingram <johnie@debian.org>  Wed, 12 Nov 1997 14:40:42 -0500
+
+apache (1.3b2-1) unstable; urgency=low, closes=6778 8649 9818 9851 11510 11511 11563 11635 12981 12040 12188 12189 12200 12728 13106 13935 13954 14656
+
+  * New stabler upstream version, now in beta test.
+  * Module mod_rewrite no longer out of date (#9993) -- it is now
+    officially part of apache.
+  * Module mod_browser replaced with mod_envif.
+  * Added new modules mod_speling [sic] and mod_mime_magic.
+  * Corrected location of CGI logfile in suexec utility (#12040).
+  * Configuration files now default to historic locations in
+    ServerRoot/conf to ease FrontPage 98 and multi-server configurations
+    (#12189), as recommeded by James Chan.
+  * Cron script calls /etc/init.d/apache instead of killall (#12200), and
+    is no longer confused by multiple User or Group directives in
+    httpd.conf (#13741).
+  * MIME types file for apache can now differ from systemwide file, as
+    recommended by Robert Stone.
+  * Installation script no longer fails if /usr/lib/httpd/cgi-bin/ exists
+    but is empty (#9818).
+  * Support for the SuppressHTMLPreamble is now standard with apache (it
+    was a Debian patch in 1.1.3 packages) (#12728, #13954, #11563).
+  * Registered suexec with the suidmanager program, so permissions will
+    persist across upgrades if it is activated (#13935).
+  * Modified init.d script to maintain compliance with Standard for
+    Console Messages even if suexec is activated (#13935), and suexec is
+    now a conffile.
+  * Improved apacheconfig detection of incompatible existing configuration
+    (#11510, #12728).
+  * Debian patch adds a debian_apache.h header (with correct DOC_LOCATION)
+    instead of editing httpd.h, making it easier to rebuild (#9851).
+  * Removed apache_monitor, third-party module mod_perl (#14656, #11635,
+    #12188), obsolete modules mod_log_agent and mod_log_referer (and
+    mod_browser), and mod_auth_dbm (#7516); linked in mod_auth_db.
+  * Timestamps now preserved wherever possible during package build.
+  * Fixed bug in http_core.c introduced by debian dynamic-modules patching
+    and discovered by Dean Gaudet of the Apache Group.
+  * Harcoded default user now nobody.nogroup instead of -1.-1 (#12981).
+  * Moved pre-permed proxy cache directory from /var/spool to /var/cache.
+  * Closed #13106 (RFC 2068 requires errcode 301 instead of 302), fixed
+    upstream with HTTP/1.1 support.
+  * Closed #11511 (apache complains if max servers is set to over 256) as
+    this recommended value is enough for most webserver situations.
+  * Closed #6778 (SIGSEGV if virtual server not defined), fixed upstream.
+  * Tweaked default index.html page to reflect file locations (#8649).
+  * Added SHELL=/bin/bash to debian/rules.
+  * Package now conflicts with "apache-modules" package for apache 1.1.3.
+  * Cron daily script now uses #!/bin/bash (#9905).
+  * Updated to Standards-Version 2.3.0.1.
+
+ -- Johnie Ingram <johnie@debian.org>  Wed, 12 Nov 1997 04:25:50 -0500
+
+apache (1.2.4-2) unstable; urgency=low
+
+  * Corrected potentially confusing reference to invalid logfile location
+    in default httpd.conf (#12095).
+  * Updated to Standards-Version 2.3.0.0.
+  * No longer uses the --verbose option to mkdir, which apparently does
+    not work on all systems (#12090).
+  * Config files now relative to ServerRoot (#12189).
+  * Configuration program now waits for newline asking questions (#12999,
+    #12662).
+  * Ensured htpasswd program is in /usr/bin (#12356).
+  * Fixed erroneous chown to user "www" (#12656).
+  * Closed #9354, as no more references to /home/www-data/webspace remain.
+  * Tweaked packaging for better multiple-architecture support.
+  
+ -- Johnie Ingram <johnie@debian.org>  Sun, 14 Sep 1997 23:36:40 -0400
+
+apache (1.3a1-3) unstable; urgency=low
+
+  * Corrected potentially confusing reference to invalid logfile location
+    in default httpd.conf (#12095).
+  * Updated to Standards-Version 2.3.0.0.
+
+ -- Johnie Ingram <johnie@debian.org>  Sun, 14 Sep 1997 22:44:50 -0400
+
+apache (1.2.4-1) unstable; urgency=low
+
+  * New upstream version.
+  
+ -- Johnie Ingram <johnie@debian.org>  Sat, 23 Aug 1997 12:52:43 -0400
+
+apache (1.2.3-1) unstable; urgency=low
+
+  * New upstream version.
+
+ -- Johnie Ingram <johnie@debian.org>  Wed, 20 Aug 1997 15:00:48 -0400
+
+apache (1.2.1-8) unstable; urgency=low
+
+  * Fixed name of httpd.conf config file in apache(8) man page.
+
+ -- Johnie Ingram <johnie@debian.org>  Wed, 20 Aug 1997 12:03:59 -0400
+
+apache (1.2.1-7) unstable; urgency=low
+
+  * Added patches from Jordan Hrycaj which fix dynamic module loading.
+  * Removed inadvertent architecture dependence in rules file (#12112).
+  * Source code to suexec now included in package (#12081), and suexec now
+    uses correct logfile path (#12040, #12081).
+  * Configuration files made relative to ServerRoot (#10812).
+  * Made mod_proxy, mod_rewrite, mod_auth_dbm and mod_auth_db dynamic.
+  * Updated mod_perl to version 1.00.
+  * Closed #11510, failure of 1.2 to run with untouched 1.1.3 config file.
+  * Closed #11511 since something within apache does indeed check and warn
+    when a MaxClient directive exceeds HARD_SERVER_LIMIT.
+  * Added cgi-bin examples.
+  
+ -- Johnie Ingram <johnie@debian.org>  Tue, 19 Aug 1997 23:40:41 -0400
+
+apache (1.3a1-2) experimental; urgency=low
+
+  * Removed inadvertent architecture dependence in rules file (#12112).
+  * Added patches from Jordan Hrycaj which fix dynamic module loading.
+
+ -- Johnie Ingram <johnie@debian.org>  Tue, 19 Aug 1997 00:05:32 -0400
+
+apache (1.2.1-6) unstable; urgency=low
+
+  * Corrected mod_proxy data so it can be detected automatically.
+  * Made apacheconfig load mod_expires by default, so it can be used in
+    .htaccess.
+
+ -- Johnie Ingram <johnie@debian.org>  Wed, 13 Aug 1997 13:34:15 -0400
+
+apache (1.2.1-5.1) unstable; urgency=low
+
+  * Fixed mod_dlopen.
+  * Fixed variable mismatch total_modules/num_modules.
+  * Updated *.info files and the module config.
+  * Added load order feature to apacheconfig.
+  * Added (temporary) support for mod_perl-1.00 for perl-5.004.
+
+ -- Jordan Hrycaj <jordan@mjh.teddy-net.com>  Wed, 13 Aug 1997 19:27:02 -0200
+
+apache (1.2.1-5) unstable; urgency=low
+
+  * Fixed apacheconfig autodetection of the need for mod_expires.
+  * Deleted optional module mod_msql, since with this support apache
+    would require libmsql1 and libmsql1-dev to build, a violation of new
+    Debian policy.
+  * Apache executable and mod-perl libraries are now stripped (#11635).
+  * Removed unnecessary Apache-SSL targets from Debian makefile.
+  * Switched to pristine upstream tar archive.
+  * Updated to Standards-Version: 2.2.0.0.
+
+ -- Johnie Ingram <johnie@debian.org>  Mon, 11 Aug 1997 07:12:51 -0400
+
+apache (1.3a1-1) experimental; urgency=low
+
+  * New upstream version (pristine source).
+  * Deleted optional module mod_msql, since with this support apache
+    would require libmsql1 and libmsql1-dev to build.
+  * Fixed apacheconfig autodetection of the need to activate mod_expires.
+  * Apache executable and mod-perl libraries are now stripped (#11635).
+  * Updated to Standards-Version: 2.2.0.0.
+
+ -- Johnie Ingram <johnie@debian.org>  Mon, 11 Aug 1997 07:00:42 -0400
+
+ apache (1.2.1-4) unstable; urgency=low
+
+  * Config program no longer asks twice whether mod_dlopen should be
+    activated (thanks to Alex Apke for catchy bug number, #11223).
+  * Closed #10441, another manifestation of #10856, the lack of mod_proxy.
+  * Added debian copyright stanza to copyright file (#8208).
+  * Added check so Authoritative can never be misspelled again (#9767).
+  * Enabled mod_auth_dbm again, linked with libgdbmg (#7516).
+  * Closed #9081, since the new location of the CGI bin is now Policy.
+  * DocumentRoot can now be a symlink (#9790).
+
+ -- Johnie Ingram <johnie@debian.org>  Tue, 15 Jul 1997 00:07:07 -0400
+
+apache (1.2.1-3) unstable; urgency=low
+
+  * Added files ABOUT_APACHE and KEYS to package.
+  * Restored mod_proxy, by popular demand (#10856).
+
+ -- Johnie Ingram <johnie@debian.org>  Sun, 13 Jul 1997 01:16:38 -0400
+
+apache (1.2.1-2) unstable; urgency=low
+
+  * Fixed spelling of Anonymous_Authoritative in the mod_auth_anon
+    and mod_auth_msql data file, since Apache itself now uses the correct
+    spelling.
+  * Corrected more references to /home/www-data/webspace to /var/www in
+    intro.html (#8649, #9354).
+  * Closed #7290, since this is a bug in bash 2.0 that is fixed in 2.01.
+  * Closed #9818, the failure to install if /usr/lib/httpd/cgi-bin/
+    exists but is empty.
+  * Closed #7159, the incompatibility of apacheconfig with bash-2.0,
+    since apacheconfig has been perl since 1.1.3-3.
+  * Closed #7478, the confusion of apacheconfig, fixed in 1.1.3-6.
+  * Closed #8945 and #9905, other manifestations of #10714 (fixed in
+    1.2.1-1).
+  * Closed #10603, which was fixed by the patch from Christoph Martin.
+
+ -- Johnie Ingram <johnie@debian.org>  Sat, 12 Jul 1997 15:34:39 -0400
+
+apache (1.2.1-1) unstable; urgency=low
+
+  * New upstream version.
+  * Added patch from Christoph Martin so /etc/cron.daily/apache can handle
+    relative logfile paths (#10670).
+  * Ensured that scripts trap 1 instead of SIGHUP, which breaks ash
+    (#10714).
+  * Corrected apacheconfig lookups of user www to www-data (#10669).
+  * Vastly simplified the process used to build mod_perl, since
+    dpkg-source can indeed create new subdirectories.
+  * Updated to debian-policy 2.1.3.3.
+
+ -- Johnie Ingram <johnie@debian.org>  Fri, 11 Jul 1997 05:38:21 -0400
+
+apache (1.2.0-1) experimental; urgency=low
+
+  * New upstream version.
+
+ -- Johnie Ingram <johnie@debian.org>  Sat,  7 Jun 1997 12:12:46 -0400
+
+apache (1.2b11-2) experimental; urgency=low
+
+  * Added mod_perl, by popular demand.
+
+ -- Johnie Ingram <johnie@debian.org>  Wed,  4 Jun 1997 01:29:01 -0400
+
+apache (1.2b11-1) experimental; urgency=low
+
+  * New upstream version.
+  * Added www.apacheweek.com to resources in intro.html (Peter Kleinmann).
+  * Fixed default location of conffile for apache_monitor (Bug #9787).
+
+ -- Johnie Ingram <johnie@debian.org>  Mon,  2 Jun 1997 22:20:42 -0400
+
+apache (1.2b10-1) experimental; urgency=low
+
+  * New upstream version.
+  * Updated to debian-policy 2.1.3.2, linked against libc6.
+  * No longer uses debmake for package build.
+  * Install no longer fails if /usr/lib/httpd/cgi-bin exists, but is
+    empty (Bug #9818).
+  * Debian changes modified so they do not conflict with Apache-SSL.
+  * Modules mod_auth_db and mod_auth_dbm now included modules (Bug
+    #7516).
+  * Fixed Bugs #7190, #7478, #7543, #8030, #7927, #8208, #6619, and #7544.
+
+ -- Johnie Ingram <johnie@debian.org>  Wed, 21 May 1997 23:14:20 -0400
+
+apache (1.1.3-6) frozen unstable; urgency=low
+
+  * Config program no longer confused by ServerName directives inside
+    VirtualHost sections (Bugs #7190, #7478).
+  * Compiled apache_monitor with -DDEBIAN, which fixes the default
+    location of the config file (Bug #7543), and corrected typo in its
+    manpage.
+  * Reduced webmaster address strangeness (Bug #7928).
+  * Fixed typo in apacheconfig discovered by Tony Finch (Bug #8359).
+  * Config program always asks before restarting apache, and can now
+    detect when the restart fails (Bug #7927).
+  * Registered htpasswd with suidregister, making it easier for the
+    administrator to make it suid (request #8030).  The default
+    permissions and umask have not changed, however.
+  * Corrected mispositioned set -e in apache-dev preinst script, and added
+    set -e to preinst and postinst scripts (Bug #8208).
+  * Added dependency on checkroot to binary-arch rules target, and added
+    removal of substvars and files files to clean target (Bug #8208).
+  * Added language to the apache manpage to make it clear that the Debian
+    apache has FSSTND file location defaults (Bug #6619).
+  * Changed control file so dependencies are no longer hardcoded,
+    a quirk pointed out by Dermot Bradley.
+  * Removed deep debmake magic from install scripts, to facilitate porting
+    to non-debmake environments.
+  * Corrected name of program in apache_monitor.8 manpage (Bug #7544).
+  * Closed Bug #5601, since the need to use nph- filename to disable
+    buffering of CGI program output is not a bug, but a feature.
+  * Closed Bug #7132, which was fixed by the new apacheconfig in 1.1.3-3.
+  * Closed Bug #7277, since undocumented.7.gz is now correct.
+  * Closed Bug #7302, the mod_info bug incorrectly listed as 7017 below.
+  * Closed Bug #7740 (posted against apache 3.0) (!), which was another
+    manifestation of the bug located by Manoj Srivastava (Bug #6524)
+    and fixed in 1.1.2-1.
+  * Closed Bug #7744, since the apache 1.1.1-5 file permissions bug has
+    long been fixed.
+  * Package now includes file checksums (debmake 3.2.4).
+  * Updated to Standards-Version 2.1.3.0.
+
+ -- Johnie Ingram <johnie@debian.org>  Mon, 7 Apr 1997 14:19:04 -0400
+
+apache (1.1.3-5) unstable; urgency=low
+
+  * Restored -DSTATUS to Makefile.modules for mod_info (Bug #7017).
+  * Fixed Bug #7297, where apacheconfig doesn't restart apache because the
+    init.d script inadvertently kills itself.
+  * Changed recommended DocumentRoot to /var/www (Bug #7318).
+  * Removed empty /usr/doc/apache/modules directory.
+  * Fixed some links from undocumented.7.gz to undocumented.7.
+  * Config program now understands numerical IDs better, a deficiency
+    pointed out by Dermot Bradley (bradley@mourne.gpl.net).  It isn't
+    perfect, though, because chown doesn't understand, e.g., "-1".
+  * Now validates installation scripts during package build using bash
+    2.0.
+
+ -- Johnie Ingram <johnie@debian.org>  Mon, 17 Feb 1997 23:03:13 -0500
+
+apache (1.2b6-3) experimental; urgency=low
+
+  * Added missing new-installation homepage file intro.html.
+  * Fixed Bug #7297, where apacheconfig doesn't restart apache because the
+    init.d script inadvertently kills itself.
+  * Changed recommended DocumentRoot to /var/www (Bug #7318).
+  * Fixed some links from undocumented.7.gz to undocumented.7.
+  * Config program now understands numerical IDs better, a deficiency
+    pointed out by Dermot Bradley (bradley@mourne.gpl.net).
+
+ -- Johnie Ingram <johnie@debian.org>  Mon, 17 Feb 1997 22:08:30 -0500
+
+apache (1.2b6-2) experimental; urgency=low
+
+  * Synchronized with 1.1.3-4 (Webstandard 3.0, apacheconfig, the works).
+
+ -- Johnie Ingram <johnie@debian.org>  Mon, 10 Feb 1997 13:25:30 -0500
+
+apache (1.1.3-4) stable unstable; urgency=medium
+
+  * Webstandard 3.0 savvy.
+  * The /usr/lib/httpd directory is no more.
+  * Moved icon directory to /usr/doc/apache/icons, cgi-bin directory to
+    /usr/lib/cgi-bin, and created Alias /doc for /usr/doc, for compliance
+    with Webstandard 3.0 at long last (Bug #6942); added checks and
+    automagic config conversion code.
+  * Closed bug #3470, since compliance with the webstandard means apache
+    can coexist with the other web servers.
+  * Added fallback to smail "mkaliases" command (Bug), and removed stop of
+    apache before upgrade, by suggestion of Joey Hess (joey@kite.ml.org).
+  * Added --force, --force-modules, --serveradmin, --serverroot,
+    --servername, --port, and --update options (back) to apacheconfig.
+  * Closed bug #4817, as CGI scripts are now required to be in /usr.
+  * Source package can actually be unpacked with dpkg-source -x.
+  * Updated default homepage, and fixed filename used for installation.
+  * Minor tweaks to text formatting in apacheconfig and init.d scripts.
+  * Removed apachemodname and install-apachemod programs, these having
+    been superceded by new apacheconfig.
+  * Closed Bug #7107, since the package now uses world-readable
+    permissions on the icons (and does not use /usr/lib/httpd anyway).
+  * Added dependency on perl.
+  * Removed obsolete modules-descr and modules-doc targes from
+    Makefile.modules.
+  * Module mod_auth now loaded by default, because its necessity cannot
+    always be determined from the standard ocnfig files.
+  * Did I mention it was Webstandard 3.0 savvy?
+
+ -- Johnie Ingram <johnie@debian.org>  Mon, 10 Feb 1997 02:48:53 -0500
+
+apache (1.1.3-3) unstable; urgency=low
+
+  * Config program, rewritten in perl, now does an exhaustive check to
+    decide which modules are needed, taking all provided mime types,
+    handlers, and directives into account (Bug #4601).
+  * Config program now supports both Apache 1.1 and 1.2, automatically
+    detecting whether LoadModule or AddModule commands should be used.
+  * Installation script no longer asks to make unnecessary changes (Bug
+    #6945), and the configuration can be skipped if the files look good.
+  * Default homepage is not installed if index.cgi already exists there
+    (Bug #6973).
+  * Config program now prefers the config_log_module over the
+    common_log_module, knows the difference between the two (Bug #4683),
+    and ignores commented-out directives (Bug #6780).
+  * Corrected logfile pathname for the log modules from Apache to
+    Debian default (Bug #6800).
+  * First tentative step toward Webstandard 3.0: /usr/lib/cgi-bin
+    included.
+  * Diff no longer contains extraneous temporary directories (Bug #6803).
+  * Source package updated to use debmake 3.0.11 flat directory structure.
+  * Corrected spelling of "unprivileged" in configuration question.
+  * Closed Bug #7031 (posted against 1.1.1-5), since the reference to
+    /var/web/webspace has long been removed from the new-install homepage. 
+  * Ran e2fsck -c on stupid /var partition, eliminating garbage from
+    created diff files (Bug #6561).
+  * Simplified /etc/init.d/apache script, and suppressed spurious error
+    message from kill.
+  * Config file backups are now rotated, so apacheconfig can be run
+    multiple times without potential loss of data.
+  * Closed Bug #7094 (posted against apache 3.1-8) (!), which was another
+    manifestation of the bug located by Manoj Srivastava (#6524)
+    and fixed in 1.1.2-1.
+  * Closed Bug #7095, since the package can now repair broken 1.1.1-5
+    permissions on the (obsolecent) /usr/lib/httpd directory.
+
+ -- Johnie Ingram <johnie@debian.org>  Tue, 4 Feb 1997 11:55:55 -0500
+
+apache (1.2b6-1) experimental; urgency=low
+
+  * Experimental release of Apache beta, sans autoconfig scripts.
+    ("LoadModule" lines should be replaced with "ClearModuleList,
+    AddModule...").
+
+ -- Johnie Ingram <johnie@debian.org>  Thu, 30 Jan 1997 00:20:23 -0500
+
+apache (1.1.3-2) unstable; urgency=low
+
+  * Cron script now recognizes indented logfile directives (Bug #6784).
+  * Fixed a problem with recognizing and correcting some PidFile
+    directives which was reported by Jeff Noxon (jeff@planetfall.com).
+
+ -- Johnie Ingram <johnie@debian.org>  Tue, 28 Jan 1997 12:36:22 -0500
+
+apache (1.1.3-1) unstable; urgency=low
+
+  * New upstream version which fixes the new bugs introduced by
+    security release 1.1.2 (sigh).
+  * Added SuppressHTMLPreamble option to mod_dir IndexOptions with
+    patch by Roy T. Fielding.
+  * Hacked mod_info so it correctly shows current configuration from
+    config files with absolute pathnames.
+  * Modified mod_dir to recognize PHP/FI and server-parsed documents as
+    HTML code (so it can extract the title from these as a description),
+    and to increase the maximum size of the generated description.
+  * Added SuppressHTMLPreamble and ScanHTMLTitles to IndexOptions in
+    example srm.conf.
+  * Added module mod_rewrite.
+  * Package now suggests installing the (new) apache-modules package.
+
+ -- Johnie Ingram <johnie@debian.org>  Sun, 19 Jan 1997 22:00:22 -0500
+
+apache (1.1.2-1) unstable; urgency=high
+
+  * New upstream version which fixes security holes in mod_cookies and
+    mod_dir (APACHE_MOD.advisory.1.13.97, Bug #6576).
+  * Post-installation script can now find and install the sample
+    access.conf and srm.conf files (Bug #6522).
+  * Corrected Document Root in example access.conf (Bug #6523), startup
+    script, and initial homepage, which removes the last vestiges of the
+    "silly," (Bug #2802), "abominable" (Bug #3470) /var/web directory.
+  * Fixed a typo in apacheconfig located by Manoj Srivastava (Bug #6524),
+    which also fixes detection of the existing webmaster alias (Bug #5693)
+    and eliminates the need to type Control-D during install (Bug #4724).
+  * Post-installation script now asks for a "publiziced" name instead of
+    an alternate name (Bug #3470).
+  * Webmaster address default is now guessed from /etc/mailname instead
+    of the local hostname (Bug #3470).
+  * File listing in apache.8 corrected to reflect current practice.
+  * Debian/GNU product token added to SERVER_VERSION.
+  * Bug #5062 closed, since any further stripping of the modules would
+    make them unloadable by apache.
+
+ -- Johnie Ingram <johnie@debian.org>  Tue, 14 Jan 1997 17:39:26 -0500
+
+apache (1.1.1-9) unstable; urgency=low
+
+  * Daily cron script no longer inadvertently HUPs itself (Bug #6509).
+  * Officially closes Bugs #4694, #5234, #5842, #5843, and #6509.
+  * Moved apache-dev from "devel" to new section, "web".
+
+ -- Johnie Ingram <johnie@debian.org>  Sun, 12 Jan 1997 22:41:22 -0500
+
+apache (1.1.1-8) unstable; urgency=low
+
+  * Fixed errant "set -x" in cron.daily script.
+
+ -- Johnie Ingram <johnie@debian.org>  Wed, 8 Jan 1997 02:12:34 -0500
+
+apache (1.1.1-7) unstable; urgency=high
+
+  * New maintainer.
+  * Updated to Standards-Version 2.1.2.2 with debmake 2.53.
+  * Fixed bad permissions on apache files and directores under /usr/lib;
+    everything now world-readable (Bug #5234).
+  * Document root changed to /home/www-data/webspace in default srm.conf
+    (Bug #4694)
+  * Symbols stripped from /usr/sbin/unescape (Bug #5062).
+  * Source code and Debian scripts changed to use /var/run/apache.pid
+    throughout (Bug #5842, FSSTND 5.10).
+  * Cron script changed to automatically determine which logs need
+    to be rotated (Bug #5843), and can now handle virtual webserver
+    logs.
+  * Sequence code changed so Apache starts up after the automounter and
+    any database daemons.
+  * Compiled with -DSTATUS for more complete reports from from
+    info_module.
+  * Default savelog time extended to one month.
+  * Startup script changed to comply with proposed Standard for Console
+    Messages.
+  * Moved from "net" to new section "web".
+  * Source code changelog now included in documentation.
+  * Headers, source code, and API documentation now in separate package.
+  * Minor changes to text formatting in apacheconfig and post-install
+    script.
+
+ -- Johnie Ingram <johnie@debian.org>  Tue, 7 Jan 1997 17:25:45 -0500
+
+apache (1.1.1-6) unstable; urgency=low
+
+  * This space intentionally left blank.
+
+ -- Johnie Ingram <johnie@debian.org>  Wed, 1 Jan 1997 09:07:08 -0500
+
+apache (1.1.1-5) unstable; urgency=LOW
+
+  * Changed Configure, mod_dl.c and mod_dld.c to arrange for storing the
+    names of dynamically loaded modules. Then changed mod_info.c so that
+    it uses the names correctly instead of making a SIGSEGV.
+  * The default document root is really found by first looking for an
+      existent www-data passwd entry (it will anyway default to
+      /home/www-data/webspace, but previously only the server was looking
+      for ~www-data).
+  * Corrected typos in the default homepage, home.html, changed default
+      locations to reflect changes made in 1.1.1-4, and added some
+      documentation in this page.
+  * Corrected typos in my manual pages.
+  * Added the install-apachemod(8) script to let other packages install or
+      remove dynamically loadable modules by just calling this script,
+      without having to know how things are done.
+  * New modules are added at the end of the LoadModule block rather than
+      at the beginning, just after the magic.
+  * The apacheconfig(8) script now looks in .htaccess files under the
+      directories listed in access.srm to determine the authentication
+      modules that are needed.
+  * Corrected the compilation of the db and msql authentication modules so
+      that the .so files include the necessary libraries dependencies.
+  * Removed the gdbm1 dependency from Apache because the dependency is
+      only useful when loading the dbm authentication module. Added
+      Suggests: entry for all libraries that modules may need.
+
+ -- Yves Arrouye <Yves.Arrouye@marin.fdn.fr>  Mon, 30 Sep 1996 00:44:34 +0200
+
+apache (1.1.1-4) unstable; urgency=LOW
+
+  * Fixed the getting of some paths in the config files.
+  * Changed permissions to use root.www-data.
+  * Corrected bug in mod_mime.c that made Content-type and
+      Content-encoding be the same. I hope I didn't introduce other
+      bugs...
+  * Put the package back in net.
+  * Built-in document root is /home/www-data/webspace. This is ugly
+      but consistent with the wu-ftpd package, and should be overriden
+      by the installer anyway.
+  * None of the /etc/apache/*.conf files are listed in conffiles as
+      apacheconfig(8) or the postinst may edit them.
+  * Added option --serverroot to apacheconfig(8) and commented out the
+      default ServerRoot in httpd.conf-dist so that apacheconfig(8)
+      will ask for the value to use.
+  * No CGI scripts are found in this package.
+  
+ -- Yves Arrouye <Yves.Arrouye@marin.fdn.fr>  Tue, 24 Sep 1996 11:34:53 +0200
+
+apache (1.1.1-3) non-free; urgency=LOW
+
+  * Fixed mod_info.c: SIGSEGV bug (reported by Joey Hess
+      <joey@kite.preferred.com>) and bad construction of configuration
+      files paths. Note that the SIGSEGV bug comes from the fact that
+      dynamically loaded modules do not have a name registered in the
+      modules_names table, which means the information page will list
+      modules as dyn_module_1, dyn_module_2, etc. instead of giving their
+      exact names. (The problem has been reported to the Apache group.)
+  * Put conffiles back in the package (omitted accidentally when moving
+      to the new package format).
+
+ -- Yves Arrouye <Yves.Arrouye@marin.fdn.fr>  Mon, 16 Sep 1996 11:32:05 +0200
+
+apache (1.1.1-2) non-free; urgency=LOW
+
+  * Switched to new source format.
+  * Removed contributed CGI scripts from the package.
+  * Wrote manual pages for utilities included from the support directory.
+  * Moved the package to the non-free section.
+
+ -- Yves Arrouye <arrouye@marin.sevy.fr>  Mon, 9 Sep 1996 11:09:33 +0200
+
+apache (1.1.1-1) unstable; urgency=LOW
+
+ * New release by Yves Arrouye <Yves.Arrouye@debian.org>.
+ * Moved some stuff again: things that were named apache-httpd are just
+     named apache.
+ * Made /var/run/apache and put things there.
+ * Created /var/spool/apache for proxy caching.
+ * Wrote mod_dl.c and created /usr/lib/apache filled with modules.
+ * Many many changes to the package configuration system, including
+     an apcheconfig script that determines which modules to load at
+     startup.
+ * Fixed bugs reported against previous packages.
+
+ -- Yves Arrouye <arrouye@marin.sevy.fr>  Sat, 24 Aug 1996 11:22:56 +0200
+  

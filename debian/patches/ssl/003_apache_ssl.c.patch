@@ -1,0 +1,15 @@
+diff -Naurd build-tree.ORIG/src/modules/ssl/apache_ssl.c build-tree/src/modules/ssl/apache_ssl.c
+--- build-tree.ORIG/src/modules/ssl/apache_ssl.c	2004-01-30 12:26:42.000000000 +0100
++++ build-tree/src/modules/ssl/apache_ssl.c	2004-02-16 08:45:24.000000000 +0100
+@@ -2359,6 +2359,11 @@
+     NULL,			/* child_init */
+     NULL,			/* child_exit */
+     NULL,			/* post_read_request */
++    NULL,			/* add_module */
++    NULL,			/* remove_module */
++    NULL,			/* rewrite_command */
++    NULL,			/* new_connection */
++    NULL,			/* close_connextion */
+     SSLSetupConnection2,	/* setup_connection */
+     SSLAddCommonVars		/* add_common_vars */
+     };

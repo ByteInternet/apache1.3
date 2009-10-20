@@ -1,0 +1,11 @@
+--- build-tree-apache-ssl/src/modules/ssl/pass_cb.c	2004-12-11 14:54:04.000000000 +0100
++++ build-tree-apache-ssl/src/modules/ssl/pass_cb.c	2004-12-11 19:21:17.169199800 +0100
+@@ -63,7 +63,7 @@
+ 	    pass_cb_data=(PassCBData *)pass_cb_data->next;
+ 
+ 	/* updating the list */
+-	(PassCBData *)pass_cb_data->next=new;
++	pass_cb_data->next=new;
+ 
+ 	/* returning the new cache entry */
+ 	return new;

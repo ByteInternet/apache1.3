@@ -1,0 +1,12 @@
+diff -Nru bak/apache_1.3.41/src/support/apxs.pl build-tree/apache_1.3.41/src/support/apxs.pl
+--- bak/apache_1.3.41/src/support/apxs.pl	2004-02-07 16:49:25.000000000 +0100
++++ build-tree/apache_1.3.41/src/support/apxs.pl	2004-02-10 02:55:42.000000000 +0100
+@@ -447,7 +447,7 @@
+         }
+     }
+     $cmd .= $opt;
+-    $cmd .= " $CFG_LIBS_SHLIB";
++#    $cmd .= " $CFG_LIBS_SHLIB";
+     push(@cmds, $cmd);
+ 
+     #   execute the commands

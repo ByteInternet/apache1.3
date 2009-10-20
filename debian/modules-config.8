@@ -1,0 +1,62 @@
+.TH apache-modconf 8
+.SH NAME
+apache-modconf \- reconfigure the Apache webserver modules list
+.SH SYNOPSIS
+.B apache-modconf
+apache | apache-ssl | apache-perl [options]
+.SH "DESCRIPTION"
+This command is meant to be a simple interface between sysadmins
+and apache (in all it's flavours) to administer which modules has to
+be loaded or not. It automatically creates a new config file located
+in /etc/apache{-perl,-ssl}/modules.conf and it will cleanup httpd.conf
+from all the LoadModules entries that are Debian standards without
+modifying any custom one. In order for apache-modconf to recognize
+a module, this needs to have a correctly formatted .info file
+in /usr/lib/apache/1.3/
+.PP
+.B Note:
+apache-modconf obsoletes apacheconfig, apache-sslconfig and
+apache-perlconfig
+.SH OPTIONS
+A summary of options are included below.
+.TP
+.B enable <module_name>
+this will automatically enable the module in the selection list
+and ask if the specified flavour of apache should be restarted.
+module_name has to match the same as specified in the .info filename.
+.PP
+Example: apache-modconf apache enable mod_php4
+.TP
+.B disable <module_name> [quiet]
+this will automatically disable the module in the selection list
+and ask if the specified flavour of apache should be restarted.
+The quite option will not prompt for any selection but it will just
+do the work (useful only when called by other scripts).
+.PP
+Example: apache-modconf apache-ssl disable mod_perl quiet
+.PP
+.TP
+.B query <module_name>
+will return a non-empty string if the module is enabled in the
+configuration.
+.PP
+Example: apache-modconf apache-perl query mod_ssl
+.PP
+.B Note:
+use of the quiet options should be done very carefully since
+a sysadmin should always be able to verify what has been changed
+in the configuration.
+.SH NOTES
+In order for apache-modconf to be able to recognize a module,
+the latter should be provided with an .info file installed
+in /usr/lib/apache/1.3. The minimum requirement for a .info
+file to be valid is its first line, that should contain
+the LoadModule information. Ex:
+.PP
+LoadModule: urlcount_module /usr/lib/apache/1.3/mod_urlcount.so
+.PP
+at this point in time no other entries are processed.
+.SH AUTHOR
+This program and manual page was written by Fabio M. Di Nitto
+<fabbione@fabbione.net>, for the Debian GNU/Linux system
+(but may be used by others).

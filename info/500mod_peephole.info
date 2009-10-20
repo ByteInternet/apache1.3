@@ -1,0 +1,2 @@
+LoadModule: peephole_module /usr/lib/apache/1.3/mod_peephole.so
+Description: Peepholing filesystem information about documents

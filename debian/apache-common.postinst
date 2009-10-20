@@ -1,0 +1,62 @@
+#! /bin/bash
+
+# postinst script for apache-common
+#
+# see: dh_installdeb(1)
+
+set -e
+
+# The loading of the confmodule is needed for magic tricks in debconf to work
+# don't remove :)
+. /usr/share/debconf/confmodule
+. /usr/share/apache/postinst.common
+
+# summary of how this script can be called:
+#        * <postinst> `configure' <most-recently-configured-version>
+#        * <old-postinst> `abort-upgrade' <new version>
+#        * <conflictor's-postinst> `abort-remove' `in-favour' <package>
+#          <new-version>
+#        * <deconfigured's-postinst> `abort-deconfigure' `in-favour'
+#          <failed-install-package> <version> `removing'
+#          <conflicting-package> <version>
+# for details, see /usr/doc/packaging-manual/
+#
+# quoting from the policy:
+#     Any necessary prompting should almost always be confined to the
+#     post-installation script, and should be protected with a conditional
+#     so that unnecessary prompting doesn't happen if a package's
+#     installation fails and the `postinst' is called with `abort-upgrade',
+#     `abort-remove' or `abort-deconfigure'.
+
+add_group_if_missing
+add_user_if_missing
+
+# Fixing mod-bandwith owner/permissions
+
+chown -R www-data:www-data /var/lib/apache/mod-bandwidth
+chmod -R 777 /var/lib/apache/mod-bandwidth
+
+# Migrate the FHS-forbidden /var/state/apache directory to
+# /var/lib/apache
+if [ -d /var/state/apache ]; then
+        mv /var/state/apache/mod_bandwidth/* /var/lib/apache/mod_bandwidth/ 2>/dev/null || true
+        rmdir /var/state/apache/mod_bandwidth
+        rmdir /var/state/apache/
+
+        # It's not FHS, and it's probably our fault this is here,
+        # so delete it if we can.
+        rmdir /var/state/ 2> /dev/null || true
+
+# Restart *all* apache instances here that might depend on it
+        if [ -x /usr/sbin/invoke-rc.d ]; then
+            invoke-rc.d apache restart || true
+            invoke-rc.d apache-ssl restart || true
+            invoke-rc.d apache-perl restart || true
+        else
+            /etc/init.d/apache restart || true
+            /etc/init.d/apache-ssl restart || true
+            /etc/init.d/apache-perl restart || true
+        fi
+fi
+
+#DEBHELPER#

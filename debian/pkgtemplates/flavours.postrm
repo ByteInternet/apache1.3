@@ -1,0 +1,47 @@
+#! /bin/bash
+
+set -e
+
+hash="/var/lib/ucf/hashfile"
+
+if [ "$1" = "purge" ]
+then
+    rm -f /usr/lib/@FLAVOUR@/suexec
+    rm -rf /var/log/@FLAVOUR@
+    rm -rf /var/run/@FLAVOUR@
+    rm -rf /var/run/@FLAVOUR@_runtime_status
+    rm -rf /var/run/@FLAVOUR@.status
+    rm -rf /var/run/@FLAVOUR@.scoreboard
+    # /etc mess
+    rm -f /etc/@FLAVOUR@/mime.types
+    for i in access.conf srm.conf; do
+        if [ -e /etc/@FLAVOUR@/$i ]; then
+            if [ "`md5sum /etc/@FLAVOUR@/$i | awk '{print $1}'`" = "`md5sum /usr/share/apache/default-configs/@FLAVOUR@/$i | awk '{print $1}'`" ]; then
+	        rm -f /etc/@FLAVOUR@/$i
+	    fi
+	fi
+    done
+    for i in httpd.conf modules.conf; do
+        if [ -e /etc/@FLAVOUR@/$i ]; then
+	    if [ "`md5sum /etc/@FLAVOUR@/$i | awk '{print $1}'`" = "`cat $hash | grep '/etc/@FLAVOUR@/'$i'$' | awk '{print $1}'`" ]; then
+	       rm -f /etc/@FLAVOUR@/$i
+	    fi
+	fi
+    done
+    if [ -x "`which ucf`" ]; then
+        ucf --purge /etc/@FLAVOUR@/httpd.conf
+        ucf --purge /etc/@FLAVOUR@/access.conf
+        ucf --purge /etc/@FLAVOUR@/srm.conf
+        ucf --purge /etc/@FLAVOUR@/modules.conf
+    else
+        rm -f /etc/@FLAVOUR@/httpd.conf
+        rm -f /etc/@FLAVOUR@/access.conf
+        rm -f /etc/@FLAVOUR@/srm.conf
+        rm -f /etc/@FLAVOUR@/modules.conf
+    fi
+
+    # statoverrides
+    dpkg-statoverride --remove /var/log/@FLAVOUR@ >/dev/null 2>&1 || true
+fi
+
+#DEBHELPER#

@@ -1,0 +1,53 @@
+diff -Naurd mod_perl-1.27/lib/Apache/Resource.pm libapache-mod-perl-1.27-debian/lib/Apache/Resource.pm
+--- mod_perl-1.27/lib/Apache/Resource.pm	2000-05-23 20:58:09.000000000 +0200
++++ libapache-mod-perl-1.27-debian/lib/Apache/Resource.pm	2003-06-29 08:31:43.000000000 +0200
+@@ -1,4 +1,4 @@
+-#! /usr/local/bin/perl
++#! /usr/bin/perl
+ package Apache::Resource;
+ 
+ use strict;
+diff -Naurd mod_perl-1.27/src/modules/perl/mod_perl.c libapache-mod-perl-1.27-debian/src/modules/perl/mod_perl.c
+--- mod_perl-1.27/src/modules/perl/mod_perl.c	2002-05-23 06:23:18.000000000 +0200
++++ libapache-mod-perl-1.27-debian/src/modules/perl/mod_perl.c	2003-06-29 08:31:43.000000000 +0200
+@@ -256,6 +256,7 @@
+ void perl_shutdown (server_rec *s, pool *p)
+ {
+     char *pdl = NULL;
++    int destruct_level;
+ 
+     if((pdl = getenv("PERL_DESTRUCT_LEVEL")))
+ 	perl_destruct_level = atoi(pdl);
+@@ -266,9 +267,14 @@
+ 	return;
+     }
+ 
++    destruct_level = perl_destruct_level;
+     /* execute END blocks we suspended during perl_startup() */
+     perl_run_endav("perl_shutdown"); 
+ 
++    if (perl_destruct_level != destruct_level)
++	fprintf (stderr, "[warning] Perl module's END block clobbered perl_destruct_level (buggy DBD::Pg?)\n");
++    perl_destruct_level = destruct_level;
++
+     MP_TRACE_g(fprintf(stderr, 
+ 		     "destructing and freeing Perl interpreter (level=%d)...",
+ 	       perl_destruct_level));
+@@ -633,7 +639,7 @@
+ #endif
+     }
+     
+-    if(perl_is_running == 0) {
++    if(!PERL_RUNNING()) {
+ 	/* we'll boot Perl below */
+     }
+     else if(perl_is_running < PERL_DONE_STARTUP) {
+@@ -696,7 +702,7 @@
+     }
+     MP_TRACE_g(fprintf(stderr, "ok\n"));
+   
+-    MP_TRACE_g(fprintf(stderr, "constructing perl interpreter...ok\n"));
++    MP_TRACE_g(fprintf(stderr, "constructing perl interpreter..."));
+     perl_construct(perl);
+ 
+     status = perl_parse(perl, mod_perl_xs_init, argc, argv, NULL);

@@ -1,0 +1,19 @@
+#!/bin/sh
+. debian/scripts/vars
+. debian/scripts/lib
+mkdir -p $STAMP_DIR/patches $SOURCE_DIR/$TAR_DIR
+for f in `find debian/patches -maxdepth 1 -type f|sort -r`;do
+	stampfile=$STAMP_DIR/patches/`basename $f`
+	if [ -e $stampfile ];then
+		START $f
+		if file2cat $f | (cd $SOURCE_DIR/$TAR_DIR;patch -p1 -R) > $stampfile.log;then
+			OK
+			rm $stampfile
+		else
+			FAILED
+			exit 1
+		fi
+	else
+		ALREADY_DONE $f
+	fi
+done

@@ -1,0 +1,43 @@
+#!/usr/bin/perl -lpw
+
+s?_log?.log?g;
+s?apache.conf?httpd.conf?g;
+
+s?usr/local/bin/perl?usr/bin/perl?g;
+
+# bug?
+s?TH ab 1?TH ab 8?;
+s?TH apache-perl-ctl 1?TH apache-perl-ctl 8?;
+
+# debian convention
+s?TH apxs 8?TH apxs 1?;
+s?TH httpd 8?TH apache-perl 8?;
+s?httpd\(8\)?apache-perl\(8\)?;
+s?B httpd?B apache-perl?;
+s?^httpd?apache-perl?;
+s?httpd -l?apache-perl -l?;
+
+# manual fix
+s?\"apache_pb.gif\"?\"icons/apache_pb.gif\"?;
+
+# mime.types in apaci
+s?/etc/apache/mime.types?/etc/mime.types?;
+
+#apachectl
+s?/usr/local/apache/logs/httpd.pid?/var/run/apache-perl.pid?;
+s?/usr/local/apache/src/httpd?/usr/sbin/apache-perl?;
+
+#manpages
+s?/usr/local/httpd.conf?/etc/apache-perl?;
+s?/usr/local/apache/logs?/var/log/apache-perl?;
+
+# apaci
+s?etc/apache/?etc/apache-perl/?;
+s?log/apache/?log/apache-perl/?;
+s?lib/apache/suexec?lib/apache-perl/suexec?;
+s?apache.pid?apache-perl.pid?;
+s?apache.scoreboard?apache-perl.scoreboard?;
+s?apache.lock?apache-perl.lock?;
+
+#lynx/www-browser
+s?"lynx?"/etc/alternatives/www-browser?;

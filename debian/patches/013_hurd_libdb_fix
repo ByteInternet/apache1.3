@@ -1,0 +1,12 @@
+diff -Naurd build-tree/apache_1.3.41.ORIG/src/helpers/find-dbm-lib build-tree/apache_1.3.41/src/helpers/find-dbm-lib
+--- build-tree/apache_1.3.41.ORIG/src/helpers/find-dbm-lib	2003-04-26 10:52:38.000000000 +0200
++++ build-tree/apache_1.3.41/src/helpers/find-dbm-lib	2003-04-26 10:54:35.000000000 +0200
+@@ -10,7 +10,7 @@
+     else
+ 	found_dbm=0
+ 	case "$PLAT" in
+-	    *-linux*)
++	    *-linux* | *-GNU/*)
+ 		# many systems don't have -ldbm
+ 		DBM_LIB=""
+ 		if ./helpers/TestCompile lib db __db_ndbm_open; then

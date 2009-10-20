@@ -1,0 +1,7 @@
+usr/bin
+usr/include/apache-1.3/modules/proxy
+usr/include/apache-1.3/modules/rewrite
+usr/sbin
+usr/share/doc/apache-dev
+usr/share/man/man1
+usr/share/man/man8

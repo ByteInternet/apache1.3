@@ -1,0 +1,23 @@
+This is the apache-perl package.  It's useful for anyone using mod_perl in
+production; it provides a performance boost over dynamically loaded
+mod_perl, and in some cases also a reliability boost.
+
+As of 1.3.22-2-1.26-1, this package no longer conflicts with the normal
+Apache package.  This means that you can serve static content using Apache,
+and dynamic content using mod_perl; Apache can be configured to pass
+requests for dynamic content to a second server.  See the mod_perl
+documentation for more details on this.
+
+As a side effect, apache-perl now uses an almost completely separate
+layout from the apache package:
+  /etc/apache-perl
+  /var/log/apache-perl
+  /var/run/apache-perl.pid
+  /var/run/apache-perl.scoreboard
+  /usr/sbin/apache-perl
+  /usr/sbin/apache-perl-ctl
+
+No attempt is made to transition a configuration from /etc/apache or to
+automatically configure apache-perl.  If you install this package, you
+probably want to configure it yourself.  A sample non-perl-specific
+configuration is in /usr/share/doc/apache-perl/examples to use as a base.

@@ -1,0 +1,181 @@
+#!/usr/bin/perl
+#
+# Recursively walks httpd.conf for Include directives not being part of a
+# VirtualHost. Returns all configfiles so defined.
+#
+# Pierfrancesco Caci, ik5pvx - Same licence as apache itself.
+#
+# Updates:
+# 20040119 - Added option '-V' to include vhosts too. Must be first argument.
+# 20040120 - Added support for spaces in filenames.
+# 20040602 - Ignore multiple spaces before filename. Properly get rid of
+#            comments on same line as valid command, and of spaces at 
+#            end of line. Spaces in filenames are evil. Don't let your 
+#            friend use them.
+#
+
+use warnings;
+use strict;
+use diagnostics;
+
+my $serverroot = "/";
+my $baseconfig;
+our $withvhosts = 0;
+
+#
+# If and only if first argument is '-V', don't skip vhosts. Other argument 
+# must be the base config file.
+#
+
+sub usage() {
+	print STDERR "Usage: $0 [-V] <baseconfigfile>\n";
+	exit 1;
+}
+
+usage() unless scalar @ARGV > 0;
+
+if ( $ARGV[0] eq "-V" ) {
+  $withvhosts = 1;
+  shift @ARGV;
+};
+usage() unless scalar @ARGV == 1;
+$baseconfig = shift @ARGV;
+
+
+scanfile($baseconfig);
+
+print "\n";
+
+exit 0;
+
+sub scanfile {
+  my $file = $_[0];
+  my $outfile = $file;
+# put back surrounding " only if needed:
+      #if ($outfile =~ /\s/) {
+	#$outfile = "\"$outfile\"";
+      #}
+# The file we are working on is what we need to know. 
+  unless ($outfile =~ /\.dpkg/) {
+     print "$outfile\x07";
+  }
+# it's not necessary to die here, let's just skip the file if we can't open it.
+  if ( open (my $conf,'<',$file)  ) {
+    skipvirtual($conf);
+    close $conf
+  } else {
+    warn "Can't open config file $file.\n$!\n";
+    return;
+  }
+  
+}
+
+sub skipvirtual {
+  my $cfg = $_[0];
+ OUTER: while (<$cfg>) {
+
+    next if /^\s*$/;
+    next if /^\s*\#/;
+
+    chomp;
+
+# get rid of comments on the same line, if any.
+#        (are they allowed by apache syntax? )
+    s/(.*?)\s*#.*/$1/;
+
+# get rid of spaces at end of line
+    s/\s*$//;
+
+# If '-V' was given, we won't skip virtualhosts here.
+    unless ( $withvhosts ) {
+
+# if we enter a virtualhost, read until we find the end of the block. We assume
+# the user is not insane and the vhost is all within the same file. 
+      if (/^\s*<virtualhost/i) {
+      INNER: while (<$cfg>) {
+	  #	print "DEBUG: $_";
+	  last INNER if /^\s*<\/virtualhost/i;
+	}
+      }
+      next if /^\s*<\/virtualhost/i;
+      
+    }
+
+# This takes care of possible multiple serverroot instances. 
+    if (/^\s*serverroot/i) {
+      s/^\s*(\w+)\s*(.*)/$1 $2/; 
+      $serverroot = $2;
+
+# take away surrounding ' and "
+      $serverroot =~ s/[\"\']//g;
+      ($serverroot .= "/") unless ($serverroot =~ m|/$|);
+#      print "DEBUG: Found ServerRoot to be $serverroot\n";
+    }
+
+# Build the full path for the included file.
+    if (/^\s*include/i) {
+      s/^\s*(\w+)\s*(.*)/$1 $2/; 
+      my $file = $2;
+
+# take away surrounding ' and "
+      $file =~ s/[\"\']//g;
+
+      if ($file !~ m|^/| ) {
+	$file = $serverroot . $file;
+      }
+
+# Follow the include.
+      testfile($file);
+    }
+  }
+
+}
+
+# Expand into subdirectories.
+sub scandir {
+  my $dir = $_[0];
+  my $glob = $_[1];
+#  $dir =~ s/\"//g;
+#  print "DEBUG: working on $dir with regexp $glob\n";
+  opendir (DIR, $dir) or warn "Can't open directory $dir\n$!\n";
+  # ignore ., .., and evilname files.  And glob
+  my @files = grep (!/^\.{1,2}$/ && /^[a-zA-Z0-9_.-]+$/ && /^$glob$/, readdir(DIR));
+#  print "DEBUG: found @files\n";
+  closedir DIR;
+  foreach (@files) {
+    testfile("$dir/$_");
+  }
+}
+
+# Check the included filename, decide if it's a file, a directory or something
+# else and treat it appropriately. Phear teh recursion!
+sub testfile {
+  my $path = $_[0];
+  $path =~ s/\"//g;
+
+  if ( $path =~ /[*?]/) {
+#    print "DEBUG: fileglob found: $path\n";
+    $path =~ m|^(/.*/)(.*)$|;
+    my $dir = $1;
+    my $glob = $2;
+    $dir =~ s|(.*)/$|$1|;
+    $glob =~ s/\./\\\./g;
+    $glob =~ s/\*/\.\*/g;
+    $glob =~ s/\?/\.{1}/g;
+#   print "DEBUG: expanding parent dir $dir, looking for glob $glob\n";
+    scandir ($dir,$glob);
+  } else {
+    if ( -d $path ) {
+#      	print "DEBUG: found directory $path\n";
+      scandir($path,'.*');
+    } elsif ( -f $path ) {
+#      	print "DEBUG: found plain file $path\n";
+      scanfile($path);
+    } elsif ( -e $path and -r $path ){
+      warn "You tried to include something that is neither file nor directory: $path\n";
+    } else {
+      warn "Can't read $path\n$!\n";
+    }
+#          print "DEBUG: $path\n";
+  }
+}

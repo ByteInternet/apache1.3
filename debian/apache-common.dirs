@@ -1,0 +1,12 @@
+usr/sbin
+usr/lib/apache/1.3
+usr/share/apache/default-configs/apache
+usr/share/apache/default-configs/apache-perl
+usr/share/apache/default-configs/apache-ssl
+usr/share/apache/icons/small
+usr/share/bug/apache-common
+usr/share/doc/apache-common/mod_auth_cache
+usr/share/lintian/overrides
+usr/share/man/man8
+var/lib/apache/mod-bandwidth/master
+var/lib/apache/mod-bandwidth/link

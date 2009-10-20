@@ -1,0 +1,7 @@
+Patching scheme:
+
+000_stolen_from_HEAD_BTS<bugnumber>
+200_mod_<name>-version updates from upstream for the modules.
+001 - 399 patches that should be sent or stolen from upstream
+500 - 899 Debian specific patches that should NOT go upstream
+900 - XXX security patches

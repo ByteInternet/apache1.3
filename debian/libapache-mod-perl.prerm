@@ -1,0 +1,31 @@
+#!/bin/bash
+
+set -e
+
+killconf() {
+	# apache-perl depends on us so there is no need to
+	# remove the entries because they will be flushed
+	# in any case
+	if [ -x /usr/sbin/apache-modconf ]; then
+		for i in apache apache-ssl; do
+			if [ -e /etc/$i/httpd.conf ]; then
+				/usr/sbin/apache-modconf $i disable mod_perl quiet
+			fi
+		done
+	fi
+}
+
+case "$1" in
+  remove)
+	killconf
+	;;
+  upgrade | deconfigure | failed-upgrade)
+	:
+	;;
+  *) echo "$0: didn't understand being called with \`$1'" 1>&2
+     exit 1;;
+esac
+
+#DEBHELPER#
+
+exit 0

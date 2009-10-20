@@ -1,0 +1,35 @@
+Template: apache-ssl/enable-suexec
+Type: boolean
+Default: true
+_Description: Enable suExec?
+ suExec is a feature of apache where CGI scripts are run by the user who
+ owns the script.  It is useful if your users have CGI access and don't
+ trust each other.
+
+Template: apache-ssl/init
+Type: boolean
+Default: true
+_Description: Would you like to start apache-ssl at boot time?
+
+Template: apache-ssl/server-name
+Type: string
+Default: localhost
+_Description: Set the FQDN for apache-ssl default server
+ If you do not know which is the FQDN (Fully Qualified
+ Domain Name, Ex: www.debian.org) for this computer
+ please ask your network administrator or otherwise set
+ it temporary to localhost (Note that using localhost
+ might results in apache printing some harmless warnings).
+
+Template: apache-ssl/server-admin
+Type: string
+Default: webmaster@localhost
+_Description: Set the email address of the apache-ssl administrator
+
+Template: apache-ssl/document-root
+Type: string
+Default: /var/www
+_Description: Set the directory that will contain the web pages for apache-ssl default server
+ The default is set to /var/www according to the FHS.
+ If you will use a non default setting the contents of
+ /var/www will NOT be touched/moved.

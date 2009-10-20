@@ -1,0 +1,128 @@
+
+
+Configuring mod_roaming
+=======================
+1. Edit your httpd.conf file and add a line like the following:
+RoamingAlias /roaming /usr/local/apache/roaming
+
+   The first argument is the uri prefix that mod_roaming will respond
+   to, the second argument is the directory where the roaming access
+   files will be stored. Make sure the webserver has write permissions
+   to this directory. Preferrably, no other user should have read or
+   write permissions to this directory to protect the privacy of the
+   users.
+
+   A subdirectory is automatically created for each user, e.g. the
+   roaming access files for user vinny will be stored under
+
+	   /usr/local/apache/roaming/vinny
+   and can be accessed via
+
+       http://<host>/roaming/vinny/...
+
+   Multiple mod_roaming directives may be used to set up multiple
+   roaming uri's. You do not have to set up directories for the
+   individual users. These are automatically created the first
+   time someone uses Roaming Access.
+
+2. Make sure that any requests made to the roaming directory are
+   authorized. You can do this in a number of different ways:
+   a. by putting a .htaccess file in the roaming directory (e.g.
+      /usr/local/apache/roaming). If you do this, make sure
+      Apache is reading the .htaccess file and the directives in it
+      are allowed (AllowOverride AuthConfig),
+   b. by putting a
+      <Directory /usr/local/apache/roaming>
+      block in httpd.conf, or
+   c. by putting a
+      <Location /roaming>
+      block in httpd.conf.
+
+   This file or block should contains something like this:
+
+AuthUserFile /usr/local/apache/conf/roaming-htpasswd
+AuthType Basic
+AuthName "Roaming Access"
+require valid-user
+
+   The roaming-htpasswd can be created by using the htpasswd program
+   that comes with the Apache distribution. Try accessing the URL
+   http://<host>/roaming/<userid>/liprefs to check whether
+   authentication has been configurated correctly.
+
+   These steps make sure access to the roaming files is authenticated.
+   However, basic authentication is very weak and passwords can be
+   snooped from the connection. SSL would be even better, but Netscape
+   Communicator 4.5 refuses to connect to https URL's when they are
+   entered as the Roaming URL.
+
+   If you want to use your regular Unix password for authentication
+   you may want to look into Howard Fear's mod_auth_sys module:
+   <URL:http://pageplus.com/~hsf/sources/mod_auth_sys/>
+
+3. Stop Apache and start it again (restarting after rebuilding a DSO
+   module sometimes causes Apache to hang or crash).
+
+Configuring Netscape Communicator
+=================================
+There are two ways roaming access can be enabled with Netscape
+Communicator:
+1. You can change an existing user profile to use the Roaming Access
+   server
+2. You can create a new user profile that uses the settings on a Roaming
+   Access server.
+
+Enabling Roaming Access for an existing user profile
+----------------------------------------------------
+1. Start Netscape Communicator.
+
+2. Open the Preferences dialog.
+
+3. Go to the "Roaming Access" pane.
+
+4. Check the "Enable Roaming Access for this profile" checkbox.
+
+5. Enter your username below and optionally check the "Remember my
+   roaming password" checkbox.
+
+6. Go to the "Server Info" pane.
+
+7. Select the "HTTP Server" radio button.
+
+8. Enter the Roaming URL, e.g.
+http://www.foo.com/roaming/vinny
+   You can replace the userid with the string $USERID or %USERID% to
+   let Netscape Communicator replace it with the userid entered in the
+   previous pane.
+
+9. Go to the "File Selection" pane.
+
+10. Select the files you want to be stored on the Roaming Access server.
+    Depending upon your trust of the network and the server you may or
+    may not want to store the Java Security or Certificates and Private
+    Keys file on the Roaming Access Server. Storing the History file on
+    the server may not be very useful and may consume valuable bandwidth.
+
+Known problems
+==============
+The following known and unresolved issues exist with mod_roaming
+and Roaming Access:
+
+* Loading mod_roaming as a DSO module on Debian GNU/Linux fails with an
+  error message like:
+Cannot load /usr/local/apache/libexec/mod_roaming.so into server:
+/usr/local/apache/libexec/mod_roaming.so: undefined symbol: stat
+  Luc Stepniewski reported he has managed to build a DSO module with:
+> gcc -DLINUX=2 -DUSE_HSREGEX -fpic -DSHARED_MODULE
+  -I/usr/local/apache/include -c mod_roaming.c
+> ld -Bshareable -o mod_roaming.so mod_roaming.o -lc -lm -lcrypt
+
+* There can be problems when you access the Roaming Access server
+  through a proxy. Roaming Access uses the non-standard HTTP MOVE
+  request method to atomically update the files. Some proxies
+  (including Squid) do not pass these requests through to the
+  server. One way to get around this is to add the line
+user_pref("li.prefs.http.useSimplePut", true);
+  to your Preferences file. However, I have used before and it
+  gives a lot of hassle (sometimes it disappears and reverts
+  back to the old way of doing things).

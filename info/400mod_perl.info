@@ -1,0 +1,9 @@
+LoadModule: perl_module /usr/lib/apache/1.3/mod_perl.so
+Directives:
+ PerlHandler
+ PerlRequire
+ PerlModule
+ <Perl>
+Handles:
+ perl-script
+Description: If you can do it with perl, you can do it with Apache.

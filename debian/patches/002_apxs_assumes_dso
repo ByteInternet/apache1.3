@@ -1,0 +1,19 @@
+diff --minimal --new-file --recursive --show-c-function --unified=3 apache_1.3.12.old/src/support/apxs.pl apache_1.3.12/src/support/apxs.pl
+--- build-tree/apache_1.3.41/src/support/apxs.pl	Thu Aug 10 10:20:46 2000
++++ build-tree/apache_1.3.41/src/support/apxs.pl	Thu Aug 10 10:21:45 2000
+@@ -216,6 +216,7 @@ if (@opt_S) {
+     }
+ }
+ 
++if (0) {
+ ##
+ ##  Initial DSO support check
+ ##
+@@ -229,6 +230,7 @@ if (not grep(/mod_so/, `$CFG_SBINDIR/$CF
+     print STDERR "apxs:Error: module mod_so is compiled into your server\n";
+     print STDERR "apxs:Error: binary `$CFG_SBINDIR/$CFG_TARGET'.\n";
+     exit(1);
++}
+ }
+ 
+ ##

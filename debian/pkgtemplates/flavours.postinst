@@ -1,0 +1,73 @@
+#! /bin/bash
+
+set -e
+
+@INCLUDE@
+
+# Main body
+
+# Load debconf so that our .config script gets run.
+. /usr/share/debconf/confmodule
+
+. /usr/share/apache/postinst.common
+
+if [ "$1" != configure ]
+then
+    exit 0
+fi
+
+# Timmer /var/log/apache dicht
+dpkg-statoverride --remove /var/log/@FLAVOUR@ >/dev/null 2>&1 || true
+dpkg-statoverride --update --add root www-data 00710 /var/log/@FLAVOUR@
+
+HIDE=
+if [ "$2" != "" ]
+then
+    UPGRADE=true
+    if dpkg --compare-versions $2 ge 1.3.28-1; then
+    	HIDE=quiet
+    fi
+    if dpkg --compare-versions $2 lt 1.3.27-0.1; then
+	UPGRADEFROMWOODY=true
+    fi
+    if dpkg --compare-versions $2 eq @APACHEMAJOR@@APACHEMINOR@-@DEBREVISION@; then
+    	HIDE=
+    fi
+    if dpkg --compare-versions $2 ge 1.3.29.0.1-1; then
+	if [ -e /etc/@FLAVOUR@/suexec.limits ]; then
+	    if [ "`md5sum /etc/@FLAVOUR@/suexec.limits | awk '{print $1}'`" = "5d8149cb6ff1082ef280c05c09eba793" ]; then
+	        rm -f /etc/@FLAVOUR@/suexec.limits
+	    fi
+	fi
+    fi
+else
+    UPGRADE=false
+fi
+
+/usr/sbin/apache-modconf @FLAVOUR@ internal $HIDE
+
+if [ "$UPGRADE" != "true" ]; then
+    add_webmaster_alias
+fi
+ 
+do_all @FLAVOUR@
+
+db_stop
+
+# this is some sort of hack since we only have dh_installinit down there
+
+# we need to restore the status only if the user decide not to start
+# apache at boot, otherwise debhelper will take care of it.
+if [ -e /etc/@FLAVOUR@/.@FLAVOUR@mustberestarted ]; then
+     rm -f /etc/@FLAVOUR@/.@FLAVOUR@mustberestarted
+    /etc/init.d/@FLAVOUR@ start || exit 0
+fi
+
+if [ "$start_at_boot" = "false" ]; then
+    update-rc.d -f @FLAVOUR@ remove > /dev/null 2>&1
+    exit 0
+fi
+
+#DEBHELPER#
+
+exit 0

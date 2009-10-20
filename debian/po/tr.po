@@ -1,0 +1,316 @@
+# Turkish translation of apache.
+# This file is distributed under the same license as the apache package.
+# Deniz Bahadir GUR <deniz@parkyeri.com>, 2004.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: apache\n"
+"Report-Msgid-Bugs-To: debian-apache@lists.debian.org\n"
+"POT-Creation-Date: 2006-08-16 21:44+1000\n"
+"PO-Revision-Date: 2004-07-04 13:46+0300\n"
+"Last-Translator: Deniz Bahadir GUR <deniz@parkyeri.com>\n"
+"Language-Team: Turkish <debian-l10n-turkish@lists.debian.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms:  nplurals=1; plural=0;\n"
+
+#. Type: note
+#. Description
+#: ../apache-common.templates:1001
+msgid "Old log rotation scripts exists and are modified"
+msgstr "Eski günlük döndürme betikleri var ve değiştirilmiş"
+
+#. Type: note
+#. Description
+#: ../apache-common.templates:1001
+msgid ""
+"You have old log rotation scripts in /etc/cron.d and /etc/${flavour}, they "
+"have not been touched, but you might want to remove them to avoid having "
+"your logs rotated multiple times."
+msgstr ""
+"Eski günlük döndürme betikleriniz /etc/cron.d ve /etc/${flavour} içinde "
+"mevcut. Onlara dokunulmamış, fakat günlüklerinizin çok kere çevrilmesinden "
+"kaçınmak için onları silmek isteyebilirsiniz "
+
+#. Type: note
+#. Description
+#: ../apache-common.templates:2001
+msgid "${flavour} has switched to use logrotate"
+msgstr "${flavour} logrotate'i kullanıyor"
+
+#. Type: note
+#. Description
+#: ../apache-common.templates:2001
+msgid ""
+"Some of your logs are stored outside the /var/log/${flavour} directory, so "
+"you should edit /etc/logrotate.d/${flavour} to have them automatically "
+"rotated."
+msgstr ""
+"Günlüklerinizin bir kısmı /var/log/${flavour} dizininin dışında depolanmış. "
+"Bu yüzden onların otomatik olarak döndürülmesi için /etc/logrotate.d/"
+"${flavour} dosyasını düzenlemeniz gerekir."
+
+#. Type: note
+#. Description
+#: ../apache-common.templates:3001
+msgid "Handling of config files has been changed"
+msgstr "Yapılandırma dosyalarının yönetimi değiştirilmiş"
+
+#. Type: note
+#. Description
+#: ../apache-common.templates:3001
+msgid ""
+"From this release of apache, apache-ssl and apache-perl no more attempts of "
+"fixing users configurations will be done other than for the really essential "
+"ones that would prevent the server to run. Two new files will appear in /etc/"
+"apache{-ssl,-perl}:"
+msgstr ""
+"Apache'nin bu sürümünden sonra, apache-ssl ve apache-perl, sunucunun "
+"çalışmasını engelleyecek çok temel olanlar hariç, kullanıcı ayarlarını artık "
+"düzeltmeye çalışmayacak. /etc içinde iki yeni dosya gözükecek, bunlar apache"
+"{-ssl,-perl}:"
+
+#. Type: note
+#. Description
+#: ../apache-common.templates:3001
+msgid ""
+" - modules.config, that will be used by apache-modconf to handle\n"
+"   LoadModules directives;\n"
+" - suggested_corrections that will contain information about\n"
+"   the differences from the users config and the standard Debian\n"
+"   one and how to fix them."
+msgstr ""
+" - modules.config, apache-modconf'un LoadModules emirlerini\n"
+"   yönetmesi için kullanılacak;\n"
+" - suggested_corrections, kullanıcıya ait yapılandırma \n"
+"   ile standart Debian yapılandırması arasındaki farklılıklar\n"
+"   ve bunların nasıl düzeltileceği hakkında bilgiler içerecektir."
+
+#. Type: note
+#. Description
+#: ../apache-common.templates:3001
+msgid ""
+"For more information please refer to /usr/share/doc/apache{-ssl,-perl}/"
+"README.Debian"
+msgstr ""
+"Daha fazla bilgi için lütfen /usr/share/doc/apache{-ssl,-perl}/README.Debian "
+"belgesine başvurun"
+
+#. Type: multiselect
+#. Description
+#: ../apache-common.templates:4001
+msgid "Please select the modules that ${flavour} will load"
+msgstr "Lütfen ${flavour} tarafından yüklenecek modülleri seçin"
+
+#. Type: boolean
+#. Description
+#: ../apache-common.templates:5001
+msgid "Do you want me to restart ${flavour} now?"
+msgstr "${flavour} tekrar başlatılsın mı?"
+
+#. Type: boolean
+#. Description
+#: ../apache-common.templates:5001
+msgid ""
+"Remember that in order to activate the new configuration ${flavour} has to "
+"be restarted. You can also restart ${flavour} manually executing /etc/init.d/"
+"${flavour} restart"
+msgstr ""
+"Yeni yapılandırmanın etkinleştirilmesi için ${flavour} tekrar başlatılmalı. "
+"Bu işlem /etc/init.d/${flavour} restart komutunu kullanarak elle de "
+"yapılabilir."
+
+#. Type: boolean
+#. Description
+#: ../apache.templates:1001 ../apache-ssl.templates:1001
+#: ../apache-perl.templates:3001
+msgid "Enable suExec?"
+msgstr "suExec etkinleştirilsin mi?"
+
+#. Type: boolean
+#. Description
+#: ../apache.templates:1001 ../apache-ssl.templates:1001
+#: ../apache-perl.templates:3001
+msgid ""
+"suExec is a feature of apache where CGI scripts are run by the user who owns "
+"the script.  It is useful if your users have CGI access and don't trust each "
+"other."
+msgstr ""
+"suExec, CGI betiklerinin, betiğin sahibi olan kullanıcının izinleri altında "
+"çalıştırılmasını sağlayan bir apache özelliğidir. Eğer kullanıcılarınızın "
+"CGI erişimi var ve diğer kullanıcılara güvenmiyorlarsa bu özellik faydalıdır."
+
+#. Type: boolean
+#. Description
+#: ../apache.templates:2001
+msgid "Would you like to start apache at boot time?"
+msgstr "Açılışta apache'yi başlatmak ister misiniz?"
+
+#. Type: string
+#. Description
+#: ../apache.templates:3001
+msgid "Set the FQDN for apache default server"
+msgstr "Öntanımlı Apache sunucusu için FQDN'i ayarlayın"
+
+#. Type: string
+#. Description
+#: ../apache.templates:3001 ../apache-ssl.templates:3001
+#: ../apache-perl.templates:5001
+msgid ""
+"If you do not know which is the FQDN (Fully Qualified Domain Name, Ex: www."
+"debian.org) for this computer please ask your network administrator or "
+"otherwise set it temporary to localhost (Note that using localhost might "
+"results in apache printing some harmless warnings)."
+msgstr ""
+"Bu bilgisayar için FQDN'in (Tam Nitelikli Alan Adı, ör: www.debian.org) ne "
+"olduğunu bilmiyorsaniz lütfen ağ yöneticinize sorun veya geçici olarak "
+"localhost yapın. (Dikkat bu localhost olarak kullanıldığında apache bazı "
+"zararsız uyarılar verebilir)."
+
+#. Type: string
+#. Description
+#: ../apache.templates:4001
+msgid "Set the email address of the apache administrator"
+msgstr "Apache yöneticisinin e-posta adresini ayarlayın"
+
+#. Type: string
+#. Description
+#: ../apache.templates:5001
+msgid ""
+"Set the directory that will contain the web pages for apache default server"
+msgstr ""
+"Öntanımlı Apache sunucusu için web sayfalarını içerecek dizini ayarlayın"
+
+#. Type: string
+#. Description
+#: ../apache.templates:5001 ../apache-ssl.templates:5001
+#: ../apache-perl.templates:7001
+msgid ""
+"The default is set to /var/www according to the FHS. If you will use a non "
+"default setting the contents of /var/www will NOT be touched/moved."
+msgstr ""
+"Öntanımlı dizin FHS'ye göre /var/www olarak ayarlanır. Varsayılan dışında "
+"bir ayar kullanacaksanız, /var/www içeriği korunacak/taşınmayacaktır."
+
+#. Type: string
+#. Description
+#: ../apache.templates:6001
+msgid "Set the TCP port on which the apache server will listen"
+msgstr "Apache sunucusunun dinleyeceği TCP kapısını ayarlayın"
+
+#. Type: string
+#. Description
+#: ../apache.templates:6001 ../apache-perl.templates:8001
+msgid ""
+"If you have more than one server running on the same machine you might want "
+"to set them to listen on different ports, since otherwise one of them will "
+"not work."
+msgstr ""
+"Aynı makine üzerinde birden fazla sunucunuz çalışıyor ise bunları farklı "
+"kapılardan dinleyecek şekilde ayarlamak isteyebilirsiniz, aksi halde "
+"bunlardan birisi çalışmayacaktır."
+
+#. Type: boolean
+#. Description
+#: ../apache-ssl.templates:2001
+msgid "Would you like to start apache-ssl at boot time?"
+msgstr "Açılışta apache-ssl'i başlatmak ister misiniz?"
+
+#. Type: string
+#. Description
+#: ../apache-ssl.templates:3001
+msgid "Set the FQDN for apache-ssl default server"
+msgstr "Öntanımlı Apache-ssl sunucusu için FQDN'i ayarlayın"
+
+#. Type: string
+#. Description
+#: ../apache-ssl.templates:4001
+msgid "Set the email address of the apache-ssl administrator"
+msgstr "Apache-ssl yöneticisinin e-posta adresini ayarlayın"
+
+#. Type: string
+#. Description
+#: ../apache-ssl.templates:5001
+msgid ""
+"Set the directory that will contain the web pages for apache-ssl default "
+"server"
+msgstr ""
+"Öntanımlı Apache-ssl sunucusu için web sayfalarını içerecek dizini ayarlayın"
+
+#. Type: note
+#. Description
+#: ../apache-perl.templates:1001
+msgid "Apache-Perl needs to be reconfigured."
+msgstr "Apache-Perl'ün tekrar yapılandırılması gerekiyor."
+
+#. Type: note
+#. Description
+#: ../apache-perl.templates:1001
+msgid ""
+"This version of apache-perl has been reorganized from the previously "
+"installed version; its configuration files have moved to /etc/apache-perl."
+msgstr ""
+"Apache-perl'ün bu sürümü eskiden yüklü olan sürümünden yararlanılarak tekrar "
+"düzenlendi. Yapılandırma dosyaları /etc/apache-perl dizinine taşındı."
+
+#. Type: note
+#. Description
+#: ../apache-perl.templates:1001
+msgid ""
+"Please read /usr/share/doc/apache-perl/README.Debian for more information."
+msgstr ""
+"Lütfen daha fazla bilgi için /usr/share/doc/apache-perl/README.Debian "
+"belgesini okuyun."
+
+#. Type: note
+#. Description
+#: ../apache-perl.templates:2001
+msgid "Apache-Perl needs a separate PidFile from Apache."
+msgstr "Apache-Perl, Apache'den ayrı bir PidFile'a ihtiyaç duyar."
+
+#. Type: note
+#. Description
+#: ../apache-perl.templates:2001
+msgid ""
+"The installed /etc/apache-perl/httpd.conf contains a reference to apache."
+"pid.  Apache-Perl must have its own PidFile, which should be called /var/run/"
+"apache-perl.pid.  Apache-Perl will not start until this is corrected."
+msgstr ""
+"Kurulu /etc/apache-perl/httpd.conf, apache pid ile ilgili bir ayar içeriyor. "
+"Apache-Perl'ün, /var/run/apache-perl.pid olarak kendine ait bir pid dosyası "
+"(PidFile) olmalıdır. Apache-Perl bu durum düzeltilmediği müddetçe "
+"başlamayacaktır."
+
+#. Type: boolean
+#. Description
+#: ../apache-perl.templates:4001
+msgid "Would you like to start apache-perl at boot time?"
+msgstr "Açılışta apache-perl'ü başlatmak ister misiniz?"
+
+#. Type: string
+#. Description
+#: ../apache-perl.templates:5001
+msgid "Set the FQDN for apache-perl default server"
+msgstr "Öntanımlı Apache-perl sunucusu için FQDN'i ayarlayın"
+
+#. Type: string
+#. Description
+#: ../apache-perl.templates:6001
+msgid "Set the email address of the apache-perl administrator"
+msgstr "Apache-perl yöneticisinin e-posta adresini ayarlayın"
+
+#. Type: string
+#. Description
+#: ../apache-perl.templates:7001
+msgid ""
+"Set the directory that will contain the web pages for apache-perl default "
+"server"
+msgstr ""
+"Öntanımlı Apache-perl sunucusu için web sayfalarını içerecek dizini ayarlayın"
+
+#. Type: string
+#. Description
+#: ../apache-perl.templates:8001
+msgid "Set the TCP port on which the apache-perl server will listen"
+msgstr "Apache-perl sunucusunun dinleyeceği TCP kapısını ayarlayın"

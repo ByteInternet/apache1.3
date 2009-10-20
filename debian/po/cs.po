@@ -1,0 +1,323 @@
+#
+#    Translators, if you are not familiar with the PO format, gettext
+#    documentation is worth reading, especially sections dedicated to
+#    this format, e.g. by running:
+#         info -n '(gettext)PO Files'
+#         info -n '(gettext)Header Entry'
+#
+#    Some information specific to po-debconf are available at
+#            /usr/share/doc/po-debconf/README-trans
+#         or http://www.debian.org/intl/l10n/po-debconf/README-trans
+#
+#    Developers do not need to manually edit POT or PO files.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: apache\n"
+"Report-Msgid-Bugs-To: debian-apache@lists.debian.org\n"
+"POT-Creation-Date: 2006-08-16 21:44+1000\n"
+"PO-Revision-Date: 2004-07-11 21:10+0200\n"
+"Last-Translator: Jan Outrata <outrataj@upcase.inf.upol.cz>\n"
+"Language-Team: Czech <provoz@debian.cz>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-2\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. Type: note
+#. Description
+#: ../apache-common.templates:1001
+msgid "Old log rotation scripts exists and are modified"
+msgstr "Existují staré skripty pro rotaci logù a jsou pozmìnìny"
+
+#. Type: note
+#. Description
+#: ../apache-common.templates:1001
+msgid ""
+"You have old log rotation scripts in /etc/cron.d and /etc/${flavour}, they "
+"have not been touched, but you might want to remove them to avoid having "
+"your logs rotated multiple times."
+msgstr ""
+"Máte staré skripty pro rotaci logù v /etc/cron.d a /etc/${flavour}, které "
+"sice nebyly pozmìnìny, ale mohli byste chtít je odstranit, aby se logy "
+"nerotovaly vícekrát."
+
+#. Type: note
+#. Description
+#: ../apache-common.templates:2001
+msgid "${flavour} has switched to use logrotate"
+msgstr "${flavour} zaèal pou¾ívat program logrotate"
+
+#. Type: note
+#. Description
+#: ../apache-common.templates:2001
+msgid ""
+"Some of your logs are stored outside the /var/log/${flavour} directory, so "
+"you should edit /etc/logrotate.d/${flavour} to have them automatically "
+"rotated."
+msgstr ""
+"Nìkteré va¹e logy jsou ulo¾eny mimo adresáø /var/log/${flavour}, mìli byste "
+"tedy upravit /etc/logrotate.d/${flavour}, aby se automaticky rotovaly."
+
+#. Type: note
+#. Description
+#: ../apache-common.templates:3001
+msgid "Handling of config files has been changed"
+msgstr "Zacházení s konfiguraèními soubory se zmìnilo"
+
+#. Type: note
+#. Description
+#: ../apache-common.templates:3001
+msgid ""
+"From this release of apache, apache-ssl and apache-perl no more attempts of "
+"fixing users configurations will be done other than for the really essential "
+"ones that would prevent the server to run. Two new files will appear in /etc/"
+"apache{-ssl,-perl}:"
+msgstr ""
+"Od tohoto vydání apache, apache-ssl a apache-perl ji¾ nebudou provádìny "
+"¾ádné jiné pokusy o opravu u¾ivatelských nastavení ne¾ opravdu nezbytné, "
+"které by zabraòovaly serveru v bìhu. V /etc/apache{-ssl,-perl} se objeví dva "
+"nové soubory:"
+
+#. Type: note
+#. Description
+#: ../apache-common.templates:3001
+msgid ""
+" - modules.config, that will be used by apache-modconf to handle\n"
+"   LoadModules directives;\n"
+" - suggested_corrections that will contain information about\n"
+"   the differences from the users config and the standard Debian\n"
+"   one and how to fix them."
+msgstr ""
+" - modules.config, který bude pou¾ívat apache-modconf pro zacházení s\n"
+"   direktivami LoadModules;\n"
+" - suggested_corrections, který bude obsahovat informace o rozdílech\n"
+"   mezi u¾ivatelským nastavením a standardním nastavením Debianu a jak je\n"
+"   opravit."
+
+#. Type: note
+#. Description
+#: ../apache-common.templates:3001
+msgid ""
+"For more information please refer to /usr/share/doc/apache{-ssl,-perl}/"
+"README.Debian"
+msgstr ""
+"Pro více informací se podívejte do /usr/share/doc/apache{-ssl,-perl}/README."
+"Debian"
+
+#. Type: multiselect
+#. Description
+#: ../apache-common.templates:4001
+msgid "Please select the modules that ${flavour} will load"
+msgstr "Vyberte moduly, které má ${flavour} nahrát"
+
+#. Type: boolean
+#. Description
+#: ../apache-common.templates:5001
+msgid "Do you want me to restart ${flavour} now?"
+msgstr "Chcete, abych nyní ${flavour} restartoval?"
+
+#. Type: boolean
+#. Description
+#: ../apache-common.templates:5001
+msgid ""
+"Remember that in order to activate the new configuration ${flavour} has to "
+"be restarted. You can also restart ${flavour} manually executing /etc/init.d/"
+"${flavour} restart"
+msgstr ""
+"Nezapomeòte, ¾e pro aktivaci nové konfigurace musí být ${flavour} "
+"restartován. Mù¾ete také restartovat ${flavour} manuálnì spu¹tìním /etc/init."
+"d/${flavour} restart"
+
+#. Type: boolean
+#. Description
+#: ../apache.templates:1001 ../apache-ssl.templates:1001
+#: ../apache-perl.templates:3001
+msgid "Enable suExec?"
+msgstr "Povolit suExec?"
+
+#. Type: boolean
+#. Description
+#: ../apache.templates:1001 ../apache-ssl.templates:1001
+#: ../apache-perl.templates:3001
+msgid ""
+"suExec is a feature of apache where CGI scripts are run by the user who owns "
+"the script.  It is useful if your users have CGI access and don't trust each "
+"other."
+msgstr ""
+"suExec je vlastnost apache, která CGI skriptùm umo¾òuje bì¾et pod "
+"u¾ivatelem, který vlastní tento skript. Je to u¾iteèné, pokud va¹i u¾ivatelé "
+"mají povolené CGI a nevìøí si navzájem."
+
+#. Type: boolean
+#. Description
+#: ../apache.templates:2001
+msgid "Would you like to start apache at boot time?"
+msgstr "Má se apache startovat pøi spu¹tìní systému?"
+
+#. Type: string
+#. Description
+#: ../apache.templates:3001
+msgid "Set the FQDN for apache default server"
+msgstr "Zadejte FQDN pro hlavní server apache"
+
+#. Type: string
+#. Description
+#: ../apache.templates:3001 ../apache-ssl.templates:3001
+#: ../apache-perl.templates:5001
+msgid ""
+"If you do not know which is the FQDN (Fully Qualified Domain Name, Ex: www."
+"debian.org) for this computer please ask your network administrator or "
+"otherwise set it temporary to localhost (Note that using localhost might "
+"results in apache printing some harmless warnings)."
+msgstr ""
+"Pokud neznáte FQDN (Fully Qualified Domain Name - Plnì kvalifikované "
+"doménové jméno, napø.: www.debian.org) pro tento poèítaè, zeptejte se svého "
+"správce sítì nebo jej doèasnì nastavte na localhost (Poznamenejme, ¾e "
+"pou¾ívání localhost mù¾e zapøíèinit vypisování nìjakých ne¹kodných varování)."
+
+#. Type: string
+#. Description
+#: ../apache.templates:4001
+msgid "Set the email address of the apache administrator"
+msgstr "Zadejte emailovou adresu správce apache"
+
+#. Type: string
+#. Description
+#: ../apache.templates:5001
+msgid ""
+"Set the directory that will contain the web pages for apache default server"
+msgstr ""
+"Zadejte adresáø, který bude obsahovat webové stránky pro hlavní server apache"
+
+#. Type: string
+#. Description
+#: ../apache.templates:5001 ../apache-ssl.templates:5001
+#: ../apache-perl.templates:7001
+msgid ""
+"The default is set to /var/www according to the FHS. If you will use a non "
+"default setting the contents of /var/www will NOT be touched/moved."
+msgstr ""
+"Výchozí nastavení je v souladu se standardem FHS /var/www. Pokud budete "
+"pou¾ívat jiné ne¾ výchozí nastavení, obsah /var/www NEBUDE mìnìn/pøesunut."
+
+#. Type: string
+#. Description
+#: ../apache.templates:6001
+msgid "Set the TCP port on which the apache server will listen"
+msgstr "Zadejte TCP port, na kterém bude server apache naslouchat"
+
+#. Type: string
+#. Description
+#: ../apache.templates:6001 ../apache-perl.templates:8001
+msgid ""
+"If you have more than one server running on the same machine you might want "
+"to set them to listen on different ports, since otherwise one of them will "
+"not work."
+msgstr ""
+"Pokud vám na stejném stroji bì¾í více ne¾ jeden server, mù¾ete je chtít "
+"nastavit tak, aby naslouchaly na rozdílných portech, proto¾e jinak jeden z "
+"nich nebude fungovat."
+
+#. Type: boolean
+#. Description
+#: ../apache-ssl.templates:2001
+msgid "Would you like to start apache-ssl at boot time?"
+msgstr "Má se apache-ssl startovat pøi spu¹tìní systému?"
+
+#. Type: string
+#. Description
+#: ../apache-ssl.templates:3001
+msgid "Set the FQDN for apache-ssl default server"
+msgstr "Zadejte FQDN pro hlavní server apache-ssl"
+
+#. Type: string
+#. Description
+#: ../apache-ssl.templates:4001
+msgid "Set the email address of the apache-ssl administrator"
+msgstr "Zadejte emailovou adresu správce apache-ssl"
+
+#. Type: string
+#. Description
+#: ../apache-ssl.templates:5001
+msgid ""
+"Set the directory that will contain the web pages for apache-ssl default "
+"server"
+msgstr ""
+"Zadejte adresáø, který bude obsahovat webové stránky pro hlavní server "
+"apache-ssl"
+
+#. Type: note
+#. Description
+#: ../apache-perl.templates:1001
+msgid "Apache-Perl needs to be reconfigured."
+msgstr "Apache-Perl je potøeba znovu nastavit."
+
+#. Type: note
+#. Description
+#: ../apache-perl.templates:1001
+msgid ""
+"This version of apache-perl has been reorganized from the previously "
+"installed version; its configuration files have moved to /etc/apache-perl."
+msgstr ""
+"Tato verze apache-perl byla oproti pøedchozí nainstalované verzi "
+"reorganizována; její konfiguraèní soubory se pøesunuly do /etc/apache-perl."
+
+#. Type: note
+#. Description
+#: ../apache-perl.templates:1001
+msgid ""
+"Please read /usr/share/doc/apache-perl/README.Debian for more information."
+msgstr ""
+"Pro více informací si pøeètìte /usr/share/doc/apache-perl/README.Debian."
+
+#. Type: note
+#. Description
+#: ../apache-perl.templates:2001
+msgid "Apache-Perl needs a separate PidFile from Apache."
+msgstr "Apache-Perl potøebuje samostatný PidFile ne¾ ten pro Apache."
+
+#. Type: note
+#. Description
+#: ../apache-perl.templates:2001
+msgid ""
+"The installed /etc/apache-perl/httpd.conf contains a reference to apache."
+"pid.  Apache-Perl must have its own PidFile, which should be called /var/run/"
+"apache-perl.pid.  Apache-Perl will not start until this is corrected."
+msgstr ""
+"Instalovaný /etc/apache-perl/httpd.conf obsahuje odkaz na apache.pid. Apache-"
+"Perl musí mít svùj vlastní PidFile, který by se mìl jmenovat /var/run/apache-"
+"perl.pid. Apache-Perl se nenastartuje, dokud toto nebude opraveno."
+
+#. Type: boolean
+#. Description
+#: ../apache-perl.templates:4001
+msgid "Would you like to start apache-perl at boot time?"
+msgstr "Má se apache-perl startovat pøi spu¹tìní systému?"
+
+#. Type: string
+#. Description
+#: ../apache-perl.templates:5001
+msgid "Set the FQDN for apache-perl default server"
+msgstr "Zadejte FQDN pro hlavní server apache-perl"
+
+#. Type: string
+#. Description
+#: ../apache-perl.templates:6001
+msgid "Set the email address of the apache-perl administrator"
+msgstr "Zadejte emailovou adresu správce apache-perl"
+
+#. Type: string
+#. Description
+#: ../apache-perl.templates:7001
+msgid ""
+"Set the directory that will contain the web pages for apache-perl default "
+"server"
+msgstr ""
+"Zadejte adresáø, který bude obsahovat webové stránky pro hlavní server "
+"apache-perl"
+
+#. Type: string
+#. Description
+#: ../apache-perl.templates:8001
+msgid "Set the TCP port on which the apache-perl server will listen"
+msgstr "Zadejte TCP port, na kterém bude server apache-perl naslouchat"

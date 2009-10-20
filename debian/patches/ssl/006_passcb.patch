@@ -1,0 +1,316 @@
+diff -Naurd build-tree.orig/apache_1.3.34/src/include/pass_cb.h build-tree/apache_1.3.34/src/include/pass_cb.h
+--- build-tree.orig/apache_1.3.34/src/include/pass_cb.h	1970-01-01 01:00:00.000000000 +0100
++++ build-tree/apache_1.3.34/src/include/pass_cb.h	2004-05-15 01:10:20.000000000 +0200
+@@ -0,0 +1,10 @@
++typedef struct
++    {
++	int *next;
++	char server_hostname[256];
++	char pphrase[1024];
++    } PassCBData;
++
++PassCBData *get_pass_cb_data(server_rec *s);
++int pass_cb(char *buf, int size, int rwflag, void *u);
++void pass_cb_init(void);
+diff -Naurd build-tree.orig/apache_1.3.34/src/main/http_main.c build-tree/apache_1.3.34/src/main/http_main.c
+--- build-tree.orig/apache_1.3.34/src/main/http_main.c	2004-05-15 01:08:57.000000000 +0200
++++ build-tree/apache_1.3.34/src/main/http_main.c	2004-05-15 01:10:20.000000000 +0200
+@@ -84,6 +84,8 @@
+ #include <sys/prctl.h>
+ #endif
+ 
++#include "pass_cb.h"
++
+ #ifdef MULTITHREAD
+ /* special debug stuff -- PCS */
+ 
+@@ -240,6 +242,8 @@
+ #endif
+ #endif
+ 
++PassCBData *pass_cb_data_start;
++
+ int ap_dump_settings = 0;
+ API_VAR_EXPORT int ap_extended_status = 0;
+ 
+@@ -4317,6 +4321,8 @@
+     plog = ap_make_sub_pool(pglobal);
+     ptrans = ap_make_sub_pool(pconf);
+ 
++    pass_cb_init();
++
+     ap_util_init();
+     ap_util_uri_init();
+ 
+@@ -8143,3 +8149,20 @@
+ }
+ #endif /* USE_EXPAT */
+ 
++void pass_cb_init(void)
++    {
++	if (!pass_cb_data_start)
++	{
++	    pass_cb_data_start=malloc(sizeof(PassCBData));
++	    if (pass_cb_data_start == NULL)
++	    {
++		 printf("ARGH! Cannot allocate memory for passphrase caching!\n");
++		 exit(1);
++	    }
++
++	    /* setting safe defaults */
++	    pass_cb_data_start->next=0;
++	    memset(pass_cb_data_start->server_hostname,0,256);
++	    memset(pass_cb_data_start->pphrase,0,1024);
++	}
++    }
+diff -Naurd build-tree.orig/src/modules/ssl/apache_ssl.c build-tree/src/modules/ssl/apache_ssl.c
+--- build-tree.orig/src/modules/ssl/apache_ssl.c	2004-05-15 01:08:57.000000000 +0200
++++ build-tree/src/modules/ssl/apache_ssl.c	2004-05-15 01:10:20.000000000 +0200
+@@ -71,6 +71,7 @@
+ #include "http_log.h"
+ #include "http_main.h"
+ 
++#include "pass_cb.h"
+ 
+ /* Note that APACHE_SSL_EXPORT_CERTS is defined in buff.h */
+ 
+@@ -245,6 +246,9 @@
+ 
+ MODULE_VAR_EXPORT module apache_ssl_module;
+ 
++PassCBData *pass_cb_data;
++extern PassCBData *pass_cb_data_start;
++
+ static pool *s_pPermanentPool;
+ 
+ static const char six2pr[64+1]=
+@@ -1476,8 +1480,11 @@
+ 	exit(1);
+ 	}
+ 
++    pass_cb_data=get_pass_cb_data(s);
++
+     pConfig->prsaKey=RSA_new();
+-    for(nCount=0 ; !localPEM_read_RSAPrivateKey(f,&pConfig->prsaKey,NULL)
++
++    for(nCount=0 ; !localPEM_read_RSAPrivateKey(f,&pConfig->prsaKey,pass_cb)
+ 	  ; ++nCount)
+ 	{
+ 	if(nCount < 3 && ERR_peek_error() == ERR_PACK(ERR_LIB_EVP,
+@@ -1485,6 +1492,7 @@
+ 						      EVP_R_BAD_DECRYPT))
+ 	    {
+ 	    fprintf(stderr,"Bad passphrase - try again\n");
++	    memset(pass_cb_data->pphrase,0,1024); /* we need to clear the cache */
+ 	    rewind(f);
+ 	    continue;
+ 	    }
+@@ -1493,6 +1501,7 @@
+ 	SSLLogError(s,APLOG_CRIT,NULL);
+ 	exit(1);
+ 	}
++
+     fclose(f);
+ 
+     ap_table_setn(s_pKeyTable,ap_pstrdup(s_pPermanentPool,szKeyFile),
+@@ -1599,7 +1608,9 @@
+ 
+     pConfig->px509Certificate=X509_new();
+ 
+-    if(!localPEM_read_X509(f,&pConfig->px509Certificate,NULL))
++    pass_cb_data=get_pass_cb_data(s);
++
++    if(!localPEM_read_X509(f,&pConfig->px509Certificate,pass_cb))
+ 	{
+ 	ap_log_error(APLOG_MARK,APLOG_CRIT|APLOG_NOERRNO,s,
+ 		     "Error reading server certificate file %s",szPath);
+@@ -1608,12 +1619,14 @@
+ 	}
+     fclose(f);
+ 
+-    if(pConfig->szKeyFile)
+-	if(*pConfig->szKeyFile == '/')
++    if(pConfig->szKeyFile) {
++	if(*pConfig->szKeyFile == '/') {
+ 	    strcpy(szPath,pConfig->szKeyFile);
+-	else
++	} else {
+ 	    ap_snprintf(szPath,sizeof szPath,"%s/private/%s",
+ 			X509_get_default_cert_area(),pConfig->szKeyFile);
++	}
++    }
+ 
+ /* Otherwise the path already contains the name of the certificate file */
+     GetPrivateKey(s,pConfig,szPath);
+diff -Naurd build-tree.orig/src/modules/ssl/Makefile.tmpl build-tree/src/modules/ssl/Makefile.tmpl
+--- build-tree.orig/src/modules/ssl/Makefile.tmpl	2003-10-23 15:26:04.000000000 +0200
++++ build-tree/src/modules/ssl/Makefile.tmpl	2004-05-15 01:10:20.000000000 +0200
+@@ -4,9 +4,9 @@
+ LIB=libssl.$(LIBEXT)
+ 
+ OBJS=\
+-     apache_ssl.o gcacheclient.o gcachecommon.o
++     apache_ssl.o gcacheclient.o gcachecommon.o pass_cb.o
+ OBJS_PIC=\
+-     apache_ssl.lo gcacheclient.lo gcachecommon.lo
++     apache_ssl.lo gcacheclient.lo gcachecommon.lo pass_cb.lo
+ 
+ all: lib
+ 
+@@ -85,7 +85,7 @@
+  $(INCDIR)/ap_alloc.h $(INCDIR)/buff.h $(INCDIR)/ap.h \
+  $(INCDIR)/util_uri.h $(INCDIR)/http_config.h \
+  $(INCDIR)/http_log.h $(INCDIR)/http_main.h \
+- $(INCDIR)/gcache.h
++ $(INCDIR)/gcache.h $(INCDIR)/pass_cb.h
+ gcache.o: gcache.c $(INCDIR)/gcache.h $(INCDIR)/httpd.h \
+  $(INCDIR)/ap_config.h $(INCDIR)/ap_mmn.h \
+  $(INCDIR)/ap_config_auto.h $(OSDIR)/os.h \
+diff -Naurd build-tree.orig/src/modules/ssl/pass_cb.c build-tree/src/modules/ssl/pass_cb.c
+--- build-tree.orig/src/modules/ssl/pass_cb.c	1970-01-01 01:00:00.000000000 +0100
++++ build-tree/src/modules/ssl/pass_cb.c	2004-05-15 01:10:20.000000000 +0200
+@@ -0,0 +1,144 @@
++#include <stdio.h>
++#include <stdlib.h>
++#include <stdarg.h>
++#include <assert.h>
++
++#include "httpd.h"
++#include "http_config.h"
++#include "http_log.h"
++#include "http_main.h"
++
++#include "pass_cb.h"
++
++#include <termios.h>
++
++extern PassCBData *pass_cb_data;
++extern PassCBData *pass_cb_data_start;
++
++PassCBData *get_pass_cb_data(server_rec *s)
++    {
++
++	PassCBData *new;
++
++	/* this is required to initialize correctly pass_cb_data_start
++	 * since it's already allocated */
++	if (strlen(pass_cb_data_start->server_hostname) == 0)
++	{
++	    /* use of strncpy to avoid buffer overflows
++	     * server_hostname is max 255 and we have allocated 256 bytes
++	     * and it will preserve the null-terminated string */
++	    strncpy(pass_cb_data_start->server_hostname,s->server_hostname,255);
++	}
++
++	/* work on generic pass_cb_data */
++	pass_cb_data=pass_cb_data_start;
++
++	/* this check if we already have it in cache and in case return */
++	for ( ; pass_cb_data; pass_cb_data=(PassCBData *)pass_cb_data->next)
++	{
++	    if (strcmp(pass_cb_data->server_hostname,s->server_hostname) == 0)
++	    {
++		return pass_cb_data;
++	    }
++	}
++
++	/* if we are here it means we have no cache for this server_hostname */
++	new=malloc(sizeof(PassCBData));
++
++	if (new == NULL) {
++	    ap_log_error(APLOG_MARK,APLOG_CRIT|APLOG_NOERRNO,s,
++		"ARGH! Can't allocate memory for passphrase caching!");
++	    exit(1);
++	}
++
++	/* initializing the new cache entry */
++	new->next=0;
++	memset(new->server_hostname,0,256);
++	strncpy(new->server_hostname,s->server_hostname,256);
++	memset(new->pphrase,0,1024);
++
++	/* we need to go back to update the list */
++	pass_cb_data=pass_cb_data_start;
++	while (pass_cb_data->next > 0)
++	    pass_cb_data=(PassCBData *)pass_cb_data->next;
++
++	/* updating the list */
++	(PassCBData *)pass_cb_data->next=new;
++
++	/* returning the new cache entry */
++	return new;
++    }
++
++int pass_cb(char *buf, int size, int rwflag, void *u)
++    {
++	int len;
++	char tmp[size];
++
++	/* termios stuff to hide the passphrase */
++	int fd;
++	struct termios oldterm;
++	struct termios newterm;
++
++	/* check if we have it in cache */
++	len=strlen(pass_cb_data->pphrase);
++
++	if (len == 0)
++	{
++
++	    fd=open("/dev/tty",O_NONBLOCK);
++
++	    if (fd == -1)
++	    {
++		printf("ARGH! Cannot open /dev/tty to retrive passphrase(s)!\n");
++		exit(1);
++	    }
++
++	    if (tcgetattr(fd, &oldterm) == -1)
++	    {
++		printf("ARGH! Cannot retrive terminal information!\n");
++		exit(1);
++	    }
++
++	    /* setting flags - we hide everything other than newline (stolen from shadow) */
++	    newterm=oldterm;
++	    newterm.c_lflag &= ~(ECHO | ECHOE | ECHOK);
++	    newterm.c_lflag |= ECHONL;
++
++	    printf("Enter pass phrase: ");
++
++	    if (tcsetattr(fd, TCSANOW, &newterm) == -1)
++	    {
++		printf("ARGH! Cannot set terminal information!\n");
++		exit(1);
++	    }
++
++	    fgets( tmp, size, stdin);
++
++	    if (tcsetattr(fd, TCSANOW, &oldterm) == -1)
++	    {
++		printf("ARGH! Cannot restore terminal information!\n");
++	    }
++
++	    close(fd);
++
++	    /* get pass phrase, length 'len' into 'tmp' */
++	    len = strlen(tmp);
++
++	    /* bail out on error */
++	    if (len <= 0) return 0;
++
++	    /* if too long, truncate */
++	    if (len > size) len = size;
++
++	    memcpy(pass_cb_data->pphrase, tmp, len);
++
++	    memcpy(buf, tmp, len);
++
++	} else {
++	
++	    memcpy(buf, pass_cb_data->pphrase, len);
++	}
++
++	return --len;
++    }
++

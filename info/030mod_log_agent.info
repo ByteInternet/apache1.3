@@ -1,0 +1,4 @@
+LoadModule: agent_log_module /usr/lib/apache/1.3/mod_log_agent.so
+Directives:
+ AgentLog
+Description: Support for agent log (obsolete)

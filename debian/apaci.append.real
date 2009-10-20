@@ -1,0 +1,10 @@
+## ELITE DEBIAN STUFFS
+echo '-DDEFAULT_PATH="/bin:/usr/bin:/usr/X11R6/bin:/usr/local/bin"'
+echo '-DHARD_SERVER_LIMIT=4096'
+echo '-DDEFAULT_USER="#65534"'
+echo '-DDEFAULT_GROUP="#65534"'
+## ARCH=$(uname | sed -e s/GNU/Hurd/)
+DIST=$(lsb_release -i | cut -f2)
+echo "-DPLATFORM=\"$DIST\""
+echo '-DLOG_EXEC="/var/log/@PACKAGE@/cgi.log"'
+echo '-O2 -g3 -DEAPI'

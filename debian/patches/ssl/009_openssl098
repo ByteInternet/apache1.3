@@ -1,0 +1,15 @@
+--- build-tree-apache-ssl/src/modules/ssl/apache_ssl.c	2005-10-23 02:13:40.000000000 +1000
++++ build-tree-apache-ssl/src/modules/ssl/apache_ssl.c	2005-10-23 02:35:53.000000000 +1000
+@@ -164,6 +164,12 @@
+ # define localPEM_read_X509(f,c,x)	    PEM_read_X509(f,c,x)
+ #endif
+ 
++#if (OPENSSL_VERSION_NUMBER >= 0x0090800fL)
++# ifndef EVP_F_EVP_DECRYPTFINAL
++#  define EVP_F_EVP_DECRYPTFINAL EVP_F_EVP_DECRYPTFINAL_EX
++# endif
++#endif
++
+ #define ENV_CERT_CHAIN		"SSL_CLIENT_CERT_CHAIN_"
+ 
+ #define UNSET	-1

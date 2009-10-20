@@ -1,0 +1,339 @@
+# translation of el.po to Greek
+# translation of templates.po to Greek
+#
+#    Translators, if you are not familiar with the PO format, gettext
+#    documentation is worth reading, especially sections dedicated to
+#    this format, e.g. by running:
+#         info -n '(gettext)PO Files'
+#         info -n '(gettext)Header Entry'
+#    Some information specific to po-debconf are available at
+#            /usr/share/doc/po-debconf/README-trans
+#         or http://www.debian.org/intl/l10n/po-debconf/README-trans#
+#    Developers do not need to manually edit POT or PO files.
+# Konstantinos Margaritis <markos@debian.org>, 2004.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: apache 1.3.29.0.2\n"
+"Report-Msgid-Bugs-To: debian-apache@lists.debian.org\n"
+"POT-Creation-Date: 2006-08-16 21:44+1000\n"
+"PO-Revision-Date: 2004-03-27 13:16EEST\n"
+"Last-Translator: Konstantinos Margaritis <markos@debian.org>\n"
+"Language-Team: Greek <debian-l10n-greek@lists.debian.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.0.2\n"
+
+#. Type: note
+#. Description
+#: ../apache-common.templates:1001
+msgid "Old log rotation scripts exists and are modified"
+msgstr ""
+"Βρέθηκαν και τροποποιήθηκαν παλαιότερα σενάρια ανακύκλωσης αρχείων "
+"καταγραφής."
+
+#. Type: note
+#. Description
+#: ../apache-common.templates:1001
+msgid ""
+"You have old log rotation scripts in /etc/cron.d and /etc/${flavour}, they "
+"have not been touched, but you might want to remove them to avoid having "
+"your logs rotated multiple times."
+msgstr ""
+"Βρέθηκαν παλαιότερα σενάρια ανακύκλωσης αρχείων καταγραφής (log rotation "
+"scripts) στο /etc/cron.d και /etc/${flavour}, τα οποία όμως δεν "
+"τροποποιήθηκαν. Συνιστάται να τα διαγράψετε για αποφυγή πολλαπλών "
+"ανακυκλώσεων των αρχείων καταγραφής."
+
+#. Type: note
+#. Description
+#: ../apache-common.templates:2001
+msgid "${flavour} has switched to use logrotate"
+msgstr "Το ${flavour} έχει μεταβεί στη χρήση του logrotate"
+
+#. Type: note
+#. Description
+#: ../apache-common.templates:2001
+msgid ""
+"Some of your logs are stored outside the /var/log/${flavour} directory, so "
+"you should edit /etc/logrotate.d/${flavour} to have them automatically "
+"rotated."
+msgstr ""
+"Κάποια από τα αρχεία καταγραφής βρίσκονται εκτός του καταλόγου /var/log/"
+"${flavour}, και θα πρέπει να επεξεργαστείτε το αρχείο /etc/logrotate/"
+"${flavour} για την αυτοματοποιημένη ανακύκλωσή τους."
+
+#. Type: note
+#. Description
+#: ../apache-common.templates:3001
+msgid "Handling of config files has been changed"
+msgstr "Έχει αλλάξει ο χειρισμός των αρχείων ρυθμίσεων"
+
+#. Type: note
+#. Description
+#: ../apache-common.templates:3001
+msgid ""
+"From this release of apache, apache-ssl and apache-perl no more attempts of "
+"fixing users configurations will be done other than for the really essential "
+"ones that would prevent the server to run. Two new files will appear in /etc/"
+"apache{-ssl,-perl}:"
+msgstr ""
+"Από αυτήν την έκδοση του apache, τα πακέτα apache-ssl και apache-perl δε θα "
+"προσπαθούν πλέον να κάνουν διορθώσεις στις ρυθμίσεις των χρηστών, πέρα από "
+"τις απαραίτητες για τη σωστή λειτουργία του διακομιστή. Θα προστεθούν δύο "
+"νέα αρχεία στους καταλόγους /etc/apache{-ssl,-perl}:"
+
+#. Type: note
+#. Description
+#: ../apache-common.templates:3001
+msgid ""
+" - modules.config, that will be used by apache-modconf to handle\n"
+"   LoadModules directives;\n"
+" - suggested_corrections that will contain information about\n"
+"   the differences from the users config and the standard Debian\n"
+"   one and how to fix them."
+msgstr ""
+" - modules.config, που χρησιμοποιείται από το εργαλείο apache-modconf\n"
+"   για το χειρισμό των εντολών LoadModules.\n"
+" - suggested_corrections που θα περιέχει πληροφορίες για τις\n"
+"   διαφορές των αρχείων ρυθμίσεων των χρηστών και του Debian\n"
+"   πως μπορούν να διορθωθούν."
+
+#. Type: note
+#. Description
+#: ../apache-common.templates:3001
+msgid ""
+"For more information please refer to /usr/share/doc/apache{-ssl,-perl}/"
+"README.Debian"
+msgstr ""
+"Για περισσότερες πληροφορίες ανατρέξτε στα αρχεία /usr/share/doc/apache{-"
+"ssl,-perl}/ README.Debian"
+
+#. Type: multiselect
+#. Description
+#: ../apache-common.templates:4001
+msgid "Please select the modules that ${flavour} will load"
+msgstr ""
+"Παρακαλώ επιλέξτε τις μονάδες λογισμικού που φορτωθούν από το ${flavour}"
+
+#. Type: boolean
+#. Description
+#: ../apache-common.templates:5001
+msgid "Do you want me to restart ${flavour} now?"
+msgstr "Θέλετε να γίνει επανεκκίνηση του ${flavour} τώρα;"
+
+#. Type: boolean
+#. Description
+#: ../apache-common.templates:5001
+msgid ""
+"Remember that in order to activate the new configuration ${flavour} has to "
+"be restarted. You can also restart ${flavour} manually executing /etc/init.d/"
+"${flavour} restart"
+msgstr ""
+"Σημειώστε ότι για την ενεργοποίηση των νέων ρυθμίσεων θα πρέπει να γίνει "
+"επανεκκίνηση του ${flavour}. Μπορείτε επίσης να επανεκκινήσετε το ${flavour} "
+"χειροκίνητα εκτελώντας /etc/init.d/${flavour} restart"
+
+#. Type: boolean
+#. Description
+#: ../apache.templates:1001 ../apache-ssl.templates:1001
+#: ../apache-perl.templates:3001
+msgid "Enable suExec?"
+msgstr "Να ενεργοποιηθεί το suExec;"
+
+#. Type: boolean
+#. Description
+#: ../apache.templates:1001 ../apache-ssl.templates:1001
+#: ../apache-perl.templates:3001
+msgid ""
+"suExec is a feature of apache where CGI scripts are run by the user who owns "
+"the script.  It is useful if your users have CGI access and don't trust each "
+"other."
+msgstr ""
+"Η επιλογή suExec είναι ένα χαρακτηριστικό του apache που επιτρέπει την "
+"εκτέλεση ενός σεναρίου CGI με την ταυτότητα του ιδιοκτήτη του αρχείου.  "
+"Είναι χρήσιμο αν οι χρήστες σας έχουν πρόσβαση σε σενάρια CGI αλλά δεν "
+"υπάρχει αμοιβαία εμπιστοσύνη."
+
+#. Type: boolean
+#. Description
+#: ../apache.templates:2001
+msgid "Would you like to start apache at boot time?"
+msgstr "Θέλετε να φορτώνεται ο apache κατά την εκκίνηση;"
+
+#. Type: string
+#. Description
+#: ../apache.templates:3001
+msgid "Set the FQDN for apache default server"
+msgstr "Δώστε το FQDN για τον προκαθορισμένο διακομιστή του apache"
+
+#. Type: string
+#. Description
+#: ../apache.templates:3001 ../apache-ssl.templates:3001
+#: ../apache-perl.templates:5001
+msgid ""
+"If you do not know which is the FQDN (Fully Qualified Domain Name, Ex: www."
+"debian.org) for this computer please ask your network administrator or "
+"otherwise set it temporary to localhost (Note that using localhost might "
+"results in apache printing some harmless warnings)."
+msgstr ""
+"Αν δε γνωρίζετε ποιο είναι το Πλήρως Καθορισμένο Όνομα Τομέα (Fully "
+"Qualified Domain Name, FQDN, π.χ. www.debian.org) για τον υπολογιστή αυτό, "
+"παρακαλώ συμβουλευτείτε το διαχειριστή του δικτύου σας, διαφορετικά ορίστε "
+"το προσωρινά σε localhost (Σημειώστε, ότι η χρήση του localhost, πιθανόν να "
+"έχει ως αποτέλεσμα την εμφάνιση ακίνδυνων προειδοποιητικών μηνυμάτων από τον "
+"apache)."
+
+#. Type: string
+#. Description
+#: ../apache.templates:4001
+msgid "Set the email address of the apache administrator"
+msgstr "Δώστε τη διεύθυνση email του διαχειριστή του apache"
+
+#. Type: string
+#. Description
+#: ../apache.templates:5001
+msgid ""
+"Set the directory that will contain the web pages for apache default server"
+msgstr ""
+"Ορίστε τον κατάλογο που θα περιέχει τις ιστοσελίδες για τον προκαθορισμένο "
+"διακομιστή του apache"
+
+#. Type: string
+#. Description
+#: ../apache.templates:5001 ../apache-ssl.templates:5001
+#: ../apache-perl.templates:7001
+msgid ""
+"The default is set to /var/www according to the FHS. If you will use a non "
+"default setting the contents of /var/www will NOT be touched/moved."
+msgstr ""
+"Ο προκαθορισμένος κατάλογος είναι ο /var/www, σύμφωνα με το FHS. Αν "
+"χρησιμοποιήσετε κάποιον άλλο κατάλογο, τα περιεχόμενα του /var/www θα "
+"μείνουν άθικτα."
+
+#. Type: string
+#. Description
+#: ../apache.templates:6001
+msgid "Set the TCP port on which the apache server will listen"
+msgstr "Δώστε τη θύρα TCP στην οποία θα \"ακούει\" ο apache"
+
+#. Type: string
+#. Description
+#: ../apache.templates:6001 ../apache-perl.templates:8001
+msgid ""
+"If you have more than one server running on the same machine you might want "
+"to set them to listen on different ports, since otherwise one of them will "
+"not work."
+msgstr ""
+"Αν τρέχετε περισσότερους από ένα διακομιστές στο ίδιο σύστημα, συνιστάται να "
+"επιλέξετε διαφορετικές θύρες για τον καθένα, διαφορετικά κάποιος από αυτούς "
+"πιθανόν να μη λειτουργεί."
+
+#. Type: boolean
+#. Description
+#: ../apache-ssl.templates:2001
+msgid "Would you like to start apache-ssl at boot time?"
+msgstr "Θέλετε να φορτώνεται ο apache-ssl κατά την εκκίνηση;"
+
+#. Type: string
+#. Description
+#: ../apache-ssl.templates:3001
+msgid "Set the FQDN for apache-ssl default server"
+msgstr "Δώστε το FQDN για τον προκαθορισμένο διακομιστή του apache-ssl"
+
+#. Type: string
+#. Description
+#: ../apache-ssl.templates:4001
+msgid "Set the email address of the apache-ssl administrator"
+msgstr "Δώστε τη διεύθυνση email του διαχειριστή του apache-ssl"
+
+#. Type: string
+#. Description
+#: ../apache-ssl.templates:5001
+msgid ""
+"Set the directory that will contain the web pages for apache-ssl default "
+"server"
+msgstr ""
+"Ορίστε τον κατάλογο που θα περιέχει τις ιστοσελίδες για τον προκαθορισμένο "
+"διακομιστή του apache-ssl"
+
+#. Type: note
+#. Description
+#: ../apache-perl.templates:1001
+msgid "Apache-Perl needs to be reconfigured."
+msgstr "Είναι αναγκαία η επαναρύθμιση του apache-perl."
+
+#. Type: note
+#. Description
+#: ../apache-perl.templates:1001
+msgid ""
+"This version of apache-perl has been reorganized from the previously "
+"installed version; its configuration files have moved to /etc/apache-perl."
+msgstr ""
+"Αυτή η έκδοση του apache-perl έχει αναδιοργανωθεί από την προηγούμενη "
+"έκδοση. Τα αρχεία ρυθμίσεων έχουν μεταφερθεί στο /etc/apache-perl."
+
+#. Type: note
+#. Description
+#: ../apache-perl.templates:1001
+msgid ""
+"Please read /usr/share/doc/apache-perl/README.Debian for more information."
+msgstr ""
+"Για περισσότερες πληροφορίες ανατρέξτε στο αρχείο /usr/share/doc/apache-"
+"perl/ README.Debian."
+
+#. Type: note
+#. Description
+#: ../apache-perl.templates:2001
+msgid "Apache-Perl needs a separate PidFile from Apache."
+msgstr ""
+"Το πακέτο Apache-Perl απαιτεί διαφορετικό αρχείο PidFile από το Apache."
+
+#. Type: note
+#. Description
+#: ../apache-perl.templates:2001
+msgid ""
+"The installed /etc/apache-perl/httpd.conf contains a reference to apache."
+"pid.  Apache-Perl must have its own PidFile, which should be called /var/run/"
+"apache-perl.pid.  Apache-Perl will not start until this is corrected."
+msgstr ""
+"Το εγκατεστημένο αρχείο ρυθμίσεων /etc/apache-perl/httpd.conf περιέχει μια "
+"αναφορά στο αρχείο apache.pid.  Το πακέτο Apache-Perl πρέπει να έχει το δικό "
+"του αρχείο PidFile, το οποίο θα πρέπει να ονομάζεται /var/run/apache-perl."
+"pid.  Ο διακομιστής Apache-Perl δε θα εκκινήσει έως ότου διορθωθεί αυτό το "
+"πρόβλημα."
+
+#. Type: boolean
+#. Description
+#: ../apache-perl.templates:4001
+msgid "Would you like to start apache-perl at boot time?"
+msgstr "Θέλετε να φορτώνεται ο apache-perl κατά την εκκίνηση;"
+
+#. Type: string
+#. Description
+#: ../apache-perl.templates:5001
+msgid "Set the FQDN for apache-perl default server"
+msgstr "Δώστε το FQDN για τον προκαθορισμένο διακομιστή του apache-perl"
+
+#. Type: string
+#. Description
+#: ../apache-perl.templates:6001
+msgid "Set the email address of the apache-perl administrator"
+msgstr "Δώστε τη διεύθυνση email του διαχειριστή του apache-perl"
+
+#. Type: string
+#. Description
+#: ../apache-perl.templates:7001
+msgid ""
+"Set the directory that will contain the web pages for apache-perl default "
+"server"
+msgstr ""
+"Ορίστε τον κατάλογο που θα περιέχει τις ιστοσελίδες για τον προκαθορισμένο "
+"διακομιστή του apache-perl"
+
+#. Type: string
+#. Description
+#: ../apache-perl.templates:8001
+msgid "Set the TCP port on which the apache-perl server will listen"
+msgstr "Δώστε τη θύρα TCP στην οποία θα \"ακούει\" ο apache-perl"

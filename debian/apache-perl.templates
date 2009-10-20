@@ -1,0 +1,60 @@
+Template: apache-perl/upgrade-from-apache-conflict
+Type: note
+_Description: Apache-Perl needs to be reconfigured.
+ This version of apache-perl has been reorganized from the previously
+ installed version; its configuration files have moved to /etc/apache-perl.
+ .
+ Please read /usr/share/doc/apache-perl/README.Debian for more information.
+
+Template: apache-perl/old-pidfile-set
+Type: note
+_Description: Apache-Perl needs a separate PidFile from Apache.
+ The installed /etc/apache-perl/httpd.conf contains a reference to
+ apache.pid.  Apache-Perl must have its own PidFile, which should be called
+ /var/run/apache-perl.pid.  Apache-Perl will not start until this is
+ corrected.
+
+Template: apache-perl/enable-suexec
+Type: boolean
+Default: true
+_Description: Enable suExec?
+ suExec is a feature of apache where CGI scripts are run by the user who
+ owns the script.  It is useful if your users have CGI access and don't
+ trust each other.
+
+Template: apache-perl/init
+Type: boolean
+Default: true
+_Description: Would you like to start apache-perl at boot time?
+
+Template: apache-perl/server-name
+Type: string
+Default: localhost
+_Description: Set the FQDN for apache-perl default server
+ If you do not know which is the FQDN (Fully Qualified
+ Domain Name, Ex: www.debian.org) for this computer
+ please ask your network administrator or otherwise set
+ it temporary to localhost (Note that using localhost
+ might results in apache printing some harmless warnings).
+
+Template: apache-perl/server-admin
+Type: string
+Default: webmaster@localhost
+_Description: Set the email address of the apache-perl administrator
+
+Template: apache-perl/document-root
+Type: string
+Default: /var/www
+_Description: Set the directory that will contain the web pages for apache-perl default server
+ The default is set to /var/www according to the FHS.
+ If you will use a non default setting the contents of
+ /var/www will NOT be touched/moved.
+
+Template: apache-perl/server-port
+Type: string
+Default: 80
+_Description: Set the TCP port on which the apache-perl server will listen
+ If you have more than one server running on the same machine
+ you might want to set them to listen on different ports, since
+ otherwise one of them will not work.
+

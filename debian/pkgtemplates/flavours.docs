@@ -1,0 +1,5 @@
+build-tree-@FLAVOUR@/apache_@APACHEMAJOR@/ABOUT_APACHE
+build-tree-@FLAVOUR@/apache_@APACHEMAJOR@/README
+build-tree-@FLAVOUR@/apache_@APACHEMAJOR@/config.layout
+debian/@FLAVOUR@.intro.html
+debian/NEWS.Debian

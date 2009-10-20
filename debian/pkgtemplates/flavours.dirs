@@ -1,0 +1,10 @@
+etc/@FLAVOUR@/conf.d
+usr/lib/@FLAVOUR@
+usr/lib/cgi-bin
+usr/sbin
+usr/share/bug/@FLAVOUR@
+usr/share/doc/@FLAVOUR@/examples
+usr/share/lintian/overrides
+usr/share/man/man8
+var/cache/@FLAVOUR@
+var/log/@FLAVOUR@

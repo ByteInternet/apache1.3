@@ -1,0 +1,14 @@
+Reporting @FLAVOUR@ bugs
+
+Before reporting any bug to the @FLAVOUR@ package, please check
+carefully the Bug Tracking System (http://bugs.debian.org/src:apache) for
+possible duplicate reports or workaround to the problem (if already known).
+
+When reporting bugs please include as many details as possible, and be ready
+to answer the maintainers some questions to help them debugging the problems.
+It is in the interest of everyone to cooperate.
+
+As a common policy, if the submitter of a bug will not provide information
+within 15 days from a specific request a new request will be sent to the
+submitter/mailing list. In case of no answer within 7 days, the bug will be
+closed.

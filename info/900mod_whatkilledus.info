@@ -1,0 +1,1 @@
+LoadModule: whatkilledus_module /usr/lib/apache/1.3/mod_whatkilledus.so

@@ -1,0 +1,18 @@
+diff -Naurd build-tree-apache.ORIG/apache_1.3.41/conf/mime.types build-tree-apache/apache_1.3.41/conf/mime.types
+--- build-tree-apache.ORIG/apache_1.3.41/conf/mime.types	2003-07-14 20:09:10.000000000 +0200
++++ build-tree-apache/apache_1.3.41/conf/mime.types	2003-08-19 15:21:30.000000000 +0200
+@@ -344,14 +344,12 @@
+ application/x-bcpio		bcpio
+ application/x-cdlink		vcd
+ application/x-chess-pgn		pgn
+-application/x-compress
+ application/x-cpio		cpio
+ application/x-csh		csh
+ application/x-director		dcr dir dxr
+ application/x-dvi		dvi
+ application/x-futuresplash	spl
+ application/x-gtar		gtar
+-application/x-gzip
+ application/x-hdf		hdf
+ application/x-javascript	js
+ application/x-koan		skp skd skt skm

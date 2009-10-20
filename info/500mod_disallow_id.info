@@ -1,0 +1,2 @@
+LoadModule: disallow_id_module /usr/lib/apache/1.3/mod_disallow_id.so
+Description: Disallow documents owned by particular UserIDs to be fetched

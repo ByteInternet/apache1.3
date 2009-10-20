@@ -1,0 +1,50 @@
+--- apache-ssl.httpd.conf.orig	2003-11-24 18:26:36.000000000 +0100
++++ apache-ssl.httpd.conf	2003-11-24 18:26:50.000000000 +0100
+@@ -2,6 +2,9 @@
+ ## httpd.conf -- Apache HTTP server configuration file
+ ##
+ 
++# Debian maintainers note:
++# all the SSL configuration directives are located at the end of this file.
++
+ #
+ # Based upon the NCSA server configuration files originally by Rob McCool.
+ #
+@@ -49,6 +52,7 @@
+ # ServerType is either inetd, or standalone.  Inetd mode is only supported on
+ # Unix platforms.
+ #
++# SSL Servers MUST be standalone, currently.
+ ServerType standalone
+ 
+ #
+@@ -180,6 +184,10 @@
+ #
+ #Listen 3000
+ #Listen 12.34.56.78:80
++#
++# The default port for SSL is 443...
++
++Listen 443
+ 
+ #
+ # BindAddress: You can support virtual hosts with this option. This directive
+@@ -230,6 +238,7 @@
+ # LoadModule usertrack_module /usr/lib/apache/1.3/mod_usertrack.so
+ LoadModule unique_id_module /usr/lib/apache/1.3/mod_unique_id.so
+ LoadModule setenvif_module /usr/lib/apache/1.3/mod_setenvif.so
++LoadModule apache_ssl_module /usr/lib/apache/1.3/libssl.so
+ 
+ #
+ # ExtendedStatus: controls whether Apache will generate "full" status
+@@ -263,7 +272,9 @@
+ # Port: The port to which the standalone server listens. For
+ # ports < 1023, you will need apache to be run as root initially.
+ #
+-Port 80
++# The default port for SSL is 443...
++
++Port 443
+ 
+ #
+ # If you wish apache to run as a different user or group, you must run

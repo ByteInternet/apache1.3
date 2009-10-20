@@ -1,0 +1,63 @@
+
+- Cleanup {README,NEWS,TODO}.debian
+
+- drop apache after sarge release
+
+# tasks completed:
+
+- remider July 8, 2004. close: #67144, #96930, #170491;
+  (LWZ patent will expire the 7 in canada)
+- to check suexec pam limit and ssl-keynote
+- there is a possible error in handling apache stop/start across upgrading
+  that needs investigation. Eg:
+  user purge rc*.d/<links> via update-rc.d. or uses policy-rc.d to basically
+  exclude invoke-rc.d interaction.
+  user run /etc/init.d/apache start
+  Upgrading to whatever 1.3.29 where the user is asked again if he wants
+  to run apache at boot and changes his mind and set Yes.
+  apache is not stopped by prerm/preinst
+  postinst will try to start it again and BANG.
+  invoke-rc.d & Co. needs a bit of investigation
+- still a doc-base registration prob (there were no reports for doc-base problems)
+- removed very old items about licences (they have been sorted out)
+- postinst.common->do_ucf can be improved (done supporting all possible filenames)
+- ucf support is now completed and it supports symlink as well
+- ucf calls reduced to minimum via .queue files
+- linda/lintian clean up
+- apache-contrib-1.0.8-nomodcvs.tar.gz needs a complete check for updates
+- we need a better solution to avoid hardencoding of versions inside *.postinst
+- postrm needs a cleanup
+- postinst* needs to be reviewed (debconf - non-debconf)
+- postinst.common still does not recongnize Include inside <vhosts>
+  it is not a common case but one user has it.
+  Meaning that we should rewrite how we discover configfiles
+- added common infrastructure to register/deregister modules from
+  users configs.
+- apacheconfig eliminated.
+- ssl-certificate is gone in favour of ssl-cert
+- branched deb pkgs for 1.3.28.
+- po-debconf transition
+- lintian CLEAN!!! (except for the overrides)
+- updated standards from 3.5.10 to 3.6.0
+- default configs are now alligned
+- -perl maintainer scripts are alligned
+- -perl is now standalone package and it ships it's config files
+- -ssl is now built from the real apache-ssl tarball
+- libapache-mod-perl version is fixed
+- mod_rewrite with DBM support is still lacking test from our side
+  (no bugs have been reported let's assume it works :-))
+- -ssl is fully merged
+- updated standards from 3.5.9 to 3.5.10
+- updated standards from 3.5.6 to 3.5.9.0
+- numbering patches to apply them in order and avoid possible clashes
+- tests and fixes for mod_rewrite missing
+- generic patches cleanup (2 of them are in ./)
+- libdb4.1 tested for mod_auth_db* 100%. They seem to work fine (2003/04/26)
+- port to libdb4.1 (2003/04/26)
+- a "stable" maintainer so that Mithrandir does not have to NMU (2003/04/25)
+- removed mot_throttle (2003/04/25)
+- closing old bugs related to mod_throttle
+- check if we can fix the extension search path both for mod_rewrite and
+  mod_auth_dbm: the .db extension is hardencoded in libdb4.1 so there is
+  nothing we can do about it if not hacking around that would be totally
+  useless

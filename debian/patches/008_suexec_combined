@@ -1,0 +1,354 @@
+diff -Naurd build-tree-apache.ORIG/apache_1.3.41/src/support/suexec.c build-tree-apache/apache_1.3.41/src/support/suexec.c
+--- build-tree-apache.ORIG/apache_1.3.41/src/support/suexec.c	2003-03-05 16:50:29.000000000 +0100
++++ build-tree-apache/apache_1.3.41/src/support/suexec.c	2003-08-19 15:27:22.000000000 +0200
+@@ -90,6 +90,7 @@
+ #include <sys/types.h>
+ 
+ #include <stdarg.h>
++#include <strings.h>
+ 
+ #include "suexec.h"
+ 
+@@ -174,6 +175,9 @@
+     "UNIQUE_ID=",
+     "USER_NAME=",
+     "TZ=",
++    "HTTPS=",
++    "REDIRECT_HTTPS=",
++    "SSL=",
+     NULL
+ };
+ 
+@@ -262,6 +266,244 @@
+     environ = cleanenv;
+ }
+ 
++#define MY_STATE_NORMAL 0
++#define MY_STATE_SPACE 1
++#define MY_STATE_QUOTES 2
++#define MY_STATE_APOSTROPHES 3
++#define MY_STATE_END 4
++
++char** param_separate(char* params, int addl_slots) {
++    int state, actpos, actarg_start, actarg_len, argnum;
++    char **res=0;
++    char backslash=0;
++    
++    if (params==0) return(0);
++    
++    if (*params==0) {
++       res=(char**)malloc(sizeof(char*)*(1+addl_slots));
++       for (actpos=0;actpos<addl_slots+1;++actpos) res[actpos]=0;
++       return(res);
++    }
++    actpos=0;backslash=0;argnum=0;state=MY_STATE_SPACE;
++    while (state!=MY_STATE_END) {
++       switch (state) {
++       
++          case MY_STATE_SPACE: 
++              switch (params[actpos]) {
++                 case 0 : 
++                          state=MY_STATE_END;
++                          break;
++                          
++                 case ' ' :
++                 case '\t':
++                          break;              
++       
++                 case '\'':
++                          state=MY_STATE_APOSTROPHES;
++                          actarg_start=actpos+1;
++                          break;
++                 case '"':
++                          state=MY_STATE_QUOTES;
++                          actarg_start=actpos+1;
++                          break;
++                 default: 
++                          state=MY_STATE_NORMAL;
++                          actarg_start=actpos;
++              }
++              break;
++                          
++          case MY_STATE_NORMAL:
++              
++              switch (params[actpos]) {
++                 case 0 : 
++                          state=MY_STATE_END;
++                          ++argnum;
++                          actarg_len=actpos-actarg_start;
++                          break;
++                          
++                 case ' ':
++                 case '\t':
++                          state=MY_STATE_SPACE;
++                          ++argnum;
++                          actarg_len=actpos-actarg_start;
++                          break; 
++              }
++              break;
++
++          case MY_STATE_APOSTROPHES:
++              
++              switch (params[actpos]) {
++                 case 0 : 
++                          state=MY_STATE_END;
++                          ++argnum;
++                          actarg_len=actpos-actarg_start;
++                          break;
++                 
++                 case '\\':
++                          backslash=1-backslash;        
++                          break;        
++                          
++                 case '\'':
++                          if (! backslash) {
++                             state=MY_STATE_SPACE;
++                             ++argnum;
++                             actarg_len=actpos-actarg_start;
++                          }
++                          break; 
++              }
++              if (params[actpos]!='\\') backslash=0;
++              break;
++          
++          case MY_STATE_QUOTES:
++              
++              switch (params[actpos]) {
++                 case 0 : 
++                          state=MY_STATE_END;
++                          ++argnum;
++                          actarg_len=actpos-actarg_start;
++                          break;
++                 
++                 case '\\':
++                          backslash=1-backslash;        
++                          break;        
++                          
++                 case '"':
++                          if (! backslash) {
++                             state=MY_STATE_SPACE;
++                             ++argnum;
++                             actarg_len=actpos-actarg_start;
++                          }
++                          break; 
++              }
++              if (params[actpos]!='\\') backslash=0;
++              break;
++       }
++       actpos++;
++    }
++    
++    res=(char**)malloc(sizeof(char*)*(argnum+1+addl_slots));
++    for (actpos=0;actpos<argnum+addl_slots+1;++actpos) res[actpos]=0;
++    
++
++    actpos=0;backslash=0;argnum=0;state=MY_STATE_SPACE;
++    while (state!=MY_STATE_END) {
++       switch (state) {
++       
++          case MY_STATE_SPACE: 
++              switch (params[actpos]) {
++                 case 0 : 
++                          state=MY_STATE_END;
++                          break;
++                          
++                 case ' ' :
++                 case '\t':
++                          break;              
++       
++                 case '\'':
++                          state=MY_STATE_APOSTROPHES;
++                          actarg_start=actpos+1;
++                          break;
++                 case '"':
++                          state=MY_STATE_QUOTES;
++                          actarg_start=actpos+1;
++                          break;
++                 default: 
++                          state=MY_STATE_NORMAL;
++                          actarg_start=actpos;
++              }
++              break;
++                          
++          case MY_STATE_NORMAL:
++              
++              switch (params[actpos]) {
++                 case 0 : 
++                          state=MY_STATE_END;
++                          actarg_len=actpos-actarg_start;
++                          res[argnum]=(char*)malloc(actarg_len+1);
++                          strncpy(res[argnum],&params[actarg_start],actarg_len);
++                          res[argnum][actarg_len]=0;
++                          ++argnum;
++                          break;
++                          
++                 case ' ':
++                 case '\t':
++                          state=MY_STATE_SPACE;
++                          actarg_len=actpos-actarg_start;
++                          res[argnum]=(char*)malloc(actarg_len+1);
++                          strncpy(res[argnum],&params[actarg_start],actarg_len);
++                          res[argnum][actarg_len]=0;
++                          ++argnum;
++                          break; 
++              }
++              break;
++
++          case MY_STATE_APOSTROPHES:
++              
++              switch (params[actpos]) {
++                 case 0 : 
++                          state=MY_STATE_END;
++                          actarg_len=actpos-actarg_start;
++                          res[argnum]=(char*)malloc(actarg_len+1);
++                          strncpy(res[argnum],&params[actarg_start],actarg_len);
++                          res[argnum][actarg_len]=0;
++                          ++argnum;
++                          break;
++                 
++                 case '\\':
++                          backslash=1-backslash;        
++                          break;        
++                          
++                 case '\'':
++                          if (! backslash) {
++                             state=MY_STATE_SPACE;
++                             actarg_len=actpos-actarg_start;
++                             res[argnum]=(char*)malloc(actarg_len+1);
++                             strncpy(res[argnum],&params[actarg_start],actarg_len);
++                             res[argnum][actarg_len]=0;
++                             ++argnum;
++                          }
++                          break; 
++              }
++              if (params[actpos]!='\\') backslash=0;
++              break;
++          
++          case MY_STATE_QUOTES:
++              
++              switch (params[actpos]) {
++                 case 0 : 
++                          state=MY_STATE_END;
++                          actarg_len=actpos-actarg_start;
++                          res[argnum]=(char*)malloc(actarg_len+1);
++                          strncpy(res[argnum],&params[actarg_start],actarg_len);
++                          res[argnum][actarg_len]=0;
++                          ++argnum;
++                          break;
++                 
++                 case '\\':
++                          backslash=1-backslash;        
++                          break;        
++                          
++                 case '"':
++                          if (! backslash) {
++                             state=MY_STATE_SPACE;
++                             actarg_len=actpos-actarg_start;
++                             res[argnum]=(char*)malloc(actarg_len+1);
++                             strncpy(res[argnum],&params[actarg_start],actarg_len);
++                             res[argnum][actarg_len]=0;
++                             ++argnum;
++                          }
++                          break; 
++              }
++              if (params[actpos]!='\\') backslash=0;
++              break;
++       }
++       actpos++;
++    }
++
++    return(res);
++}    
++
++
+ int main(int argc, char *argv[])
+ {
+     int userdir = 0;		/* ~userdir flag             */
+@@ -274,6 +516,10 @@
+     char *actual_gname;		/* actual group name         */
+     char *prog;			/* name of this program      */
+     char *cmd;			/* command to be executed    */
++
++    int ind, ind2;    
++    char **passedargv = 0;
++    
+     char cwd[AP_MAXPATH];	/* current working directory */
+     char dwd[AP_MAXPATH];	/* docroot working directory */
+     struct passwd *pw;		/* password entry holder     */
+@@ -553,8 +799,18 @@
+     /*
+      * Error out if we cannot stat the program.
+      */
+-    if (((lstat(cmd, &prg_info)) != 0) || (S_ISLNK(prg_info.st_mode))) {
+-	log_err("error: cannot stat program: (%s)\n", cmd);
++    passedargv=param_separate(cmd,argc-4);
++    for (ind=0; passedargv[ind]; ++ind);
++    for (ind2=4;ind2<argc;++ind2,++ind) {
++        if (argv[ind2]!=0) if (argv[ind2][0]!=0) passedargv[ind]=strdup(argv[ind2]);
++        if (passedargv[ind]==0) {
++            passedargv[ind]=malloc(1);
++            passedargv[ind][0]=0;
++        }
++    }
++    
++    if (((lstat(passedargv[0], &prg_info)) != 0) || (S_ISLNK(prg_info.st_mode))) {
++	log_err("error: cannot stat program: (%s)\n", passedargv[0]);
+ 	exit(117);
+     }
+ 
+@@ -562,7 +818,7 @@
+      * Error out if the program is writable by others.
+      */
+     if ((prg_info.st_mode & S_IWOTH) || (prg_info.st_mode & S_IWGRP)) {
+-	log_err("error: file is writable by others: (%s/%s)\n", cwd, cmd);
++	log_err("error: file is writable by others: (%s/%s)\n", cwd, passedargv[0]);
+ 	exit(118);
+     }
+ 
+@@ -570,7 +826,7 @@
+      * Error out if the file is setuid or setgid.
+      */
+     if ((prg_info.st_mode & S_ISUID) || (prg_info.st_mode & S_ISGID)) {
+-	log_err("error: file is either setuid or setgid: (%s/%s)\n", cwd, cmd);
++	log_err("error: file is either setuid or setgid: (%s/%s)\n", cwd, passedargv[0]);
+ 	exit(119);
+     }
+ 
+@@ -595,7 +851,7 @@
+      * "[error] Premature end of script headers: ..."
+      */
+     if (!(prg_info.st_mode & S_IXUSR)) {
+-	log_err("error: file has no execute permission: (%s/%s)\n", cwd, cmd);
++	log_err("error: file has no execute permission: (%s/%s)\n", cwd, passedargv[0]);
+ 	exit(121);
+     }
+ 
+@@ -627,6 +883,8 @@
+     /*
+      * Execute the command, replacing our image with its own.
+      */
++    execv(passedargv[0], passedargv);
++#if 0
+ #ifdef NEED_HASHBANG_EMUL
+     /* We need the #! emulation when we want to execute scripts */
+     {
+@@ -637,7 +895,7 @@
+ #else /*NEED_HASHBANG_EMUL*/
+     execv(cmd, &argv[3]);
+ #endif /*NEED_HASHBANG_EMUL*/
+-
++#endif
+     /*
+      * (I can't help myself...sorry.)
+      *
+@@ -647,5 +905,10 @@
+      * Oh well, log the failure and error out.
+      */
+     log_err("emerg: (%d)%s: exec failed (%s)\n", errno, strerror(errno), cmd);
++
++    for (ind=0;passedargv[ind];++ind) free(passedargv[ind]);
++    free(passedargv);
++    passedargv=0;
++
+     exit(255);
+ }

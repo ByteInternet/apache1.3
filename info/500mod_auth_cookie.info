@@ -1,0 +1,2 @@
+LoadModule: cookie_auth_module /usr/lib/apache/1.3/mod_auth_cookie.so
+Description: Authenticate via cookies; on-the-fly

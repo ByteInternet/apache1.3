@@ -1,0 +1,20 @@
+#!/bin/bash
+
+cd $1
+
+for i in `find . -name "*.html.html"`; do
+
+	# we strip ./ in the beginning and .html at the end
+	noextra=`echo $i | sed -e 's/^.\///g' -e 's/.html$//g'`
+
+	# in which dir is
+	dir=`dirname $noextra`
+
+	# and the real file name
+	file=`basename $noextra`
+
+	# creating the symlink
+	cd $dir
+	ln -sf $file.html $file
+	cd -
+done

@@ -1,0 +1,2 @@
+LoadModule: inst_auth_module /usr/lib/apache/1.3/mod_auth_inst.so
+Description: Authenticate via instant passwords for dummy users

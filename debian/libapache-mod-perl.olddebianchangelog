@@ -1,0 +1,402 @@
+libapache-mod-perl (1.27-4) unstable; urgency=low
+
+  * Fix missing backslashes in the prerm (Closes: #181669).
+  * Update Section:.
+
+ -- Daniel Jacobowitz <dan@debian.org>  Mon, 14 Apr 2003 23:45:29 -0400
+
+libapache-mod-perl (1.27-3) unstable; urgency=low
+
+  * Work around memory leak in DBD::Pg.  The fix is a little dodgy but
+    works in my testing.  This closes the last memory leak I know of.
+    (Closes: #34947, #41946, #56557, #158777).
+  * Remove a few more files in debian/rules clean.
+  * Remove unnecessary dh_testversion call.
+
+ -- Daniel Jacobowitz <dan@debian.org>  Wed, 30 Oct 2002 16:07:31 -0500
+
+libapache-mod-perl (1.27-2) unstable; urgency=low
+
+  * Bump dependencies to build with Perl 5.8.0.
+
+ -- Daniel Jacobowitz <dan@debian.org>  Mon, 26 Aug 2002 09:57:29 -0400
+
+libapache-mod-perl (1.27-1) unstable; urgency=low
+
+  * New upstream version of mod_perl.
+    - DynaLoader fix (Closes: #156560).
+
+ -- Daniel Jacobowitz <dan@debian.org>  Fri, 16 Aug 2002 22:56:06 -0400
+
+libapache-mod-perl (1.26-4) unstable; urgency=medium
+
+  * Rebuild with Apache 1.3.26.
+
+ -- Daniel Jacobowitz <dan@debian.org>  Fri, 21 Jun 2002 10:37:16 -0400
+
+libapache-mod-perl (1.26-3) unstable; urgency=low
+
+  * Rebuild with Apache 1.3.24 (Closes: #142415).
+
+ -- Daniel Jacobowitz <dan@debian.org>  Sat, 13 Apr 2002 17:48:45 -0400
+
+libapache-mod-perl (1.26-2) unstable; urgency=low
+
+  * Rebuild with Apache 1.3.23.
+
+ -- Daniel Jacobowitz <dan@debian.org>  Thu,  7 Feb 2002 14:01:00 -0500
+
+libapache-mod-perl (1.26-1) unstable; urgency=low
+
+  * New upstream version.
+  * Rebuild with Apache 1.3.22 (Closes: #116743).
+
+ -- Daniel Jacobowitz <dan@debian.org>  Wed, 24 Oct 2001 18:12:18 -0400
+
+libapache-mod-perl (1.25-7) unstable; urgency=low
+
+  * Rebuild with Apache 1.3.20-1.
+  * Add patch to reduce the memory leaks on restarts yet further.
+
+ -- Daniel Jacobowitz <dan@debian.org>  Mon, 25 Jun 2001 11:32:38 -0700
+
+libapache-mod-perl (1.25-6) unstable; urgency=low
+
+  * Rebuilding with perl 5.6.1-2 solves the lintian fPIC error.
+
+ -- Daniel Jacobowitz <dan@debian.org>  Wed, 23 May 2001 15:21:03 -0700
+
+libapache-mod-perl (1.25-5) unstable; urgency=low
+
+  * Adjust install directories and dependencies as per the latest perl
+    policy (Closes: #95519).
+  * Revert the child_num patch, according to upstream's opinion.
+  * Build with perl 5.6.1, and matching build dependencies.
+
+ -- Daniel Jacobowitz <dan@debian.org>  Mon, 21 May 2001 15:05:50 -0700
+
+libapache-mod-perl (1.25-4) unstable; urgency=low
+
+  * Bump build dependency to apache 1.3.19 (Closes: #92539, #91930).
+  * Fix queer makefile bug: if Makefile is out of date w.r.t. Perl's
+    Config.pm, make distclean tries to remake it, and prompts.
+    Touch makefile before making distclean.
+
+ -- Daniel Jacobowitz <dan@debian.org>  Mon,  2 Apr 2001 13:34:46 -0400
+
+libapache-mod-perl (1.25-3) unstable; urgency=low
+
+  * Patch from Philippe Troin to expose child_num() (closes: #86964).
+  * Rebuild with even newer sane perl.
+
+ -- Dan Jacobowitz <dan@debian.org>  Sun,  4 Mar 2001 12:02:53 -0500
+
+libapache-mod-perl (1.25-2) unstable; urgency=low
+
+  * Fix missing brace in control file.  Thanks to Philippe
+    Troin. (closes: #86229)
+
+ -- Daniel Jacobowitz <dan@debian.org>  Fri, 16 Feb 2001 18:40:37 -0500
+
+libapache-mod-perl (1.25-1) unstable; urgency=low
+
+  * New upstream version.
+  * Patch from Philippe Troin <phil@fifi.org> to expose $r->allowed
+    (closes: #85328).
+  * Migrate to the sane perl.
+
+ -- Daniel Jacobowitz <dan@debian.org>  Fri, 16 Feb 2001 00:06:20 -0500
+
+libapache-mod-perl (1.24.01-2) unstable; urgency=low
+
+  * Rebuild with apache 1.3.14-1.
+
+ -- Daniel Jacobowitz <dan@debian.org>  Wed,  6 Dec 2000 16:47:47 -0500
+
+libapache-mod-perl (1.24.01-1) unstable; urgency=low
+
+  * New upstream release (1.24_01).
+  * Recompile against Perl 5.6, and update build dependencies.
+  * Link to shared libperl at last.
+  * Recompile against apache 1.3.12-2.2, gaining large file support.
+  * Adapt rules mechanism for the 5.00x -> 5.x transition.
+  * Lose the silly sed tricks for building debian/control; lose
+    debian/control.in.  Casualties: Build depends on perl 5.6 and
+    libperl5.6 explicitly; can no longer build libapache-mod-perl-5.005
+    style packages (you can build libapache-mod-perl that depends on
+    perl 5.005, but it will still be named libapache-mod-perl).
+    Not sure if those ever worked anyway...
+
+ -- Daniel Jacobowitz <dan@debian.org>  Mon, 27 Nov 2000 19:37:43 -0500
+
+libapache-mod-perl (1.21.20000309-1) frozen unstable; urgency=high
+
+  * New upstream release fixing a segfault in the DSO handling at startup.
+
+ -- Daniel Jacobowitz <dan@debian.org>  Thu,  9 Mar 2000 12:14:48 -0500
+
+libapache-mod-perl (1.21.20000306-1) frozen unstable; urgency=high
+
+  * New upstream version, incorporating many of our patches -
+    this is a bugfix release, and I consider it release-critical.
+  * This does not eliminate the memory leaks, as many of them
+    are not the fault of this package but of greater design problems
+    in Perl; it does reduce them to about 40K from 3MB in my tests,
+    so I am downgrading the bugs.
+  * Clean up mod_perl_version.h better; reduce diff bloat further.
+  * Do not install mod_perl.exp (AIX specific linker file).
+  * Add #DEBHELPER# to postinst/prerm to handle /usr/doc.
+  * Remove the 'Restart Apache?' question in the postinst.
+    Also remove the 'Enable?' question.  Let the user do this by hand.
+    This is fine; we'll appear commented out in the configuration
+    file if we are installed along with apache, and otherwise
+    the user probably knows what they want to do.  The "Restart?"
+    question was also removed from the prerm, and we are now
+    human-interaction-free, as we should be.
+  * Remove silly bash dependency in the postinst.
+
+ -- Daniel Jacobowitz <dan@debian.org>  Tue,  7 Mar 2000 00:00:12 -0500
+
+libapache-mod-perl (1.21.20000114-4) frozen unstable; urgency=high
+
+  * Attempt to shut perl down on restarts.
+
+ -- Daniel Jacobowitz <dan@debian.org>  Fri, 21 Jan 2000 10:36:27 -0500
+
+libapache-mod-perl (1.21.20000114-3) frozen unstable; urgency=high
+
+  * Remove the hideous hack for DSO unloading, and implement a proper fix.
+    This should prevent a few random crashes introduced by the 'fix',
+    and work much more reliably.
+  * Verified to work on Sparc (Closes: #47273).
+
+ -- Daniel Jacobowitz <dan@debian.org>  Sun, 16 Jan 2000 00:41:12 -0500
+
+libapache-mod-perl (1.21.20000114-2) frozen unstable; urgency=high
+
+  * Rebuild - Apache/Server.pm got lost somehow.
+  * Remove .cvsignore files from build.
+
+ -- Daniel Jacobowitz <dan@debian.org>  Sat, 15 Jan 2000 21:12:45 -0500
+
+libapache-mod-perl (1.21.20000114-1) unstable; urgency=medium
+
+  * New upstream version from CVS.
+  * Upstream seems to have fixed PATH corruption (Closes: #45564).
+  * Don't preserve mod_perl_version.h any more; the CVS archive
+    doesn't contain it.
+  * Use $(MAKE), not make, to preserve any -j options when building.
+
+ -- Daniel Jacobowitz <dan@debian.org>  Fri, 14 Jan 2000 18:21:12 -0500
+
+libapache-mod-perl (1.21-6) unstable; urgency=medium
+
+  * Support non-interactive installs, for buildd friendliness.
+    Closes: #45061.
+  * Don't assume httpd.conf is present (Closes: #52062).
+  * Update to FHS (Closes: #45753).
+  * Add dependency on liburi-perl.
+  * Remove dh_testroot from clean target - clean does not always need
+    root priviledges.
+  * Add a kludge to prevent DBD::Pg from clobbering the environment
+    (Closes: #48069).
+  * Add an even more revolting kludge to prevent random crashes:
+    mod_perl fails if ANY module is unloaded from the server.
+    This needs (A) a better implementation if it is the accepted thing to
+    do, and (B) a better understanding of the real problem.  Without
+    the hack, scripts get loaded on top of Perl's state variables
+    (Closes: #48634, #46906)
+  * Edit Makefile.PL to make PERL_DEBUG=1 work with USE_DSO.
+  * Update standards-version.
+  * Add build dependencies.
+
+ -- Daniel Jacobowitz <dan@debian.org>  Tue, 13 Jan 2000 04:55:32 -0500
+
+libapache-mod-perl (1.21-5) unstable; urgency=medium
+
+  * Recompile for apache 1.3.9.
+
+ -- Daniel Jacobowitz <dan@debian.org>  Mon, 13 Sep 1999 11:17:12 -0400
+
+libapache-mod-perl (1.21-4) unstable; urgency=medium
+
+  * 1.21-3 retracted.  Fix even stupider rules thinkos.
+
+ -- Daniel Jacobowitz <dan@debian.org>  Wed, 21 Jul 1999 10:56:01 -0400
+
+libapache-mod-perl (1.21-3) unstable; urgency=medium
+
+  * Fix rules thinkos.
+
+ -- Daniel Jacobowitz <dan@debian.org>  Wed, 21 Jul 1999 10:56:01 -0400
+
+libapache-mod-perl (1.21-2) unstable; urgency=medium
+
+  * Integrate Michael's proposed NMU (closes: bug#40016, bug#41531,
+    bug#40924, bug#41116, bug#41448).
+  * Notice that slink/binary-alpha is out of my hands (closes: bug#33921).
+  * Fix precedence problem in Apache::StatINC (patch from Roderick Schertler
+    <roderick@argon.org>) (closes: bug#40728).
+  * Fix modification of $_ in Apache.pm (patch from Roderick Schertler
+    <roderick@argon.org>) (closes: bug#41544).
+  * Scrap dh_perl use in favor of a scheme which lets me build
+    libapache-mod-perl-5.004.
+  * Lintian cleanups:
+    * #!/user/local/bin/perl -> #!/usr/bin/perl
+    * Make .pm and .pl files non-executable
+  * Fix stupid typo in debian/rules (missing -f in test).
+
+ -- Daniel Jacobowitz <dan@debian.org>  Tue, 20 Jul 1999 11:40:12 -0400
+
+libapache-mod-perl (1.21-1) unstable; urgency=low
+
+  * New upstream version.
+  * Test for apachectl in postrm (fixes: bug#40016).
+  * Modified for new perl packages.
+
+ -- Michael Alan Dorman <mdorman@debian.org>  Tue,  6 Jul 1999 10:07:05 -0400
+
+libapache-mod-perl (1.19-1) unstable; urgency=low
+
+  * New upstream version.
+  * Merge changes from Johnie's NMU (and clean up some of his
+    scribblings in debian/).
+  * Revert version display patch (upstream fix).
+  * Add hacks in debian/rules clean to preserve some files
+    (src/modules/perl/mod_perl_version.h and apaci/mod_perl.config).
+  * Revert Makefile.PL hacks.
+
+ -- Daniel Jacobowitz <dan@debian.org>  Wed, 21 Apr 1999 11:10:02 -0400
+
+libapache-mod-perl (1.17-1.1) unstable; urgency=low
+
+  * Compile for Apache 1.3.6.
+  * Added dependency on the libwww-perl suite, libdevel-symdump-perl
+    et. al, closes: #32047.
+  * Changed debian/rules to reflect apxs in /usr/bin.
+  * The postinst now uses apache-sslctl if that exists, closes: #34036.  
+  * Patched to show mod_perl in the Apache string once only, closes:
+    #31885.
+
+ -- Johnie Ingram <johnie@debian.org>  Tue, 23 Mar 1999 23:30:23 -0500
+
+libapache-mod-perl (1.17-1) unstable; urgency=low
+
+  * Build with a shared libperl5 only if there is one...which
+    there isn't.
+  * New upstream version.
+  * Compile for Apache 1.3.4.
+
+ -- Daniel Jacobowitz <dan@debian.org>  Wed, 13 Jan 1999 13:26:24 -0500
+
+libapache-mod-perl (1.16-3) unstable; urgency=low
+
+  * Build with a shared libperl5, at last.
+
+ -- Daniel Jacobowitz <dan@debian.org>  Sun, 22 Nov 1998 04:25:59 -0500
+
+libapache-mod-perl (1.16-2) unstable; urgency=low
+
+  * Add a patch from Michael Shields for Ben-SSL compatibility (and
+    general stability, apparently).
+
+ -- Daniel Jacobowitz <dan@debian.org>  Wed, 14 Oct 1998 22:25:59 -0400
+
+libapache-mod-perl (1.16-1) unstable; urgency=low
+
+  * New upstream release.
+  * Compile against apache 1.3.3-dev (closes #27866)
+  * Re-add the stacked handler hack.  Submit it upstream.
+
+ -- Daniel Jacobowitz <dan@debian.org>  Wed, 14 Oct 1998 22:25:59 -0400
+
+libapache-mod-perl (1.15.01-1) unstable; urgency=low
+
+  * New upstream version (1.15_01).
+  * Compile against the forthcoming apache 1.3.2.
+  * Include eg/ subdirectory as /usr/doc/libapache-mod-perl/examples (fixes:
+    Bug #25553).
+  * Close bug #25079 and bug #23999 (just old).
+  * Close bugs #25894 and #25612 thanks to Christoph Martin's NMU.
+  * And fixed #27156 as it was created.
+
+  * This version does not include my ugly stacked handlers hacks.  This
+    is a test.  This is only a test.
+
+ -- Daniel Jacobowitz <dan@debian.org>  Tue, 22 Sep 1998 21:25:59 -0400
+
+libapache-mod-perl (1.15-2.1) unstable; urgency=high
+
+  * Non Maintainer Upload
+  * not stripping mod_perl.so to make perl DSO working (fixes: Bug #25612)
+  * depend on apache-common to support apache-ssl too (fixes: Bug #25894)
+
+ -- Christoph Martin <christoph.martin@uni-mainz.de>  Sat,  5 Sep 1998 13:33:38 +0200
+
+libapache-mod-perl (1.15-2) unstable; urgency=low
+
+  * Oops, disable PERL_TRACE.
+  * Fix stacked handlers a little better.
+
+ -- Daniel Jacobowitz <dan@debian.org>  Mon,  3 Aug 1998 14:39:16 -0400
+
+libapache-mod-perl (1.15-1) unstable; urgency=low
+
+  * New upstream release.
+  * Enable (and fix!) PERL_STACKED_HANDLERS
+
+ -- Daniel Jacobowitz <dan@debian.org>  Mon, 27 Jul 1998 13:09:05 -0400
+
+libapache-mod-perl (1.14-2) unstable; urgency=low
+
+  * Recompile - it really works this time.
+  * Recompile - now shows correct version in server version.
+
+ -- Daniel Jacobowitz <dan@debian.org>  Thu, 23 Jul 1998 14:13:05 -0400
+
+libapache-mod-perl (1.14-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Daniel Jacobowitz <dan@debian.org>  Mon, 20 Jul 1998 14:57:35 -0400
+
+libapache-mod-perl (1.13-1) unstable; urgency=low
+
+  * New upstream release.
+  * Remove the module from httpd.conf in prerm, not postrm.
+
+ -- Daniel Jacobowitz <dan@debian.org>  Thu, 16 Jul 1998 00:04:38 -0400
+
+libapache-mod-perl (1.12-4) unstable; urgency=low
+
+  * Make mod_perl realize it really IS version 1.12.
+  * Do not install perllocal.pod (Closes #24452)
+  * Fix two lintian errors (rename Changes to changelog and fix one #!/usr/local/bin/perl)
+
+ -- Daniel Jacobowitz <dan@debian.org>  Thu,  9 Jul 1998 00:41:36 -0400
+
+libapache-mod-perl (1.12-3) unstable; urgency=low
+
+  * Fix broken Section, stupid self...
+
+ -- Daniel Jacobowitz <dan@debian.org>  Thu,  9 Jul 1998 00:23:35 -0400
+
+libapache-mod-perl (1.12-2) unstable; urgency=low
+
+  * Depend on apache (>= 1.3.0-4) where RTLD_GLOBAL is fixed.
+  * On Jules Bean's advice, kill PERL_STACKED_HANDLERS.
+  * Fixed broken postrm, and cleaned up postinst
+  * Fixed make clean (should shrink the .diff.gz massively)
+
+ -- Daniel Jacobowitz <dan@debian.org>  Tue, 23 Jun 1998 22:43:57 -0400
+
+libapache-mod-perl (1.12-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Daniel Jacobowitz <drow@false.org>  Tue, 16 Jun 1998 01:39:37 -0400
+
+Local variables:
+mode: debian-changelog
+add-log-mailing-address: "dan@debian.org"
+End:

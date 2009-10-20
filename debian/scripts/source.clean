@@ -1,0 +1,11 @@
+#!/bin/sh
+source debian/scripts/vars
+if [ x$SOURCE_DIR = x ];then
+	files=`find -maxdepth 1 -mindepth 1 -type f`
+	dirs=`find -maxdepth 1 -mindepth 1 -type d ! -name 'debian' ! -name 'upstream'`
+        echo files=\"$files\"
+        echo dirs=\"$dirs\"
+else
+	rm -rf $SOURCE_DIR $STAMP_DIR/upstream $STAMP_DIR/patches
+	rm -f $STAMP_DIR/{source.{clean,build,make}}
+fi

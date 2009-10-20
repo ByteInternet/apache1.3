@@ -1,0 +1,84 @@
+--- build-tree/pkg.eapi/eapi.patch.orig	2005-10-18 16:30:07.000000000 +1000
++++ build-tree/pkg.eapi/eapi.patch	2005-10-23 02:01:45.000000000 +1000
+@@ -202,7 +202,7 @@
+ Index: src/include/ap_mmn.h
+ --- src/include/ap_mmn.h	18 Oct 2005 06:26:23 -0000	1.1.1.14
+ +++ src/include/ap_mmn.h	18 Oct 2005 06:27:34 -0000	1.14
+-@@ -206,7 +206,23 @@
++@@ -206,5 +206,22 @@
+   * 19990320.18          - trace_enable member added to core server_config
+   */
+  
+@@ -223,9 +223,10 @@
+ +#else
+  #define MODULE_MAGIC_COOKIE 0x41503133UL /* "AP13" */
+ +#endif
+- 
+++
++ #define SSL_MAGIC_COOKIE 0x53533133UL /* "SS13" */
++
+  #ifndef MODULE_MAGIC_NUMBER_MAJOR
+- #define MODULE_MAGIC_NUMBER_MAJOR 19990320
+ 
+ +---------------------------------------------------------------------------
+ | Add the additional prototypes and defines for the 
+@@ -349,9 +350,9 @@
+ +    void  (*close_connection) (conn_rec *);
+ +#endif
+ +#endif /* EAPI */
+- } module;
+- 
+- /* Initializer for the first few module slots, which are only
++ #ifdef APACHE_SSL
++ /* These are only present if the cookie is SSL_MAGIC_COOKIE */
++     void (*setup_connection)(conn_rec *);
+ 
+ +---------------------------------------------------------------------------
+ | Add the additional variable `ap_global_ctx' for holding
+@@ -402,19 +403,19 @@
+  #include "ap.h"
+  
+ @@ -102,8 +114,13 @@
+- #define ap_http_method(r) ap_os_http_method((void*)r)
+- #define ap_default_port(r) ap_os_default_port((void*)r)
+- #else
++ #  define ap_http_method(r)	((r)->connection->client->ssl ? "https" : "http")
++ #  define ap_default_port(r)	((r)->connection->client->ssl ? DEFAULT_HTTPS_PORT : DEFAULT_HTTP_PORT)
++ # else
+ +#ifdef EAPI
+ +#define ap_http_method(r)   (((r)->ctx != NULL && ap_ctx_get((r)->ctx, "ap::http::method") != NULL) ? ((char *)ap_ctx_get((r)->ctx, "ap::http::method")) : "http")
+ +#define ap_default_port(r)  (((r)->ctx != NULL && ap_ctx_get((r)->ctx, "ap::default::port") != NULL) ? atoi((char *)ap_ctx_get((r)->ctx, "ap::default::port")) : DEFAULT_HTTP_PORT)
+ +#else /* EAPI */
+- #define ap_http_method(r)	"http"
+- #define ap_default_port(r)	DEFAULT_HTTP_PORT
++ #  define ap_http_method(r)	"http"
++ #  define ap_default_port(r)	DEFAULT_HTTP_PORT
+ +#endif /* EAPI */
++ # endif
+  #endif
+  
+- /* --------- Default user name and group name running standalone ---------- */
+ @@ -312,6 +329,19 @@
+  #define SCOREBOARD_MAINTENANCE_INTERVAL 1000000
+  #endif
+@@ -1445,16 +1446,17 @@
+ Index: src/modules/standard/mod_so.c
+ --- src/modules/standard/mod_so.c	22 Oct 2004 10:15:57 -0000	1.1.1.12
+ +++ src/modules/standard/mod_so.c	22 Oct 2004 10:18:59 -0000	1.13
+-@@ -266,11 +266,24 @@
++@@ -266,12 +266,25 @@
+       * Make sure the found module structure is really a module structure
+       * 
+       */
+ +#ifdef EAPI
+ +    if (   modp->magic != MODULE_MAGIC_COOKIE_AP13 
+-+        && modp->magic != MODULE_MAGIC_COOKIE_EAPI) {
+++        && modp->magic != MODULE_MAGIC_COOKIE_EAPI
+ +#else
+-     if (modp->magic != MODULE_MAGIC_COOKIE) {
++     if (modp->magic != MODULE_MAGIC_COOKIE
+ +#endif
++ 	&& modp->magic != SSL_MAGIC_COOKIE) {
+          return ap_pstrcat(cmd->pool, "API module structure `", modname,
+                            "' in file ", szModuleFile, " is garbled -"
+                            " perhaps this is not an Apache module DSO?", NULL);

@@ -1,0 +1,137 @@
+Source: apache
+Section: web
+Priority: optional
+Maintainer: Debian Apache Maintainers <debian-apache@lists.debian.org>
+Uploaders: Tollef Fog Heen <tfheen@debian.org>, Thom May <thom@debian.org>, Fabio M. Di Nitto <fabbione@fabbione.net>, Matthew Wilcox <willy@debian.org>, Martin Pitt <mpitt@debian.org>, Adam Conrad <adconrad@0c3.net>
+Standards-Version: 3.6.2
+Build-Depends: debhelper (>= 4.1.16), sharutils, libdb4.6-dev | libdb4.3-dev, libexpat1-dev, imagemagick, libssl-dev, perl (>= 5.8.4-2), libperl-dev (>= 5.8.4-2), libwww-perl, libdevel-symdump-perl, libhtml-parser-perl, lsb-release
+
+Package: apache
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, mime-support, apache-common (>= ${Source-Version}), apache-common (<< ${next:Major}), perl (>= 5.8.4-2), logrotate (>= 3.5.4-1), libmagic1, lsb-base (>= 2.0)
+Suggests: apache-doc
+Conflicts: apache-modules, libapache-mod-perl (<= 1.17-1), jserv (<= 1.1-3)
+Replaces: apache-modules
+Provides: httpd-cgi, httpd
+Priority: optional
+Description: versatile, high-performance HTTP server
+ The most popular server in the world, Apache features a modular
+ design and supports dynamic selection of extension modules at runtime.
+ Some of its strong points are its range of possible customization,
+ dynamic adjustment of the number of server processes, and a whole
+ range of available modules including many authentication mechanisms,
+ server-parsed HTML, server-side includes, access control, CERN httpd
+ metafiles emulation, proxy caching, etc.  Apache also supports multiple
+ virtual homing.
+ .
+ Separate Debian packages are available for PHP, mod_perl, Java
+ Servlet support, Apache-SSL, and other common extensions.  More
+ information is available at http://www.apache.org/.
+
+Package: apache-ssl
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ssl-cert (>= 1.0-7), openssl, mime-support, apache-common (>= ${Source-Version}), apache-common (<< ${next:Major}), perl (>= 5.8.4-2), logrotate (>= 3.5.4-1), libmagic1, lsb-base (>= 2.0)
+Suggests: apache-doc
+Conflicts: apache-modules, libapache-mod-perl (<= 1.17-1), jserv (<= 1.1-3)
+Replaces: apache-modules
+Provides: httpd-cgi, httpd
+Priority: optional
+Description: versatile, high-performance HTTP server with SSL support
+ The most popular server in the world, Apache features a modular
+ design and supports dynamic selection of extension modules at runtime.
+ Some of its strong points are its range of possible customization,
+ dynamic adjustment of the number of server processes, and a whole
+ range of available modules including many authentication mechanisms,
+ server-parsed HTML, server-side includes, access control, CERN httpd
+ metafiles emulation, proxy caching, etc.  Apache also supports multiple
+ virtual homing.
+ .
+ Separate Debian packages are available for PHP, mod_perl, Java
+ Servlet support, Apache, and other common extensions.  More
+ information is available at http://www.apache.org/.
+
+Package: apache-perl
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, mime-support, apache-common (>= ${Source-Version}), apache-common (<< ${next:Major}), libapache-mod-perl (>= 1.29.0.2-9), libapache-mod-perl (<< 1.30), libmagic1, logrotate (>= 3.5.4-1), lsb-base (>= 2.0)
+Conflicts: apache-modules, jserv (<= 1.1-3)
+Suggests: apache-doc
+Provides: httpd-cgi, httpd
+Priority: optional
+Description: versatile, high-performance HTTP server with Perl support
+ This version of Apache contains the mod_perl module statically linked.
+ .
+ The most popular server in the world, Apache features a modular
+ design and supports dynamic selection of extension modules at runtime.
+ Some of its strong points are its range of possible customization,
+ dynamic adjustment of the number of server processes, and a whole
+ range of available modules including many authentication mechanisms,
+ server-parsed HTML, server-side includes, access control, CERN httpd
+ metafiles emulation, proxy caching, etc.  Apache also supports multiple
+ virtual homing.
+ .
+ Separate Debian packages are available for PHP, Java Servlet support,
+ Apache-SSL, and other common extensions.  More information is available
+ at http://www.apache.org/.
+
+Package: apache-doc
+Architecture: all
+Recommends: w3m | www-browser
+Suggests: apache, apache-ssl, apache-perl
+Priority: optional
+Section: doc
+Description: documentation for the Apache webserver
+ The Apache webserver Manual, in HTML form.  Covers the setup and
+ operation of this version of Apache and all prior versions.  This is
+ also available at http://www.apache.org/.  More tips are available at
+ http://www.apacheweek.com/.
+
+Package: apache-dev
+Architecture: all
+Conflicts: apache (<= 1.3b2)
+Suggests: apache, apache-ssl, apache-perl
+Priority: extra
+Section: devel
+Depends: ${shlibs:Depends}, apache-common (>= ${Source-Version}), apache-common (<< ${next:Major}), libdb4.6-dev | libdb4.3-dev, libexpat1-dev
+Description: development kit for the Apache webserver
+ Provides the Apache C headers and the Apache Extension Tool (apxs),
+ needed to compile external Apache modules.
+
+Package: apache-dbg
+Architecture: any
+Priority: extra
+Section: devel
+Depends: ${shlibs:Depends}, apache | apache-ssl | apache-perl, apache-common (>= ${Source-Version}), apache-common (<< ${next:Major})
+Description: debug versions of the Apache webservers
+ If you're having problems with Apache, the maintainers may ask you to
+ install these debugging versions to get better feedback on problems.
+ Otherwise, you should not install this package.  In particular, you should
+ not install this package instead of a real apache flavour.
+
+Package: apache-common
+Architecture: any
+Conflicts: apache (<= 1.3.1-1), libapache-mod-roaming, libapache-mod-auth-sys, libapache-mod-put
+Suggests: apache, apache-ssl, apache-perl
+Priority: optional
+Replaces: apache (<= 1.3.1-1), libapache-mod-roaming, libapache-mod-auth-sys, libapache-mod-put
+Provides: libapache-mod-roaming, libapache-mod-auth-sys, libapache-mod-put
+Depends: ${shlibs:Depends}, ${misc:Depends}, perl (>= 5.8.4-2), mime-support, apache2-utils, sed (>= 4.0.5-1), ucf (>= 1.06), lynx | www-browser
+Description: support files for all Apache webservers
+ Provides the Apache modules and support binaries needed by all
+ packages of 1.3.x (regular, SSL, and locally compiled).  Also
+ includes manpages and module documentation.
+
+Package: libapache-mod-perl
+Architecture: any
+Section: perl
+Priority: optional
+Depends: apache-common (>= ${Source-Version}), apache-common (<< ${next:Major}), perl (>= 5.8.4-2), ${perl:Depends}, libwww-perl, libmime-base64-perl, libdevel-symdump-perl, liburi-perl, ${shlibs:Depends}
+Suggests: apache-dev (>= ${Source-Version}), libapache-mod-perl-doc
+Description: integration of perl with the Apache web server
+ mod_perl allows the use of Perl for just about anything
+ Apache-related, including <Perl> sections in the config
+ files and the famous Apache::Registry module for caching
+ compiled scripts.
+ .
+ It can produce anywhere from a 400% to 2000% speed increase
+ on sites using perl scripts, and is used on many large script-
+ based web sites - for example, http://slashdot.org.

@@ -1,0 +1,43 @@
+#!/usr/bin/perl -lpw
+
+s?_log?.log?g;
+s?apache.conf?httpd.conf?g;
+
+s?usr/local/bin/perl?usr/bin/perl?g;
+
+# bug?
+s?TH ab 1?TH ab 8?;
+s?TH apache-sslctl 1?TH apache-sslctl 8?;
+
+# debian convention
+s?TH apxs 8?TH apxs 1?;
+s?TH httpd 8?TH apache-ssl 8?;
+s?httpd\(8\)?apache-ssl\(8\)?;
+s?B httpd?B apache-ssl?;
+s?^httpd?apache-ssl?;
+s?httpd -l?apache-ssl -l?;
+
+# manual fix
+s?\"apache_pb.gif\"?\"icons/apache_pb.gif\"?;
+
+# mime.types in apaci
+s?/etc/apache/mime.types?/etc/mime.types?;
+
+#apachectl
+s?/usr/local/apache/logs/httpd.pid?/var/run/apache-ssl.pid?;
+s?/usr/local/apache/src/httpsd?/usr/sbin/apache-ssl?;
+
+#manpages
+s?/usr/local/httpd.conf?/etc/apache-ssl?;
+s?/usr/local/apache/logs?/var/log/apache-ssl?;
+
+# apaci
+s?etc/apache/?etc/apache-ssl/?;
+s?log/apache/?log/apache-ssl/?;
+s?lib/apache/suexec?lib/apache-ssl/suexec?;
+s?apache.pid?apache-ssl.pid?;
+s?apache.scoreboard?apache-ssl.scoreboard?;
+s?apache.lock?apache-ssl.lock?;
+
+#lynx/www-browser
+s?"lynx?"/etc/alternatives/www-browser?;

@@ -1,0 +1,12 @@
+diff -Naurd libapache-mod-perl-1.29.ORIG/src/modules/perl/Apache.xs libapache-mod-perl-1.29/src/modules/perl/Apache.xs
+--- libapache-mod-perl-1.29.ORIG/src/modules/perl/Apache.xs	2003-09-16 21:51:06.000000000 +0200
++++ libapache-mod-perl-1.29/src/modules/perl/Apache.xs	2004-01-13 08:13:12.000000000 +0100
+@@ -2084,7 +2084,7 @@
+ 						 &perl_module);
+ 	TABLE_GET_SET(c->vars, FALSE);
+     }
+-    if (!SvTRUE(RETVAL)) {
++    if (!(RETVAL && SvOK(RETVAL))) {
+ 	s = r && r->server ? r->server : perl_get_startup_server();
+ 	if (s && s->module_config) {
+ 	    SvREFCNT_dec(RETVAL); /* in case above did newSV(0) */

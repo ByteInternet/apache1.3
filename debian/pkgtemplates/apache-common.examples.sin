@@ -1,0 +1,11 @@
+build-tree-apache/apache_@APACHEMAJOR@/src/support/log_server_status
+build-tree-apache/apache_@APACHEMAJOR@/src/support/phf_abuse_log.cgi
+build-tree-apache/apache_@APACHEMAJOR@/src/support/split-logfile
+build-tree-apache/apache_@APACHEMAJOR@/cgi-bin/printenv
+build-tree-apache/apache_@APACHEMAJOR@/cgi-bin/test-cgi
+build-tree-apache/apache_@APACHEMAJOR@/conf/access.conf-dist
+build-tree-apache/apache_@APACHEMAJOR@/conf/highperformance.conf-dist
+build-tree-apache/apache_@APACHEMAJOR@/conf/httpd.conf-dist
+build-tree-apache/apache_@APACHEMAJOR@/conf/magic
+build-tree-apache/apache_@APACHEMAJOR@/conf/mime.types
+build-tree-apache/apache_@APACHEMAJOR@/conf/srm.conf-dist

@@ -1,0 +1,13 @@
+apache (1.3.28-1) unstable; urgency=low
+  apacheconfig does not exist anymore. Everyone should switch to modules-config,
+  please read README.Debian for more info.
+
+  suExec is now not enabled by default, but placed in 
+  /usr/lib/apache/suexec.disabled. Should you wish to enable it, the 
+  recommended method is to run dpkg-reconfigure -plow apache or apache-ssl
+  or apache-perl.
+
+  The permissions with which logrotate creates logfiles have changed to be 
+  644, whereas the old default was 640. Should you wish to change this, please
+  edit /etc/logrotate.d/apache
+ -- Fabio M. Di Nitto <fabbione@fabbione.net>  Mon, 06 Oct 2003 07:58:37 +0200

@@ -1,0 +1,6 @@
+LoadModule: dbm_auth_module /usr/lib/apache/1.3/mod_auth_dbm.so
+Directives:
+ AuthDBMGroupFile
+ AuthDBMUserFile
+ AuthDBMAuthoritative
+Description: Support for dbm-file authentication

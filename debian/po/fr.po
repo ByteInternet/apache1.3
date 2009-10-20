@@ -1,0 +1,330 @@
+#
+#    Translators, if you are not familiar with the PO format, gettext
+#    documentation is worth reading, especially sections dedicated to
+#    this format, e.g. by running:
+#         info -n '(gettext)PO Files'
+#         info -n '(gettext)Header Entry'
+#    Some information specific to po-debconf are available at
+#            /usr/share/doc/po-debconf/README-trans
+#         or http://www.debian.org/intl/l10n/po-debconf/README-trans#
+#    Developers do not need to manually edit POT or PO files.
+# Bruno Rodrigues <bruno.rodrigues@litux.prg>, 2003
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: apache\n"
+"Report-Msgid-Bugs-To: debian-apache@lists.debian.org\n"
+"POT-Creation-Date: 2006-08-16 21:44+1000\n"
+"PO-Revision-Date: 2003-10-15 16:42+0100\n"
+"Last-Translator: Christian Perrier <bubulle@debian.org>\n"
+"Language-Team: French <debian-l10n-french@lists.debian.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-15\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. Type: note
+#. Description
+#: ../apache-common.templates:1001
+msgid "Old log rotation scripts exists and are modified"
+msgstr "Présence d'anciens scripts pour la rotation des journaux"
+
+#. Type: note
+#. Description
+#: ../apache-common.templates:1001
+msgid ""
+"You have old log rotation scripts in /etc/cron.d and /etc/${flavour}, they "
+"have not been touched, but you might want to remove them to avoid having "
+"your logs rotated multiple times."
+msgstr ""
+"D'anciens scripts pour la rotation des journaux existent dans /etc/cron.d "
+"et /etc/${flavour}. Ils n'ont pas été modifiés mais vous devriez les "
+"supprimer pour éviter que la rotation des journaux ne se produise plusieurs "
+"fois."
+
+#. Type: note
+#. Description
+#: ../apache-common.templates:2001
+msgid "${flavour} has switched to use logrotate"
+msgstr "${flavour} utilise désormais logrotate"
+
+#. Type: note
+#. Description
+#: ../apache-common.templates:2001
+msgid ""
+"Some of your logs are stored outside the /var/log/${flavour} directory, so "
+"you should edit /etc/logrotate.d/${flavour} to have them automatically "
+"rotated."
+msgstr ""
+"Certains de vos journaux sont conservés en dehors du répertoire /var/log/"
+"${flavour}. Vous devriez donc modifier /etc/logrotate.d/${flavour} pour que "
+"la rotation automatique fonctionne."
+
+#. Type: note
+#. Description
+#: ../apache-common.templates:3001
+msgid "Handling of config files has been changed"
+msgstr "La gestion des fichiers de configuration a été modifiée"
+
+#. Type: note
+#. Description
+#: ../apache-common.templates:3001
+msgid ""
+"From this release of apache, apache-ssl and apache-perl no more attempts of "
+"fixing users configurations will be done other than for the really essential "
+"ones that would prevent the server to run. Two new files will appear in /etc/"
+"apache{-ssl,-perl}:"
+msgstr ""
+"À partir de cette version d'apache, apache-ssl et apache-perl, aucune "
+"tentative pour corriger les configurations personnalisées ne sera faite, "
+"hormis dans le cas de modifications absolument indispensables qui "
+"empêcheraient le fonctionnement du serveur. Deux nouveaux fichiers font leur "
+"apparition dans /etc/apache{-ssl,-perl} :"
+
+#. Type: note
+#. Description
+#: ../apache-common.templates:3001
+msgid ""
+" - modules.config, that will be used by apache-modconf to handle\n"
+"   LoadModules directives;\n"
+" - suggested_corrections that will contain information about\n"
+"   the differences from the users config and the standard Debian\n"
+"   one and how to fix them."
+msgstr ""
+" - modules.config, qui sera utilisé par la commande « apache-modconf »\n"
+"   pour la gestion des directives LoadModules ;\n"
+" - suggested_corrections, qui contiendra les informations relatives\n"
+"   aux différences entre la configuration utilisée et la configuration\n"
+"   standard de Debian, ainsi que la manière de les corriger."
+
+#. Type: note
+#. Description
+#: ../apache-common.templates:3001
+msgid ""
+"For more information please refer to /usr/share/doc/apache{-ssl,-perl}/"
+"README.Debian"
+msgstr ""
+"Pour plus d'informations, veuillez consulter /usr/share/doc/apache{-ssl,-"
+"perl}/README.Debian."
+
+#. Type: multiselect
+#. Description
+#: ../apache-common.templates:4001
+msgid "Please select the modules that ${flavour} will load"
+msgstr "Veuillez choisir les modules qui seront chargés par ${flavour}"
+
+#. Type: boolean
+#. Description
+#: ../apache-common.templates:5001
+msgid "Do you want me to restart ${flavour} now?"
+msgstr "Faut-il redémarrer ${flavour} maintenant ?"
+
+#. Type: boolean
+#. Description
+#: ../apache-common.templates:5001
+msgid ""
+"Remember that in order to activate the new configuration ${flavour} has to "
+"be restarted. You can also restart ${flavour} manually executing /etc/init.d/"
+"${flavour} restart"
+msgstr ""
+"Notez que pour prendre en compte la nouvelle configuration, ${flavour} doit "
+"être redémarré. Vous pouvez également le faire vous-même ultérieurement avec "
+"la commande « /etc/init.d/${flavour} restart »."
+
+#. Type: boolean
+#. Description
+#: ../apache.templates:1001 ../apache-ssl.templates:1001
+#: ../apache-perl.templates:3001
+msgid "Enable suExec?"
+msgstr "Faut-il activer « suExec » ?"
+
+#. Type: boolean
+#. Description
+#: ../apache.templates:1001 ../apache-ssl.templates:1001
+#: ../apache-perl.templates:3001
+msgid ""
+"suExec is a feature of apache where CGI scripts are run by the user who owns "
+"the script.  It is useful if your users have CGI access and don't trust each "
+"other."
+msgstr ""
+"La fonctionnalité « suExec » permet aux scripts CGI de s'exécuter avec les "
+"droits de l'utilisateur qui en est propriétaire. Cela est utile lorsque les "
+"utilisateurs en qui vous placez une confiance limitée peuvent posséder des "
+"scripts CGI."
+
+#. Type: boolean
+#. Description
+#: ../apache.templates:2001
+msgid "Would you like to start apache at boot time?"
+msgstr "Faut-il lancer apache au démarrage du système ?"
+
+#. Type: string
+#. Description
+#: ../apache.templates:3001
+msgid "Set the FQDN for apache default server"
+msgstr "Nom de domaine complètement qualifié du serveur par défaut"
+
+#. Type: string
+#. Description
+#: ../apache.templates:3001 ../apache-ssl.templates:3001
+#: ../apache-perl.templates:5001
+msgid ""
+"If you do not know which is the FQDN (Fully Qualified Domain Name, Ex: www."
+"debian.org) for this computer please ask your network administrator or "
+"otherwise set it temporary to localhost (Note that using localhost might "
+"results in apache printing some harmless warnings)."
+msgstr ""
+"Si vous ne savez pas quel est le nom de domaine complètement qualifié de cet "
+"ordinateur (« FQDN : Fully Qualified Domain Name », par exemple www.debian."
+"org), veuillez consulter votre administrateur réseau ou utilisez "
+"provisoirement la valeur « localhost ». Notez que l'utilisation de cette "
+"valeur provoquera l'affichage de quelques avertissements sans conséquences "
+"par apache."
+
+#. Type: string
+#. Description
+#: ../apache.templates:4001
+msgid "Set the email address of the apache administrator"
+msgstr "Adresse électronique de l'administrateur d'apache"
+
+#. Type: string
+#. Description
+#: ../apache.templates:5001
+msgid ""
+"Set the directory that will contain the web pages for apache default server"
+msgstr "Répertoire des pages du serveur par défaut d'apache"
+
+#. Type: string
+#. Description
+#: ../apache.templates:5001 ../apache-ssl.templates:5001
+#: ../apache-perl.templates:7001
+msgid ""
+"The default is set to /var/www according to the FHS. If you will use a non "
+"default setting the contents of /var/www will NOT be touched/moved."
+msgstr ""
+"La valeur par défaut est /var/www, en conformité avec le FHS (« Filesystem "
+"Hierarchy Standard » : norme d'organisation des systèmes de fichiers). Si "
+"vous préférez utiliser une valeur différente, le contenu de /var/www ne sera "
+"NI déplacé NI modifié."
+
+#. Type: string
+#. Description
+#: ../apache.templates:6001
+msgid "Set the TCP port on which the apache server will listen"
+msgstr "Port TCP d'écoute du serveur apache"
+
+#. Type: string
+#. Description
+#: ../apache.templates:6001 ../apache-perl.templates:8001
+msgid ""
+"If you have more than one server running on the same machine you might want "
+"to set them to listen on different ports, since otherwise one of them will "
+"not work."
+msgstr ""
+"Si plus d'un serveur est actif sur le même ordinateur, il peut être "
+"nécessaire que les différents serveurs soient à l'écoute sur des ports "
+"différents, sinon l'un d'entre eux ne fonctionnera pas correctement."
+
+#. Type: boolean
+#. Description
+#: ../apache-ssl.templates:2001
+msgid "Would you like to start apache-ssl at boot time?"
+msgstr "Faut-il lancer apache-ssl au démarrage du système ?"
+
+#. Type: string
+#. Description
+#: ../apache-ssl.templates:3001
+msgid "Set the FQDN for apache-ssl default server"
+msgstr "Nom de domaine complètement qualifié du serveur apache-ssl"
+
+#. Type: string
+#. Description
+#: ../apache-ssl.templates:4001
+msgid "Set the email address of the apache-ssl administrator"
+msgstr "Adresse électronique de l'administrateur du serveur apache-ssl"
+
+#. Type: string
+#. Description
+#: ../apache-ssl.templates:5001
+msgid ""
+"Set the directory that will contain the web pages for apache-ssl default "
+"server"
+msgstr "Répertoire des pages du serveur apache-ssl par défaut"
+
+#. Type: note
+#. Description
+#: ../apache-perl.templates:1001
+msgid "Apache-Perl needs to be reconfigured."
+msgstr "La reconfiguration d'Apache-Perl est nécessaire"
+
+#. Type: note
+#. Description
+#: ../apache-perl.templates:1001
+msgid ""
+"This version of apache-perl has been reorganized from the previously "
+"installed version; its configuration files have moved to /etc/apache-perl."
+msgstr ""
+"Une réorganisation des fichiers d'Apache-Perl a eu lieu depuis la version "
+"précédemment installée : les fichiers de configuration ont été déplacés "
+"dans /etc/apache-perl."
+
+#. Type: note
+#. Description
+#: ../apache-perl.templates:1001
+msgid ""
+"Please read /usr/share/doc/apache-perl/README.Debian for more information."
+msgstr ""
+"Veuillez consulter /usr/share/doc/apache-perl/README.Debian pour plus "
+"d'informations."
+
+#. Type: note
+#. Description
+#: ../apache-perl.templates:2001
+msgid "Apache-Perl needs a separate PidFile from Apache."
+msgstr ""
+"Apache-Perl doit utiliser un fichier d'identification de processus "
+"(« PidFile ») différent de celui d'Apache."
+
+#. Type: note
+#. Description
+#: ../apache-perl.templates:2001
+msgid ""
+"The installed /etc/apache-perl/httpd.conf contains a reference to apache."
+"pid.  Apache-Perl must have its own PidFile, which should be called /var/run/"
+"apache-perl.pid.  Apache-Perl will not start until this is corrected."
+msgstr ""
+"Le fichier /etc/apache-perl/httpd.conf actuel contient une référence au "
+"fichier apache.pid. Apache-Perl doit utiliser son propre fichier "
+"d'identification de processus, qui devrait s'appeler /var/run/apache-perl."
+"pid. Apache-Perl ne démarrera pas tant que cela ne sera pas corrigé."
+
+#. Type: boolean
+#. Description
+#: ../apache-perl.templates:4001
+msgid "Would you like to start apache-perl at boot time?"
+msgstr "Faut-il lancer apache-perl au démarrage du système ?"
+
+#. Type: string
+#. Description
+#: ../apache-perl.templates:5001
+msgid "Set the FQDN for apache-perl default server"
+msgstr "Nom de domaine complètement qualifié du serveur apache-perl"
+
+#. Type: string
+#. Description
+#: ../apache-perl.templates:6001
+msgid "Set the email address of the apache-perl administrator"
+msgstr "Adresse électronique de l'administrateur du serveur apache-perl"
+
+#. Type: string
+#. Description
+#: ../apache-perl.templates:7001
+msgid ""
+"Set the directory that will contain the web pages for apache-perl default "
+"server"
+msgstr "Répertoire des pages du serveur apache-perl par défaut"
+
+#. Type: string
+#. Description
+#: ../apache-perl.templates:8001
+msgid "Set the TCP port on which the apache-perl server will listen"
+msgstr "Port TCP d'écoute du serveur apache-perl"

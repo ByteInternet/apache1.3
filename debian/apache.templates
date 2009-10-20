@@ -1,0 +1,44 @@
+Template: apache/enable-suexec
+Type: boolean
+Default: true
+_Description: Enable suExec?
+ suExec is a feature of apache where CGI scripts are run by the user who
+ owns the script.  It is useful if your users have CGI access and don't
+ trust each other.
+
+Template: apache/init
+Type: boolean
+Default: true
+_Description: Would you like to start apache at boot time?
+
+Template: apache/server-name
+Type: string
+Default: localhost
+_Description: Set the FQDN for apache default server
+ If you do not know which is the FQDN (Fully Qualified
+ Domain Name, Ex: www.debian.org) for this computer
+ please ask your network administrator or otherwise set
+ it temporary to localhost (Note that using localhost
+ might results in apache printing some harmless warnings).
+
+Template: apache/server-admin
+Type: string
+Default: webmaster@localhost
+_Description: Set the email address of the apache administrator
+
+Template: apache/document-root
+Type: string
+Default: /var/www
+_Description: Set the directory that will contain the web pages for apache default server
+ The default is set to /var/www according to the FHS.
+ If you will use a non default setting the contents of
+ /var/www will NOT be touched/moved.
+
+Template: apache/server-port
+Type: string
+Default: 80
+_Description: Set the TCP port on which the apache server will listen
+ If you have more than one server running on the same machine
+ you might want to set them to listen on different ports, since
+ otherwise one of them will not work.
+

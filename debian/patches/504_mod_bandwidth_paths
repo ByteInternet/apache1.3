@@ -1,0 +1,22 @@
+--- build-tree/apache-contrib-1.0.8a/mod_bandwidth/mod_bandwidth.c	Fri Aug 20 01:59:02 1999
++++ build-tree/apache-contrib-1.0.8a/mod_bandwidth/mod_bandwidth.c.mine	Tue Feb 19 21:28:01 2002
+@@ -340,8 +340,8 @@
+ #define MIN_BW_DEFAULT  256        /* Minimal bandwidth defaulted to 256Bps */
+ #define PACKET 1024                /* Sent packet of 1024 bytes             */
+ 
+-#define MASTER_DIR  "/tmp/apachebw/master"
+-#define LINK_DIR    "/tmp/apachebw/link"
++#define MASTER_DIR  "/var/lib/apache/mod-bandwidth/master"
++#define LINK_DIR    "/var/lib/apache/mod-bandwidth/link"
+ 
+ #ifdef USE_MMAP_FILES
+ #include <unistd.h>
+@@ -745,7 +745,7 @@
+    * directory.
+    */
+ 
+-  if (stat(directory, &fdata) < -1) {
++  if (stat(directory, &fdata) < 0) {
+      /* Dunno if this may happen... but well... */
+      return DECLINED;
+   }

@@ -1,0 +1,36 @@
+diff -Naurd build-tree.orig/apache_1.3.41/cgi-bin/printenv build-tree/apache_1.3.41/cgi-bin/printenv
+--- build-tree.orig/apache_1.3.41/cgi-bin/printenv	1999-11-24 19:10:58.000000000 +0100
++++ build-tree/apache_1.3.41/cgi-bin/printenv	2004-05-15 00:10:29.000000000 +0200
+@@ -1,4 +1,4 @@
+-#!/usr/local/bin/perl
++#!/usr/bin/perl
+ ##
+ ##  printenv -- demo CGI program which just prints its environment
+ ##
+diff -Naurd build-tree.orig/apache_1.3.41/src/support/dbmmanage build-tree/apache_1.3.41/src/support/dbmmanage
+--- build-tree.orig/apache_1.3.41/src/support/dbmmanage	2004-02-20 23:02:24.000000000 +0100
++++ build-tree/apache_1.3.41/src/support/dbmmanage	2004-05-15 00:10:50.000000000 +0200
+@@ -1,4 +1,4 @@
+-#!/usr/local/bin/perl
++#!/usr/bin/perl
+ #
+ # Copyright 1999-2004 The Apache Software Foundation
+ #
+diff -Naurd build-tree.orig/apache_1.3.41/src/support/log_server_status build-tree/apache_1.3.41/src/support/log_server_status
+--- build-tree.orig/apache_1.3.41/src/support/log_server_status	2004-02-20 23:02:24.000000000 +0100
++++ build-tree/apache_1.3.41/src/support/log_server_status	2004-05-15 00:11:10.000000000 +0200
+@@ -1,4 +1,4 @@
+-#!/usr/local/bin/perl
++#!/usr/bin/perl
+ #
+ # Copyright 1999-2004 The Apache Software Foundation
+ #
+diff -Naurd build-tree.orig/apache_1.3.41/src/support/phf_abuse_log.cgi build-tree/apache_1.3.41/src/support/phf_abuse_log.cgi
+--- build-tree.orig/apache_1.3.41/src/support/phf_abuse_log.cgi	2004-05-15 00:09:30.000000000 +0200
++++ build-tree/apache_1.3.41/src/support/phf_abuse_log.cgi	2004-05-15 00:11:33.000000000 +0200
+@@ -1,4 +1,4 @@
+-#!/usr/local/bin/perl
++#!/usr/bin/perl
+ #
+ # Copyright 1999-2004 The Apache Software Foundation
+ #

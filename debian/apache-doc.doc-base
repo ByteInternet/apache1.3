@@ -1,0 +1,12 @@
+Document: apache
+Title: Debian Apache Manual
+Author: The Apache Group
+Abstract: This manual describes the configuration
+ directives and use of the Apache webserver.
+Section: web
+
+Format: HTML
+Index: /usr/share/doc/apache-doc/manual/index.html
+Files: /usr/share/doc/apache-doc/manual/*.html
+
+  

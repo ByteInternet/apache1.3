@@ -1,0 +1,43 @@
+Template: apache-common/old-logrotate-exists
+Type: note
+_Description: Old log rotation scripts exists and are modified
+ You have old log rotation scripts in /etc/cron.d and /etc/${flavour}, they
+ have not been touched, but you might want to remove them to avoid having
+ your logs rotated multiple times.
+
+Template: apache-common/logs
+Type: note
+_Description: ${flavour} has switched to use logrotate
+ Some of your logs are stored outside the /var/log/${flavour}
+ directory, so you should edit /etc/logrotate.d/${flavour}
+ to have them automatically rotated.
+
+Template: apache-common/confignotes
+Type: note
+_Description: Handling of config files has been changed
+ From this release of apache, apache-ssl and apache-perl no more attempts of
+ fixing users configurations will be done other than for the really
+ essential ones that would prevent the server to run. Two new files will
+ appear in /etc/apache{-ssl,-perl}:
+ .
+  - modules.config, that will be used by apache-modconf to handle
+    LoadModules directives;
+  - suggested_corrections that will contain information about
+    the differences from the users config and the standard Debian
+    one and how to fix them.
+ .
+ For more information please refer to
+ /usr/share/doc/apache{-ssl,-perl}/README.Debian
+
+Template: apache-shared/debconf-modules
+Type: multiselect
+Choices: ${choices}
+_Description: Please select the modules that ${flavour} will load
+
+Template: apache-shared/restart
+Type: boolean
+Default: false
+_Description: Do you want me to restart ${flavour} now?
+ Remember that in order to activate the new configuration
+ ${flavour} has to be restarted. You can also restart ${flavour}
+ manually executing /etc/init.d/${flavour} restart

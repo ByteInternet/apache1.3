@@ -1,0 +1,11 @@
+--- build-tree/apache_1.3.41/src/main/http_core.c.old	2005-10-04 16:52:30.090183000 +0200
++++ build-tree/apache_1.3.41/src/main/http_core.c	2005-10-04 16:58:43.052366326 +0200
+@@ -1303,7 +1303,7 @@
+ 
+     if (error_number == 401 &&
+ 	line[0] != '/' && line[0] != '"') { /* Ignore it... */
+-	ap_log_error(APLOG_MARK, APLOG_NOERRNO|APLOG_NOTICE, cmd->server,
++	ap_log_error(APLOG_MARK, APLOG_NOERRNO|APLOG_INFO, cmd->server,
+ 		     "cannot use a full URL in a 401 ErrorDocument "
+ 		     "directive --- ignoring!");
+     }

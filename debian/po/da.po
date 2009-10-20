@@ -1,0 +1,311 @@
+# translation of da.po to Danish
+# translation of apache debconf to Danish
+# Claus Hindsgaul <claus_h@image.dk>, 2004.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: da\n"
+"Report-Msgid-Bugs-To: debian-apache@lists.debian.org\n"
+"POT-Creation-Date: 2006-08-16 21:44+1000\n"
+"PO-Revision-Date: 2004-02-16 23:03+0100\n"
+"Last-Translator: Claus Hindsgaul <claus_h@image.dk>\n"
+"Language-Team: Danish <dansk@klid.dk>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.0.2\n"
+
+#. Type: note
+#. Description
+#: ../apache-common.templates:1001
+msgid "Old log rotation scripts exists and are modified"
+msgstr "Gamle logrotations-skripter eksisterer og blev ændret"
+
+#. Type: note
+#. Description
+#: ../apache-common.templates:1001
+msgid ""
+"You have old log rotation scripts in /etc/cron.d and /etc/${flavour}, they "
+"have not been touched, but you might want to remove them to avoid having "
+"your logs rotated multiple times."
+msgstr ""
+"Du har gamle logrotations-skripter i /etc/cron.d og /etc/${flavour}, de er "
+"ikke blevet ændret, men du bør nok fjerne dem så du undgår at få roteret "
+"dine logfiler flere gange."
+
+#. Type: note
+#. Description
+#: ../apache-common.templates:2001
+msgid "${flavour} has switched to use logrotate"
+msgstr "${flavour} er gået over til at bruge logrotate"
+
+#. Type: note
+#. Description
+#: ../apache-common.templates:2001
+msgid ""
+"Some of your logs are stored outside the /var/log/${flavour} directory, so "
+"you should edit /etc/logrotate.d/${flavour} to have them automatically "
+"rotated."
+msgstr ""
+"Nogle af dine logfiler er gemt udenfor mappen /var/log/${flavour}, så du bør "
+"redigerer /etc/logrotate.d/${flavour}, så de bliver roteret automatisk."
+
+#. Type: note
+#. Description
+#: ../apache-common.templates:3001
+msgid "Handling of config files has been changed"
+msgstr "Håndtering af opsætningsfiler er ændret"
+
+#. Type: note
+#. Description
+#: ../apache-common.templates:3001
+msgid ""
+"From this release of apache, apache-ssl and apache-perl no more attempts of "
+"fixing users configurations will be done other than for the really essential "
+"ones that would prevent the server to run. Two new files will appear in /etc/"
+"apache{-ssl,-perl}:"
+msgstr ""
+"Fra denne udgave af apache, apache-ssl og apache-perl, bliver der ikke "
+"foretaget flere forsøg på at rette brugernes opsætninger udover de virkeligt "
+"essentielle, der ellers ville forhindre serveren i at køre. To nye filer vil "
+"optræde i /etc/apache{-ssl,-perl}:"
+
+#. Type: note
+#. Description
+#: ../apache-common.templates:3001
+msgid ""
+" - modules.config, that will be used by apache-modconf to handle\n"
+"   LoadModules directives;\n"
+" - suggested_corrections that will contain information about\n"
+"   the differences from the users config and the standard Debian\n"
+"   one and how to fix them."
+msgstr ""
+" - modules.config, som vil blive brugt af apache-modconf til at\n"
+"   håndtere LoadModules-indstillinger\n"
+" - suggested_corrections som vil indeholde oplysninger om forskelle\n"
+"   mellem brugerens opsætning og Debians standardopsætning samt    hvordan "
+"man korrigerer dem."
+
+#. Type: note
+#. Description
+#: ../apache-common.templates:3001
+msgid ""
+"For more information please refer to /usr/share/doc/apache{-ssl,-perl}/"
+"README.Debian"
+msgstr ""
+"Se /usr/share/doc/apache{-ssl,-perl}/README.Debian for flere oplysninger."
+
+#. Type: multiselect
+#. Description
+#: ../apache-common.templates:4001
+msgid "Please select the modules that ${flavour} will load"
+msgstr "Vælg de moduler, som ${flavour} skal indlæse"
+
+#. Type: boolean
+#. Description
+#: ../apache-common.templates:5001
+msgid "Do you want me to restart ${flavour} now?"
+msgstr "Vil du have mig til at genstarte ${flavour} nu?"
+
+#. Type: boolean
+#. Description
+#: ../apache-common.templates:5001
+msgid ""
+"Remember that in order to activate the new configuration ${flavour} has to "
+"be restarted. You can also restart ${flavour} manually executing /etc/init.d/"
+"${flavour} restart"
+msgstr ""
+"Husk at ${flavour} skal genstartes for at aktivere den nye opsætning. Du kan "
+"også genstarte ${flavour} manuelt ved at køre /etc/init.d/${flavour} restart"
+
+#. Type: boolean
+#. Description
+#: ../apache.templates:1001 ../apache-ssl.templates:1001
+#: ../apache-perl.templates:3001
+msgid "Enable suExec?"
+msgstr "Aktivér suExec?"
+
+#. Type: boolean
+#. Description
+#: ../apache.templates:1001 ../apache-ssl.templates:1001
+#: ../apache-perl.templates:3001
+msgid ""
+"suExec is a feature of apache where CGI scripts are run by the user who owns "
+"the script.  It is useful if your users have CGI access and don't trust each "
+"other."
+msgstr ""
+"suExec er en funktion i apache, hvor CGI-skripter køres af den bruger, der "
+"ejer skriptet. Det er nyttigt, hvis dine brugere har CGI-adgang og ikke kan "
+"stole på hinanden."
+
+#. Type: boolean
+#. Description
+#: ../apache.templates:2001
+msgid "Would you like to start apache at boot time?"
+msgstr "Ønsker du at starte apache under opstarten?"
+
+#. Type: string
+#. Description
+#: ../apache.templates:3001
+msgid "Set the FQDN for apache default server"
+msgstr "Sæt FQDN i apaches standardserver"
+
+#. Type: string
+#. Description
+#: ../apache.templates:3001 ../apache-ssl.templates:3001
+#: ../apache-perl.templates:5001
+msgid ""
+"If you do not know which is the FQDN (Fully Qualified Domain Name, Ex: www."
+"debian.org) for this computer please ask your network administrator or "
+"otherwise set it temporary to localhost (Note that using localhost might "
+"results in apache printing some harmless warnings)."
+msgstr ""
+"Hvis du ikke ved hvad FQDN (Fully Qualified Domain Name, Ex: www.debian.org) "
+"er for denne computer, så spørg din netværksadministrator eller sæt den "
+"midlertidigt til 'localhost' (Bemærk at brugen af localhost kan få apache "
+"til at skrive nogle harmløse advarsler)."
+
+#. Type: string
+#. Description
+#: ../apache.templates:4001
+msgid "Set the email address of the apache administrator"
+msgstr "Sæt e-postadressen på apache-administratoren"
+
+#. Type: string
+#. Description
+#: ../apache.templates:5001
+msgid ""
+"Set the directory that will contain the web pages for apache default server"
+msgstr "Sæt den mappe, der vil indeholde websiderne til apaches standardserver"
+
+#. Type: string
+#. Description
+#: ../apache.templates:5001 ../apache-ssl.templates:5001
+#: ../apache-perl.templates:7001
+msgid ""
+"The default is set to /var/www according to the FHS. If you will use a non "
+"default setting the contents of /var/www will NOT be touched/moved."
+msgstr ""
+"Standardmappen er sat til /var/www i henhold til FHS. Hvis du ønsker at "
+"bruge en ikke-standard-mappe, vil indholdet af /var/www IKKE blive rørt "
+"eller flyttet."
+
+#. Type: string
+#. Description
+#: ../apache.templates:6001
+msgid "Set the TCP port on which the apache server will listen"
+msgstr "Angiv den TCP, hvor apache-serveren vil lytte"
+
+#. Type: string
+#. Description
+#: ../apache.templates:6001 ../apache-perl.templates:8001
+msgid ""
+"If you have more than one server running on the same machine you might want "
+"to set them to listen on different ports, since otherwise one of them will "
+"not work."
+msgstr ""
+"Hvis du har flere end én server kørende på samme maskine, kan du få dem til "
+"at lytte på forskellige porte, da ingen af dem ellers vil fungere."
+
+#. Type: boolean
+#. Description
+#: ../apache-ssl.templates:2001
+msgid "Would you like to start apache-ssl at boot time?"
+msgstr "Vil du starte apache-ssl under opstarten?"
+
+#. Type: string
+#. Description
+#: ../apache-ssl.templates:3001
+msgid "Set the FQDN for apache-ssl default server"
+msgstr "Angiv FQDN i apache-ssl's standardserver"
+
+#. Type: string
+#. Description
+#: ../apache-ssl.templates:4001
+msgid "Set the email address of the apache-ssl administrator"
+msgstr "Angiv e-postadressen på administratoren af apache-ssl"
+
+#. Type: string
+#. Description
+#: ../apache-ssl.templates:5001
+msgid ""
+"Set the directory that will contain the web pages for apache-ssl default "
+"server"
+msgstr ""
+"Angiv den mappe, der vil indeholde websiderne i apache-ssl's standardserver"
+
+#. Type: note
+#. Description
+#: ../apache-perl.templates:1001
+msgid "Apache-Perl needs to be reconfigured."
+msgstr "Apache-Perl skal omkonfigureres."
+
+#. Type: note
+#. Description
+#: ../apache-perl.templates:1001
+msgid ""
+"This version of apache-perl has been reorganized from the previously "
+"installed version; its configuration files have moved to /etc/apache-perl."
+msgstr ""
+"Denne version af apache-perl er blevet omorganiseret i forhold til den "
+"tidligere installerede version; Dens opsætningsfiler er flyttet til /etc/"
+"apache-perl."
+
+#. Type: note
+#. Description
+#: ../apache-perl.templates:1001
+msgid ""
+"Please read /usr/share/doc/apache-perl/README.Debian for more information."
+msgstr "Læs /usr/share/doc/apache-perl/README.Debian for flere oplysninger."
+
+#. Type: note
+#. Description
+#: ../apache-perl.templates:2001
+msgid "Apache-Perl needs a separate PidFile from Apache."
+msgstr "Apache-Perl kræver en PidFile i forhold til Apache."
+
+#. Type: note
+#. Description
+#: ../apache-perl.templates:2001
+msgid ""
+"The installed /etc/apache-perl/httpd.conf contains a reference to apache."
+"pid.  Apache-Perl must have its own PidFile, which should be called /var/run/"
+"apache-perl.pid.  Apache-Perl will not start until this is corrected."
+msgstr ""
+"Den installerede /etc/apache-perl/httpd.conf indeholder en henvisning til "
+"apache.pid. Apache-Perl er nødt til at have sin egen PidFile, som skal "
+"kaldes /var/run/apache-perl.pid. Apache-Perl vil ikke starte før dette er "
+"rettet."
+
+#. Type: boolean
+#. Description
+#: ../apache-perl.templates:4001
+msgid "Would you like to start apache-perl at boot time?"
+msgstr "Ønsker du at starte apache-perl under opstarten?"
+
+#. Type: string
+#. Description
+#: ../apache-perl.templates:5001
+msgid "Set the FQDN for apache-perl default server"
+msgstr "Angiv FQDN fof apache-perl's standardserver"
+
+#. Type: string
+#. Description
+#: ../apache-perl.templates:6001
+msgid "Set the email address of the apache-perl administrator"
+msgstr "Angiv e-postadressen på apache-perls administrator"
+
+#. Type: string
+#. Description
+#: ../apache-perl.templates:7001
+msgid ""
+"Set the directory that will contain the web pages for apache-perl default "
+"server"
+msgstr ""
+"Angiv den mappe, der vil indeholde websiderne til apache-perls standardserver"
+
+#. Type: string
+#. Description
+#: ../apache-perl.templates:8001
+msgid "Set the TCP port on which the apache-perl server will listen"
+msgstr "Angiv den TCP-port, som apache-perl-serveren vil lytte på"

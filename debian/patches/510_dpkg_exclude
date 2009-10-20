@@ -1,0 +1,45 @@
+diff -Naurd build-tree.orig/apache_1.3.41/src/main/http_config.c build-tree/apache_1.3.41/src/main/http_config.c
+--- build-tree.orig/apache_1.3.41/src/main/http_config.c	2004-03-08 17:33:49.000000000 +0100
++++ build-tree/apache_1.3.41/src/main/http_config.c	2004-03-08 17:35:14.000000000 +0100
+@@ -1257,6 +1257,31 @@
+     return strcmp(f1->fname,f2->fname);
+ }
+ 
++static int fname_valid(const char *fname) {
++    const char *c = fname;
++    char bad_dpkg[] = "*.dpkg*";
++
++    if (!isalnum(*c)) {
++        return 0;
++    }
++    ++c;
++    
++    
++    while (*c) {
++        if (!isalnum(*c) && *c!='_' && *c!='-' && *c!='.') {
++            return 0;
++        }
++        ++c;
++    }
++
++    if (!ap_fnmatch(bad_dpkg, fname, 0)) {
++        return 0;
++    }
++
++    return 1;
++}
++        
++
+ CORE_EXPORT(void) ap_process_resource_config(server_rec *s, char *fname, pool *p, pool *ptemp)
+ {
+     const char *errmsg;
+@@ -1338,7 +1363,8 @@
+ 	    if (strcmp(dir_entry->d_name, ".") &&
+ 		strcmp(dir_entry->d_name, "..") &&
+                 (!ispatt ||
+-                 !ap_fnmatch(pattern,dir_entry->d_name, FNM_PERIOD)) ) {
++                 !ap_fnmatch(pattern,dir_entry->d_name, FNM_PERIOD))
++                 && fname_valid(dir_entry->d_name)) {
+ 		fnew = (fnames *) ap_push_array(candidates);
+ 		fnew->fname = ap_make_full_path(p, path, dir_entry->d_name);
+ 	    }

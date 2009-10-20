@@ -1,0 +1,9 @@
+LoadModule: urlcount_module /usr/lib/apache/1.3/mod_urlcount.so
+Directives:
+ CounterType
+ CounterAutoAdd
+ CounterFile
+ ServerCounterType
+ ServerCounterAutoAdd
+ ServerCounterFile
+Description: Automatic URL access counter via TXT and DBM file

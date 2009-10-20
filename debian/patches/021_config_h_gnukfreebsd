@@ -1,0 +1,26 @@
+--- source/apache_1.3.33.upstream/src/include/ap_config.h	2004-09-16 01:45:17.000000000 +0200
++++ build-tree/apache_1.3.41/src/include/ap_config.h	2005-01-26 14:26:26.000000000 +0100
+@@ -487,6 +487,23 @@
+ #endif
+ #define AP_ENABLE_EXCEPTION_HOOK
+ 
++#elif defined(GNUKFREEBSD)
++#define NET_SIZE_T socklen_t
++#define HAVE_SHMGET 1
++#define USE_SHMGET_SCOREBOARD
++#define HAVE_MMAP 1
++#define USE_MMAP_FILES
++#undef HAVE_GMTOFF
++#undef NO_KILLPG
++#undef NO_SETSID
++#undef NEED_STRDUP
++#define HAVE_FLOCK_SERIALIZED_ACCEPT
++#define SINGLE_LISTEN_UNSERIALIZED_ACCEPT
++#define HAVE_SYSLOG 1
++#define SYS_SIGLIST sys_siglist
++#define AP_ENABLE_EXCEPTION_HOOK
++#include <sys/time.h>
++
+ #elif defined(SCO)
+ #undef HAVE_GMTOFF
+ #undef NO_KILLPG

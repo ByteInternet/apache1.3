@@ -1,0 +1,1 @@
+LoadModule: log_forensic_module /usr/lib/apache/1.3/mod_log_forensic.so

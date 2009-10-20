@@ -1,0 +1,57 @@
+#!/usr/bin/perl
+#
+# Scans all config files (as given by listconffiles) and finds all log files
+# definitions.
+#
+# Pierfrancesco Caci, ik5pvx - Same licence as apache itself.
+#
+# Updates:
+#
+
+use warnings;
+use strict;
+use diagnostics;
+
+# list here all the possible log files you want to check for.
+# this is used in a regexp
+my $loglist="Error|Access|Rewrite|Script|Custom";
+
+# change this to 1 if you want to output the list of filenames with errors
+my $printerrorfile = 0;
+
+# path to listconffiles
+my $listconffiles = "/usr/share/apache/listconffiles";
+#my $listconffiles = "./listconffiles";
+
+my $errorcondition = 0;
+
+chomp (my $conffiles= `$listconffiles $ARGV[0]` );
+my @conffiles=split(/\x07/,$conffiles);
+
+foreach my $conf (@conffiles) {
+  open (CONF,$conf) or warn "Can't read conf file $conf.\n$!\n";
+
+  while (<CONF>) {
+    next if /^\s*$/;
+    next if /^\s*\#/;
+
+    next unless /($loglist)Log/i;
+
+    my (undef,$file) = split (/\s/,$_,2);
+
+# take away surrounding ' and "
+    $file =~ s/[\"\']//g;
+ 
+    if ($file !~ m!^(?:/var/log/|\|)! ) {
+#      $errorcondition++;     # uncomment this if you prefer count of errors
+      $errorcondition = 1;
+      print "Wrong log file definition in $conf: $_" if $printerrorfile;
+    }
+
+  }
+
+  close (CONF);
+
+}
+
+exit $errorcondition;

@@ -1,0 +1,40 @@
+diff -urb build-tree-apache.orig/apache_1.3.41/src/include/http_core.h build-tree-apache/apache_1.3.41/src/include/http_core.h
+--- build-tree-apache.orig/apache_1.3.41/src/include/http_core.h	2004-04-15 17:51:51.000000000 +0200
++++ build-tree-apache/apache_1.3.41/src/include/http_core.h	2005-07-16 02:29:23.295651792 +0200
+@@ -41,7 +41,8 @@
+ #define OPT_INCNOEXEC 32
+ #define OPT_SYM_OWNER 64
+ #define OPT_MULTI 128
+-#define OPT_ALL (OPT_INDEXES|OPT_INCLUDES|OPT_SYM_LINKS|OPT_EXECCGI)
++/* AAH: OPT_SYM_LINK -> OPT_SYM_OWNER */
++#define OPT_ALL (OPT_INDEXES|OPT_INCLUDES|OPT_SYM_OWNER|OPT_EXECCGI)
+ 
+ /* options for get_remote_host() */
+ /* REMOTE_HOST returns the hostname, or NULL if the hostname
+diff -urb build-tree-apache.orig/apache_1.3.41/src/main/http_core.c build-tree-apache/apache_1.3.41/src/main/http_core.c
+--- build-tree-apache.orig/apache_1.3.41/src/main/http_core.c	2005-07-16 02:06:29.562490000 +0200
++++ build-tree-apache/apache_1.3.41/src/main/http_core.c	2005-07-16 02:30:33.127035808 +0200
+@@ -1400,7 +1400,8 @@
+ 	    opt = (OPT_INCLUDES | OPT_INCNOEXEC);
+ 	}
+ 	else if (!strcasecmp(w, "FollowSymLinks")) {
+-	    opt = OPT_SYM_LINKS;
++	    /* AAH: FollowSymLinks wordt hier automagisch SymlinksIfOwnerMatch */
++	    opt = OPT_SYM_OWNER;
+ 	}
+ 	else if (!strcasecmp(w, "SymLinksIfOwnerMatch")) {
+ 	    opt = OPT_SYM_OWNER;
+diff -urb build-tree-apache.orig/apache_1.3.41/src/main/http_request.c build-tree-apache/apache_1.3.41/src/main/http_request.c
+--- build-tree-apache.orig/apache_1.3.41/src/main/http_request.c	2005-07-16 02:06:30.468353000 +0200
++++ build-tree-apache/apache_1.3.41/src/main/http_request.c	2005-07-16 02:27:40.959209296 +0200
+@@ -79,8 +79,10 @@
+     char *lastp;
+     int res;
+ 
++    /* AAH: We doen dit niet meer, FollowSymlinks is disabled bij Byte, wordt automatisch SymlinksIfOwnerMatch
+     if (opts & OPT_SYM_LINKS)
+         return OK;
++    */
+ 
+     /*
+      * Strip trailing '/', if any, off what we're checking; trailing slashes

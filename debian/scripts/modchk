@@ -1,0 +1,27 @@
+#!/usr/bin/perl
+$|=1;
+
+chdir ("debian/apache-common/usr/lib/apache/1.3");
+
+foreach $file (`ls *info`)
+{
+    chomp ($file);
+    $file =~ /^\d+(.*)\.info$/;
+    if (! -f "$1.so")
+    {
+        print "modchk: info $file ($1) ... " ;
+        unlink ($file);
+        print "deleted\n";
+    }
+}
+
+foreach $file (`ls *so`)
+{
+    chomp ($file);
+    $file =~ /^(.*)\.so$/;
+    $info = `ls *$1.info 2> /dev/null`;
+    if ($info eq "")
+    {
+        print "modchk: uninfoed dso $file ($1)\n" ;
+    }
+}
