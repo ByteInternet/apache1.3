@@ -52,7 +52,7 @@ Description: versatile, high-performance HTTP server with SSL support
 
 Package: apache-perl
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, mime-support, apache-common (>= ${Source-Version}), apache-common (<< ${next:Major}), libapache-mod-perl (>= 1.29.0.2-9), libapache-mod-perl (<< 1.30), libmagic1, logrotate (>= 3.5.4-1), lsb-base (>= 2.0)
+Depends: ${shlibs:Depends}, ${misc:Depends}, mime-support, apache-common (>= ${Source-Version}), apache-common (<< ${next:Major}), libapache-mod-perl (>= 1.29.0.2-9), libapache-mod-perl, libmagic1, logrotate (>= 3.5.4-1), lsb-base (>= 2.0)
 Conflicts: apache-modules, jserv (<= 1.1-3)
 Suggests: apache-doc
 Provides: httpd-cgi, httpd
