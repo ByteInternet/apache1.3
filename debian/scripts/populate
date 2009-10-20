@@ -33,7 +33,7 @@ dest=../
 
 for i in `ls flavours.*`; do
  target=`echo $i | sed -e 's/^flavours\.//g'`
- for x in apache apache-perl apache-ssl; do
+ for x in apache apache-perl; do
   echo -n "Generating $x.$target... "
   if [ -e $x.$target.pre ]; then cat $x.$target.pre >> $dest/$x.$target; fi
   if [ -e $x.$target.inc ]; then
