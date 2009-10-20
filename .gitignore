@@ -1,1 +1,6 @@
-build-tree
+build-tree/
+build-tree-apache-perl/
+build-tree-apache-ssl/
+build-tree-apache/
+libapache-mod-perl-1.31/
+debian/stampdir/
