@@ -1,5 +1,4 @@
 #!/bin/bash
-exit;
 
 set -e
 
@@ -232,7 +231,7 @@ update_config() {
 
 enable_config() {
 	for i in httpd.conf modules.conf; do
-		# ucf --debconf-ok /etc/$FLA/$i.dpkg-inst.queue /etc/$FLA/$i
+		ucf --debconf-ok /etc/$FLA/$i.dpkg-inst.queue /etc/$FLA/$i
 		rm -f /etc/$FLA/$i.dpkg-inst.queue
 		if [ -e /etc/$FLA/$i.dpkg-dist ]; then
 			if [ "`md5sum /etc/$FLA/$i.dpkg-dist | awk '{print $1}'`" = "`md5sum /etc/$FLA/$i | awk '{print $1}'`" ]; then

@@ -297,7 +297,6 @@ link_suexec() {
     
     db_get $pkg/enable-suexec || true
     cd /usr/lib/$pkg
-    RET="true"
     if [ "$RET" = "true" ] || [ "$UPGRADEFROMWOODY" = "true" ]; then
         ln -sf suexec.disabled suexec
     else
@@ -313,12 +312,6 @@ add_group_if_missing() {
     if [ -x /usr/sbin/adduser ]; then
         if ! id -g www-data >/dev/null 2>&1; then
                 addgroup --gid 33 --force-badname www-data
-        fi
-    fi
-
-    if [ -x /usr/sbin/adduser ]; then
-        if id -u byte >/dev/null 2>&1; then
-                adduser byte www-data >/dev/null 2>&1
         fi
     fi
 }
@@ -440,30 +433,6 @@ remove_savelog_setup() {
 
 }
 
-install_logrotate_conf() {
-    if [ "$#" -ne 1 ]; then
-    	echo "Wrong number of arguments to install_logrotate_conf()"
-	return
-    fi
-
-    pkg="$1"
-
-    KNOWN_MD5SUMS="c800d2bf3dbd532ccdd9a96d0a7489d8 f71869cb122764b8f8c4c5c04d5bde62 d38b4c4db12e62a7509439769e252d1f 1e9ba69a9942ee39233bd570870ffe1d e4c191b464fc1224da439684aca3255a 98c70bc728f09655406193b994526874"
-
-    if [ -f "/etc/$pkg/logrotate.conf" ]; then
-        md5sum=$(md5sum "/etc/$pkg/logrotate.conf" | awk '{print $1}')
-        for sum in $KNOWN_MD5SUMS; do
-            if [ "$md5sum" = "$sum" ]; then
-                rm -f "/etc/$pkg/logrotate.conf"
-            fi
-        done
-    fi
-
-    if [ ! -e "/etc/$pkg/logrotate.conf" ]; then
-	cp /usr/share/apache/default-configs/$pkg/logrotate.conf /etc/$pkg/
-    fi
-}
-
 add_conf_d() {
     if [ "$#" -ne 1 ]; then
         echo "Wrong number of arguments to add_conf.d"
@@ -528,7 +497,7 @@ do_ucf() {
     # NOTE: this will register in ucf only files that needs to be registered
     #       and does that dynamically (less ucf clutter)
 
-    for i in srm.conf; do
+    for i in httpd.conf srm.conf access.conf modules.conf; do
         if [ -e /etc/$pkg/$i.dpkg-inst.queue ]; then
 	    ucf --debconf-ok "/etc/$pkg/$i.dpkg-inst.queue" "/etc/$pkg/$i"
 	    rm -f /etc/$pkg/$i.dpkg-inst.queue
@@ -557,7 +526,7 @@ do_ucf() {
 	    if [ "`grep $i$ /var/lib/ucf/hashfile`" ]; then
 	        purge_from_ucf=0
 	    fi
-	    # ucf --debconf-ok "$i.dpkg-inst.queue" "$i"
+	    ucf --debconf-ok "$i.dpkg-inst.queue" "$i"
 	    rm -f $i.dpkg-inst.queue
 	    if [ -e $i.dpkg-dist ]; then
 	        if [ "`md5sum $i.dpkg-dist | awk '{print $1}'`" = "`md5sum $i | awk '{print $1}'`" ]; then
@@ -599,7 +568,6 @@ do_all() {
     remove_savelog_setup $pkg
     link_suexec $pkg
     defaultindex $pkg
-    install_logrotate_conf $pkg
     add_conf_d $pkg
     do_ucf $pkg
     suggested_corrections $pkg

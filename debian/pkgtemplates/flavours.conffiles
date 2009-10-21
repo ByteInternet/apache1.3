@@ -1,3 +1,2 @@
 /etc/init.d/@FLAVOUR@
 /etc/logrotate.d/@FLAVOUR@
-/etc/cron.d/@FLAVOUR@
