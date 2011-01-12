@@ -24,7 +24,7 @@ APACHE_NEXT_MAJOR = 1.3.$(shell echo $$((`echo $(APACHE_MAJOR) | sed 's/.*\.//'`
 # PERL_MINOR needs to get bumped any time $(APACHE_MAJOR)$(APACHE_MINOR) is
 # incremented without PERL_MAJOR changing.
 PERL_MAJOR   = 1.31
-PERL_MINOR   = .0.1
+PERL_MINOR   = .0.2
 
 # current version of the apache-contrib tarball
 CONTRIB_MAJOR= 1.0.8a
