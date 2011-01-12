@@ -16,7 +16,7 @@ UPSTREAM_VERSION = $(shell echo $(SOURCE_VERSION) | sed -e "s/-.*//" -e "s/.*://
 DEB_REVISION     = $(shell echo $(SOURCE_VERSION) | sed -e "s/.*-//")
 
 # apache packages get a version like $(APACHE_MAJOR)$(APACHE_MINOR)-$(DEB_REVISION)
-APACHE_MAJOR = 1.3.41
+APACHE_MAJOR = 1.3.42
 APACHE_MINOR =
 APACHE_NEXT_MAJOR = 1.3.$(shell echo $$((`echo $(APACHE_MAJOR) | sed 's/.*\.//'` + 1)))
 
