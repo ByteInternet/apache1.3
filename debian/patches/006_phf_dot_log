@@ -1,6 +1,6 @@
 diff -ruN -x Makefile.in -x configure -x *~ apache_1.3.9.orig/src/support/phf_abuse_log.cgi apache_1.3.9/src/support/phf_abuse_log.cgi
---- build-tree/apache_1.3.41/src/support/phf_abuse_log.cgi	Tue Aug 31 03:58:48 1999
-+++ build-tree/apache_1.3.41/src/support/phf_abuse_log.cgi	Tue Aug 31 03:58:17 1999
+--- build-tree/apache_1.3.42/src/support/phf_abuse_log.cgi	Tue Aug 31 03:58:48 1999
++++ build-tree/apache_1.3.42/src/support/phf_abuse_log.cgi	Tue Aug 31 03:58:17 1999
 @@ -7,7 +7,7 @@
  #
  # The format logged to is "[date] remote_addr remote_host [date] referrer user_agent".

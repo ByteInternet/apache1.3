@@ -1,6 +1,6 @@
 diff -ruN -x Makefile.in -x configure -x *~ -x apache_1.3.14.orig apache_1.3.14.orig/src/include/hsregex.h apache_1.3.14/src/include/hsregex.h
---- build-tree/apache_1.3.41/src/include/hsregex.h	Mon Sep 25 16:48:24 2000
-+++ build-tree/apache_1.3.41/src/include/hsregex.h	Wed Dec  6 15:20:03 2000
+--- build-tree/apache_1.3.42/src/include/hsregex.h	Mon Sep 25 16:48:24 2000
++++ build-tree/apache_1.3.42/src/include/hsregex.h	Wed Dec  6 15:20:03 2000
 @@ -24,7 +24,7 @@
  #endif
  #endif

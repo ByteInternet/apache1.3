@@ -1,6 +1,6 @@
-diff -urb build-tree.orig/apache_1.3.41/src/main/http_core.c build-tree/apache_1.3.41/src/main/http_core.c
---- build-tree.orig/apache_1.3.41/src/main/http_core.c	2004-09-30 12:23:35.000000000 +0200
-+++ build-tree/apache_1.3.41/src/main/http_core.c	2005-02-24 12:39:05.000000000 +0100
+diff -urb build-tree.orig/apache_1.3.42/src/main/http_core.c build-tree/apache_1.3.42/src/main/http_core.c
+--- build-tree.orig/apache_1.3.42/src/main/http_core.c	2004-09-30 12:23:35.000000000 +0200
++++ build-tree/apache_1.3.42/src/main/http_core.c	2005-02-24 12:39:05.000000000 +0100
 @@ -4106,7 +4106,7 @@
      }
  
@@ -10,9 +10,9 @@ diff -urb build-tree.orig/apache_1.3.41/src/main/http_core.c build-tree/apache_1
  		      "File does not exist: %s",r->path_info ?
  		      ap_pstrcat(r->pool, r->filename, r->path_info, NULL)
  		      : r->filename);
-diff -urb build-tree.orig/apache_1.3.41/src/modules/standard/mod_asis.c build-tree/apache_1.3.41/src/modules/standard/mod_asis.c
---- build-tree.orig/apache_1.3.41/src/modules/standard/mod_asis.c	2005-02-24 12:42:23.000000000 +0100
-+++ build-tree/apache_1.3.41/src/modules/standard/mod_asis.c	2005-02-24 12:42:02.000000000 +0100
+diff -urb build-tree.orig/apache_1.3.42/src/modules/standard/mod_asis.c build-tree/apache_1.3.42/src/modules/standard/mod_asis.c
+--- build-tree.orig/apache_1.3.42/src/modules/standard/mod_asis.c	2005-02-24 12:42:23.000000000 +0100
++++ build-tree/apache_1.3.42/src/modules/standard/mod_asis.c	2005-02-24 12:42:02.000000000 +0100
 @@ -30,7 +30,7 @@
      if (r->method_number != M_GET)
  	return DECLINED;
@@ -22,9 +22,9 @@ diff -urb build-tree.orig/apache_1.3.41/src/modules/standard/mod_asis.c build-tr
  		    "File does not exist: %s", r->filename);
  	return NOT_FOUND;
      }
-diff -urb build-tree.orig/apache_1.3.41/src/modules/standard/mod_include.c build-tree/apache_1.3.41/src/modules/standard/mod_include.c
---- build-tree.orig/apache_1.3.41/src/modules/standard/mod_include.c	2005-02-24 12:42:49.000000000 +0100
-+++ build-tree/apache_1.3.41/src/modules/standard/mod_include.c	2005-02-24 12:42:37.000000000 +0100
+diff -urb build-tree.orig/apache_1.3.42/src/modules/standard/mod_include.c build-tree/apache_1.3.42/src/modules/standard/mod_include.c
+--- build-tree.orig/apache_1.3.42/src/modules/standard/mod_include.c	2005-02-24 12:42:49.000000000 +0100
++++ build-tree/apache_1.3.42/src/modules/standard/mod_include.c	2005-02-24 12:42:37.000000000 +0100
 @@ -2357,7 +2357,7 @@
          return DECLINED;
      }

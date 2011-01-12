@@ -1,5 +1,5 @@
 --- source/apache_1.3.33.upstream/src/include/ap_config.h	2004-09-16 01:45:17.000000000 +0200
-+++ build-tree/apache_1.3.41/src/include/ap_config.h	2005-01-26 14:26:26.000000000 +0100
++++ build-tree/apache_1.3.42/src/include/ap_config.h	2005-01-26 14:26:26.000000000 +0100
 @@ -487,6 +487,23 @@
  #endif
  #define AP_ENABLE_EXCEPTION_HOOK

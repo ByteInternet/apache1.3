@@ -1,6 +1,6 @@
 diff -ruN -x Makefile.in -x configure -x *~ -x apache_1.3.20.orig apache_1.3.20.orig/src/include/ap_config.h apache_1.3.20/src/include/ap_config.h
---- build-tree/apache_1.3.41/src/include/ap_config.h	Thu Apr  5 20:13:11 2001
-+++ build-tree/apache_1.3.41/src/include/ap_config.h	Tue Jun 12 12:53:24 2001
+--- build-tree/apache_1.3.42/src/include/ap_config.h	Thu Apr  5 20:13:11 2001
++++ build-tree/apache_1.3.42/src/include/ap_config.h	Tue Jun 12 12:53:24 2001
 @@ -503,6 +503,13 @@
  typedef int rlim_t;
  #endif

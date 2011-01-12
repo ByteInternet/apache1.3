@@ -1,6 +1,6 @@
-diff -u -Nur --exclude CVS build-tree.orig/apache_1.3.41/src/support/htdigest.c build-tree/apache_1.3.41/src/support/htdigest.c
---- build-tree.orig/apache_1.3.41/src/support/htdigest.c	2002-03-13 22:05:37.000000000 +0100
-+++ build-tree/apache_1.3.41/src/support/htdigest.c	2002-10-22 20:57:59.000000000 +0200
+diff -u -Nur --exclude CVS build-tree.orig/apache_1.3.42/src/support/htdigest.c build-tree/apache_1.3.42/src/support/htdigest.c
+--- build-tree.orig/apache_1.3.42/src/support/htdigest.c	2002-03-13 22:05:37.000000000 +0100
++++ build-tree/apache_1.3.42/src/support/htdigest.c	2002-10-22 20:57:59.000000000 +0200
 @@ -94,7 +94,7 @@
  
  #define MAX_STRING_LEN 256

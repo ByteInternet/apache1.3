@@ -1,6 +1,6 @@
-diff -Naurd build-tree.ORIG/apache_1.3.41/src/modules/proxy/proxy_ftp.c build-tree/apache_1.3.41/src/modules/proxy/proxy_ftp.c
---- build-tree.ORIG/apache_1.3.41/src/modules/proxy/proxy_ftp.c	2003-07-17 18:05:51.000000000 +0200
-+++ build-tree/apache_1.3.41/src/modules/proxy/proxy_ftp.c	2003-10-29 11:30:43.000000000 +0100
+diff -Naurd build-tree.ORIG/apache_1.3.42/src/modules/proxy/proxy_ftp.c build-tree/apache_1.3.42/src/modules/proxy/proxy_ftp.c
+--- build-tree.ORIG/apache_1.3.42/src/modules/proxy/proxy_ftp.c	2003-07-17 18:05:51.000000000 +0200
++++ build-tree/apache_1.3.42/src/modules/proxy/proxy_ftp.c	2003-10-29 11:30:43.000000000 +0100
 @@ -601,6 +601,12 @@
          return HTTP_BAD_REQUEST;
      urlptr += 3;

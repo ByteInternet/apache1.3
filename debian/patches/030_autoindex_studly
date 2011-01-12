@@ -1,5 +1,5 @@
---- build-tree-apache/apache_1.3.41/src/modules/standard/mod_autoindex.c	2003-12-09 14:47:37.000000000 -0500
-+++ build-tree-apache/apache_1.3.41/src/modules/standard/mod_autoindex.c	2004-02-19 13:16:31.000000000 -0500
+--- build-tree-apache/apache_1.3.42/src/modules/standard/mod_autoindex.c	2003-12-09 14:47:37.000000000 -0500
++++ build-tree-apache/apache_1.3.42/src/modules/standard/mod_autoindex.c	2004-02-19 13:16:31.000000000 -0500
 @@ -63,6 +63,7 @@
   * 3/23/93
   * 

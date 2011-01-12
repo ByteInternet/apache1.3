@@ -1,5 +1,5 @@
---- build-tree-apache/apache_1.3.41/src/modules/standard/mod_autoindex.c	Wed Mar 13 22:05:33 2002
-+++ build-tree-apache/apache_1.3.41/src/modules/standard/mod_autoindex.c	Wed Apr 24 17:17:05 2002
+--- build-tree-apache/apache_1.3.42/src/modules/standard/mod_autoindex.c	Wed Mar 13 22:05:33 2002
++++ build-tree-apache/apache_1.3.42/src/modules/standard/mod_autoindex.c	Wed Apr 24 17:17:05 2002
 @@ -101,6 +101,7 @@
  #define TRACK_MODIFIED 1024
  #define SORT_NOCASE 2048

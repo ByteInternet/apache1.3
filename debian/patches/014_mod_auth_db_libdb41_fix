@@ -1,6 +1,6 @@
-diff -Naurd build-tree/apache_1.3.41.ORIG/src/modules/standard/mod_auth_db.c build-tree/apache_1.3.41/src/modules/standard/mod_auth_db.c
---- build-tree/apache_1.3.41.ORIG/src/modules/standard/mod_auth_db.c	2002-09-04 16:29:13.000000000 +0200
-+++ build-tree/apache_1.3.41/src/modules/standard/mod_auth_db.c	2003-04-26 08:12:53.000000000 +0200
+diff -Naurd build-tree/apache_1.3.42.ORIG/src/modules/standard/mod_auth_db.c build-tree/apache_1.3.42/src/modules/standard/mod_auth_db.c
+--- build-tree/apache_1.3.42.ORIG/src/modules/standard/mod_auth_db.c	2002-09-04 16:29:13.000000000 +0200
++++ build-tree/apache_1.3.42/src/modules/standard/mod_auth_db.c	2003-04-26 08:12:53.000000000 +0200
 @@ -107,6 +107,9 @@
  #endif
  #if (DB_VERSION_MAJOR == 4)
@@ -23,9 +23,9 @@ diff -Naurd build-tree/apache_1.3.41.ORIG/src/modules/standard/mod_auth_db.c bui
      if (   db_create(&f, NULL, 0) != 0 
          || f->open(f, auth_dbpwfile, NULL, DB_HASH, DB_RDONLY, 0664) != 0) {
  #elif defined(DB2)
-diff -Naurd build-tree/apache_1.3.41.ORIG/src/modules/standard/mod_auth_db.module build-tree/apache_1.3.41/src/modules/standard/mod_auth_db.module
---- build-tree/apache_1.3.41.ORIG/src/modules/standard/mod_auth_db.module	2001-10-16 11:12:02.000000000 +0200
-+++ build-tree/apache_1.3.41/src/modules/standard/mod_auth_db.module	2003-04-26 08:46:08.000000000 +0200
+diff -Naurd build-tree/apache_1.3.42.ORIG/src/modules/standard/mod_auth_db.module build-tree/apache_1.3.42/src/modules/standard/mod_auth_db.module
+--- build-tree/apache_1.3.42.ORIG/src/modules/standard/mod_auth_db.module	2001-10-16 11:12:02.000000000 +0200
++++ build-tree/apache_1.3.42/src/modules/standard/mod_auth_db.module	2003-04-26 08:46:08.000000000 +0200
 @@ -3,6 +3,11 @@
      DB_VERSION=''
      DB_LIB=''

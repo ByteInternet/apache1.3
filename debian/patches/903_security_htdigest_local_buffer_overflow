@@ -1,6 +1,6 @@
-diff -Naurd build-tree.orig/apache_1.3.41/src/support/htdigest.c build-tree/apache_1.3.41/src/support/htdigest.c
---- build-tree.orig/apache_1.3.41/src/support/htdigest.c	2004-05-15 08:34:22.000000000 +0200
-+++ build-tree/apache_1.3.41/src/support/htdigest.c	2004-05-15 08:35:14.000000000 +0200
+diff -Naurd build-tree.orig/apache_1.3.42/src/support/htdigest.c build-tree/apache_1.3.42/src/support/htdigest.c
+--- build-tree.orig/apache_1.3.42/src/support/htdigest.c	2004-05-15 08:34:22.000000000 +0200
++++ build-tree/apache_1.3.42/src/support/htdigest.c	2004-05-15 08:35:14.000000000 +0200
 @@ -124,7 +124,8 @@
      fprintf(f, "%s:%s:", user, realm);
  

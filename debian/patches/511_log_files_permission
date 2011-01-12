@@ -1,6 +1,6 @@
-diff -Naurd build-tree.orig/apache_1.3.41/src/main/alloc.c build-tree/apache_1.3.41/src/main/alloc.c
---- build-tree.orig/apache_1.3.41/src/main/alloc.c	2004-05-18 19:45:27.000000000 +0200
-+++ build-tree/apache_1.3.41/src/main/alloc.c	2004-05-18 19:45:51.000000000 +0200
+diff -Naurd build-tree.orig/apache_1.3.42/src/main/alloc.c build-tree/apache_1.3.42/src/main/alloc.c
+--- build-tree.orig/apache_1.3.42/src/main/alloc.c	2004-05-18 19:45:27.000000000 +0200
++++ build-tree/apache_1.3.42/src/main/alloc.c	2004-05-18 19:45:51.000000000 +0200
 @@ -2193,7 +2193,7 @@
  #ifdef WIN32
      modeFlags = _S_IREAD | _S_IWRITE;
@@ -10,9 +10,9 @@ diff -Naurd build-tree.orig/apache_1.3.41/src/main/alloc.c build-tree/apache_1.3
  #endif
  
      ap_block_alarms();
-diff -Naurd build-tree.orig/apache_1.3.41/src/modules/standard/mod_log_agent.c build-tree/apache_1.3.41/src/modules/standard/mod_log_agent.c
---- build-tree.orig/apache_1.3.41/src/modules/standard/mod_log_agent.c	2004-02-20 21:37:40.000000000 +0100
-+++ build-tree/apache_1.3.41/src/modules/standard/mod_log_agent.c	2004-05-18 19:45:51.000000000 +0200
+diff -Naurd build-tree.orig/apache_1.3.42/src/modules/standard/mod_log_agent.c build-tree/apache_1.3.42/src/modules/standard/mod_log_agent.c
+--- build-tree.orig/apache_1.3.42/src/modules/standard/mod_log_agent.c	2004-02-20 21:37:40.000000000 +0100
++++ build-tree/apache_1.3.42/src/modules/standard/mod_log_agent.c	2004-05-18 19:45:51.000000000 +0200
 @@ -24,7 +24,7 @@
  /* OS/2 dosen't support users and groups */
  static mode_t xfer_mode = (S_IREAD | S_IWRITE);
@@ -22,9 +22,9 @@ diff -Naurd build-tree.orig/apache_1.3.41/src/modules/standard/mod_log_agent.c b
  #endif
  
  typedef struct {
-diff -Naurd build-tree.orig/apache_1.3.41/src/modules/standard/mod_log_config.c build-tree/apache_1.3.41/src/modules/standard/mod_log_config.c
---- build-tree.orig/apache_1.3.41/src/modules/standard/mod_log_config.c	2004-05-18 19:45:27.000000000 +0200
-+++ build-tree/apache_1.3.41/src/modules/standard/mod_log_config.c	2004-05-18 19:45:51.000000000 +0200
+diff -Naurd build-tree.orig/apache_1.3.42/src/modules/standard/mod_log_config.c build-tree/apache_1.3.42/src/modules/standard/mod_log_config.c
+--- build-tree.orig/apache_1.3.42/src/modules/standard/mod_log_config.c	2004-05-18 19:45:27.000000000 +0200
++++ build-tree/apache_1.3.42/src/modules/standard/mod_log_config.c	2004-05-18 19:45:51.000000000 +0200
 @@ -150,7 +150,7 @@
  /* OS/2 dosen't support users and groups */
  static mode_t xfer_mode = (S_IREAD | S_IWRITE);
@@ -34,9 +34,9 @@ diff -Naurd build-tree.orig/apache_1.3.41/src/modules/standard/mod_log_config.c 
  #endif
  
  /* POSIX.1 defines PIPE_BUF as the maximum number of bytes that is
-diff -Naurd build-tree.orig/apache_1.3.41/src/modules/standard/mod_log_forensic.c build-tree/apache_1.3.41/src/modules/standard/mod_log_forensic.c
---- build-tree.orig/apache_1.3.41/src/modules/standard/mod_log_forensic.c	2004-02-21 16:24:36.000000000 +0100
-+++ build-tree/apache_1.3.41/src/modules/standard/mod_log_forensic.c	2004-05-18 19:46:57.000000000 +0200
+diff -Naurd build-tree.orig/apache_1.3.42/src/modules/standard/mod_log_forensic.c build-tree/apache_1.3.42/src/modules/standard/mod_log_forensic.c
+--- build-tree.orig/apache_1.3.42/src/modules/standard/mod_log_forensic.c	2004-02-21 16:24:36.000000000 +0100
++++ build-tree/apache_1.3.42/src/modules/standard/mod_log_forensic.c	2004-05-18 19:46:57.000000000 +0200
 @@ -91,7 +91,7 @@
          char *fname = ap_server_root_relative(p, cfg->logname);
  
@@ -46,9 +46,9 @@ diff -Naurd build-tree.orig/apache_1.3.41/src/modules/standard/mod_log_forensic.
              ap_log_error(APLOG_MARK, APLOG_ERR, s,
                           "could not open forensic log file %s.", fname);
              exit(1);
-diff -Naurd build-tree.orig/apache_1.3.41/src/modules/standard/mod_log_referer.c build-tree/apache_1.3.41/src/modules/standard/mod_log_referer.c
---- build-tree.orig/apache_1.3.41/src/modules/standard/mod_log_referer.c	2004-02-20 21:37:40.000000000 +0100
-+++ build-tree/apache_1.3.41/src/modules/standard/mod_log_referer.c	2004-05-18 19:45:51.000000000 +0200
+diff -Naurd build-tree.orig/apache_1.3.42/src/modules/standard/mod_log_referer.c build-tree/apache_1.3.42/src/modules/standard/mod_log_referer.c
+--- build-tree.orig/apache_1.3.42/src/modules/standard/mod_log_referer.c	2004-02-20 21:37:40.000000000 +0100
++++ build-tree/apache_1.3.42/src/modules/standard/mod_log_referer.c	2004-05-18 19:45:51.000000000 +0200
 @@ -25,7 +25,7 @@
  /* OS/2 lacks support for users and groups */
  static mode_t xfer_mode = (S_IREAD | S_IWRITE);
@@ -58,9 +58,9 @@ diff -Naurd build-tree.orig/apache_1.3.41/src/modules/standard/mod_log_referer.c
  #endif
  
  typedef struct {
-diff -Naurd build-tree.orig/apache_1.3.41/src/modules/standard/mod_rewrite.c build-tree/apache_1.3.41/src/modules/standard/mod_rewrite.c
---- build-tree.orig/apache_1.3.41/src/modules/standard/mod_rewrite.c	2004-05-18 19:45:28.000000000 +0200
-+++ build-tree/apache_1.3.41/src/modules/standard/mod_rewrite.c	2004-05-18 19:45:51.000000000 +0200
+diff -Naurd build-tree.orig/apache_1.3.42/src/modules/standard/mod_rewrite.c build-tree/apache_1.3.42/src/modules/standard/mod_rewrite.c
+--- build-tree.orig/apache_1.3.42/src/modules/standard/mod_rewrite.c	2004-05-18 19:45:28.000000000 +0200
++++ build-tree/apache_1.3.42/src/modules/standard/mod_rewrite.c	2004-05-18 19:45:51.000000000 +0200
 @@ -3231,7 +3231,7 @@
  #elif defined(WIN32)
      mode_t rewritelog_mode  = ( _S_IREAD|_S_IWRITE );

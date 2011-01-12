@@ -1,6 +1,6 @@
-diff -Naurd build-tree.orig/apache_1.3.41/src/support/check_forensic build-tree/apache_1.3.41/src/support/check_forensic
---- build-tree.orig/apache_1.3.41/src/support/check_forensic	2004-01-15 21:46:20.000000000 +0100
-+++ build-tree/apache_1.3.41/src/support/check_forensic	2004-05-18 19:30:32.000000000 +0200
+diff -Naurd build-tree.orig/apache_1.3.42/src/support/check_forensic build-tree/apache_1.3.42/src/support/check_forensic
+--- build-tree.orig/apache_1.3.42/src/support/check_forensic	2004-01-15 21:46:20.000000000 +0100
++++ build-tree/apache_1.3.42/src/support/check_forensic	2004-05-18 19:30:32.000000000 +0200
 @@ -11,5 +11,5 @@
  grep + < /tmp/fc-all.$$ | cut -c2- | sort > /tmp/fc-in.$$
  grep -- - < /tmp/fc-all.$$ | cut -c2- | sort > /tmp/fc-out.$$

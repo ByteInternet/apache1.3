@@ -1,5 +1,5 @@
---- build-tree/apache_1.3.41/src/support/suexec.c	Thu Mar  7 12:13:38 2002
-+++ build-tree/apache_1.3.41/src/support/suexec.c	Thu Mar  7 12:20:06 2002
+--- build-tree/apache_1.3.42/src/support/suexec.c	Thu Mar  7 12:13:38 2002
++++ build-tree/apache_1.3.42/src/support/suexec.c	Thu Mar  7 12:20:06 2002
 @@ -559,10 +559,27 @@
       * Error out if the target name/group is different from
       * the name/group of the cwd or the program.

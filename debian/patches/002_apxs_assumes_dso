@@ -1,6 +1,6 @@
 diff --minimal --new-file --recursive --show-c-function --unified=3 apache_1.3.12.old/src/support/apxs.pl apache_1.3.12/src/support/apxs.pl
---- build-tree/apache_1.3.41/src/support/apxs.pl	Thu Aug 10 10:20:46 2000
-+++ build-tree/apache_1.3.41/src/support/apxs.pl	Thu Aug 10 10:21:45 2000
+--- build-tree/apache_1.3.42/src/support/apxs.pl	Thu Aug 10 10:20:46 2000
++++ build-tree/apache_1.3.42/src/support/apxs.pl	Thu Aug 10 10:21:45 2000
 @@ -216,6 +216,7 @@ if (@opt_S) {
      }
  }

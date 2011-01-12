@@ -1,6 +1,6 @@
-diff -Naurd build-tree.orig/apache_1.3.41/src/main/http_config.c build-tree/apache_1.3.41/src/main/http_config.c
---- build-tree.orig/apache_1.3.41/src/main/http_config.c	2004-11-07 17:15:08.000000000 +0100
-+++ build-tree/apache_1.3.41/src/main/http_config.c	2004-11-07 17:17:24.000000000 +0100
+diff -Naurd build-tree.orig/apache_1.3.42/src/main/http_config.c build-tree/apache_1.3.42/src/main/http_config.c
+--- build-tree.orig/apache_1.3.42/src/main/http_config.c	2004-11-07 17:15:08.000000000 +0100
++++ build-tree/apache_1.3.42/src/main/http_config.c	2004-11-07 17:17:24.000000000 +0100
 @@ -1302,7 +1302,7 @@
  	 * entries here and store 'em away. Recall we need full pathnames
  	 * for this.

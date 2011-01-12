@@ -1,5 +1,5 @@
---- build-tree/apache_1.3.41/src/main/http_core.c
-+++ build-tree/apache_1.3.41/src/main/http_core.c
+--- build-tree/apache_1.3.42/src/main/http_core.c
++++ build-tree/apache_1.3.42/src/main/http_core.c
 @@ -1892,8 +1892,9 @@
  	else {
  	    cmd->server->server_uid = ap_user_id;

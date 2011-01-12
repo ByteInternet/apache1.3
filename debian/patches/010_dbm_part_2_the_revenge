@@ -1,6 +1,6 @@
-diff -Naurd build-tree.ORIG/apache_1.3.41/src/helpers/find-dbm-lib build-tree/apache_1.3.41/src/helpers/find-dbm-lib
---- build-tree.ORIG/apache_1.3.41/src/helpers/find-dbm-lib	2002-01-22 08:39:15.000000000 +0100
-+++ build-tree/apache_1.3.41/src/helpers/find-dbm-lib	2003-06-29 09:46:15.000000000 +0200
+diff -Naurd build-tree.ORIG/apache_1.3.42/src/helpers/find-dbm-lib build-tree/apache_1.3.42/src/helpers/find-dbm-lib
+--- build-tree.ORIG/apache_1.3.42/src/helpers/find-dbm-lib	2002-01-22 08:39:15.000000000 +0100
++++ build-tree/apache_1.3.42/src/helpers/find-dbm-lib	2003-06-29 09:46:15.000000000 +0200
 @@ -13,16 +13,19 @@
  	    *-linux*)
  		# many systems don't have -ldbm
@@ -26,9 +26,9 @@ diff -Naurd build-tree.ORIG/apache_1.3.41/src/helpers/find-dbm-lib build-tree/ap
                  elif ./helpers/TestCompile lib gdbm dbm_open; then
                      DBM_LIB="-lgdbm"
                      CFLAGS="$CFLAGS -I/usr/include/gdbm"
-diff -Naurd build-tree.ORIG/apache_1.3.41/src/modules/standard/mod_auth_dbm.c build-tree/apache_1.3.41/src/modules/standard/mod_auth_dbm.c
---- build-tree.ORIG/apache_1.3.41/src/modules/standard/mod_auth_dbm.c	2002-03-13 22:05:33.000000000 +0100
-+++ build-tree/apache_1.3.41/src/modules/standard/mod_auth_dbm.c	2003-06-29 09:46:15.000000000 +0200
+diff -Naurd build-tree.ORIG/apache_1.3.42/src/modules/standard/mod_auth_dbm.c build-tree/apache_1.3.42/src/modules/standard/mod_auth_dbm.c
+--- build-tree.ORIG/apache_1.3.42/src/modules/standard/mod_auth_dbm.c	2002-03-13 22:05:33.000000000 +0100
++++ build-tree/apache_1.3.42/src/modules/standard/mod_auth_dbm.c	2003-06-29 09:46:15.000000000 +0200
 @@ -81,8 +81,15 @@
  #define dbm_fetch sdbm_fetch
  #define dbm_close sdbm_close
@@ -45,9 +45,9 @@ diff -Naurd build-tree.ORIG/apache_1.3.41/src/modules/standard/mod_auth_dbm.c bu
  
  /*
   * Module definition information - the part between the -START and -END
-diff -Naurd build-tree.ORIG/apache_1.3.41/src/modules/standard/mod_rewrite.h build-tree/apache_1.3.41/src/modules/standard/mod_rewrite.h
---- build-tree.ORIG/apache_1.3.41/src/modules/standard/mod_rewrite.h	2002-03-13 22:05:34.000000000 +0100
-+++ build-tree/apache_1.3.41/src/modules/standard/mod_rewrite.h	2003-06-29 09:46:15.000000000 +0200
+diff -Naurd build-tree.ORIG/apache_1.3.42/src/modules/standard/mod_rewrite.h build-tree/apache_1.3.42/src/modules/standard/mod_rewrite.h
+--- build-tree.ORIG/apache_1.3.42/src/modules/standard/mod_rewrite.h	2002-03-13 22:05:34.000000000 +0100
++++ build-tree/apache_1.3.42/src/modules/standard/mod_rewrite.h	2003-06-29 09:46:15.000000000 +0200
 @@ -130,7 +130,14 @@
       * so we also need to know the file extension
       */

@@ -1,5 +1,5 @@
---- build-tree/apache_1.3.41/config.layout.orig	Thu May 16 10:32:31 2002
-+++ build-tree/apache_1.3.41/config.layout	Wed Jun 19 11:53:37 2002
+--- build-tree/apache_1.3.42/config.layout.orig	Thu May 16 10:32:31 2002
++++ build-tree/apache_1.3.42/config.layout	Wed Jun 19 11:53:37 2002
 @@ -304,3 +304,23 @@
      proxycachedir: $localstatedir/cache/apache
  </Layout>

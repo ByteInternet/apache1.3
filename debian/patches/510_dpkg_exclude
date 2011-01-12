@@ -1,6 +1,6 @@
-diff -Naurd build-tree.orig/apache_1.3.41/src/main/http_config.c build-tree/apache_1.3.41/src/main/http_config.c
---- build-tree.orig/apache_1.3.41/src/main/http_config.c	2004-03-08 17:33:49.000000000 +0100
-+++ build-tree/apache_1.3.41/src/main/http_config.c	2004-03-08 17:35:14.000000000 +0100
+diff -Naurd build-tree.orig/apache_1.3.42/src/main/http_config.c build-tree/apache_1.3.42/src/main/http_config.c
+--- build-tree.orig/apache_1.3.42/src/main/http_config.c	2004-03-08 17:33:49.000000000 +0100
++++ build-tree/apache_1.3.42/src/main/http_config.c	2004-03-08 17:35:14.000000000 +0100
 @@ -1257,6 +1257,31 @@
      return strcmp(f1->fname,f2->fname);
  }

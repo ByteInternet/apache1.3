@@ -1,6 +1,6 @@
-diff -Naurd build-tree-apache.ORIG/apache_1.3.41/src/support/suexec.c build-tree-apache/apache_1.3.41/src/support/suexec.c
---- build-tree-apache.ORIG/apache_1.3.41/src/support/suexec.c	2003-03-05 16:50:29.000000000 +0100
-+++ build-tree-apache/apache_1.3.41/src/support/suexec.c	2003-08-19 15:27:22.000000000 +0200
+diff -Naurd build-tree-apache.ORIG/apache_1.3.42/src/support/suexec.c build-tree-apache/apache_1.3.42/src/support/suexec.c
+--- build-tree-apache.ORIG/apache_1.3.42/src/support/suexec.c	2003-03-05 16:50:29.000000000 +0100
++++ build-tree-apache/apache_1.3.42/src/support/suexec.c	2003-08-19 15:27:22.000000000 +0200
 @@ -90,6 +90,7 @@
  #include <sys/types.h>
  

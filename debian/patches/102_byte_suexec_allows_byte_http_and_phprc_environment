@@ -1,5 +1,5 @@
---- build-tree-apache/apache_1.3.41/src/support/suexec.c	2007-03-08 12:29:48.134624000 +0100
-+++ build-tree-apache/apache_1.3.41/src/support/suexec.c	2007-03-08 12:31:47.791626371 +0100
+--- build-tree-apache/apache_1.3.42/src/support/suexec.c	2007-03-08 12:29:48.134624000 +0100
++++ build-tree-apache/apache_1.3.42/src/support/suexec.c	2007-03-08 12:31:47.791626371 +0100
 @@ -139,6 +139,12 @@
      "HTTPS=",
      "REDIRECT_HTTPS=",

@@ -1,5 +1,5 @@
 --- source/apache_1.3.33.upstream/src/Configure	2004-10-18 18:39:37.000000000 +0200
-+++ build-tree/apache_1.3.41/src/Configure	2005-01-26 14:24:25.000000000 +0100
++++ build-tree/apache_1.3.42/src/Configure	2005-01-26 14:24:25.000000000 +0100
 @@ -411,6 +411,12 @@
  	CFLAGS="$CFLAGS -DLINUX=22"
  	LIBS="$LIBS -lm"
