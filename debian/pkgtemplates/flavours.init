@@ -1,9 +1,13 @@
 #!/bin/bash
-#
-# @FLAVOUR@	Start the @FLAVOUR@ HTTP server.
-#
-# The variables below are NOT to be changed.  They are there to make the
-# script more readable.
+### BEGIN INIT INFO
+# Provides:          @FLAVOUR@
+# Required-Start:    $local_fs $remote_fs $network $syslog $named
+# Required-Stop:     $local_fs $remote_fs $network $syslog $named
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# X-Interactive:     true
+# Short-Description: Start/stop @FLAVOUR@ web server
+### END INIT INFO
 
 set -e
 
