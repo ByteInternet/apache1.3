@@ -50,7 +50,6 @@ man=usr/share/man
 # Uncomment this to turn on verbose modes.
 # export DH_VERBOSE=1
 # export NOISY=1
-export DH_COMPAT=2
 
 include debian/scripts/vars
 
