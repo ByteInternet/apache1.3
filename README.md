@@ -34,5 +34,5 @@ When currently located in the repo root directory:
 
   ```bash
   cd ..  # leave the repo dir
-  tar czvf apache_1.3.42.orig.tar.gz apache/upstream/
+  tar czvf apache_1.3.42.orig.tar.gz apache/upstream/ apache/info/
   ```
