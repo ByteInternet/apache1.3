@@ -5,6 +5,7 @@ You need:
 
 - this repo;
 - the orig.tar.gz tarball (see below);
+- put the orig.tar.gz dir in the build-area dir outside your repo root;
 - a git-pbuilder environment for your target environment (see below).
 
 Then: 
