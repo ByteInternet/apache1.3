@@ -629,6 +629,9 @@ binary-arch: build install
 		      -v$(PERL_MAJOR)$(PERL_MINOR)-$(DEB_REVISION)
 	dh_md5sums -a
 	dh_builddeb -a
+	cat debian/files
+	perl -pi -e "s/libapache-mod-perl_$(APACHE_MAJOR)$(APACHE_MINOR)-$(DEB_REVISION)/libapache-mod-perl_$(PERL_MAJOR)$(PERL_MINOR)-$(DEB_REVISION)/" debian/files
+	cat debian/files
 
 clean:
 	dh_testdir
