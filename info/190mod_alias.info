@@ -1,0 +1,8 @@
+LoadModule: alias_module /usr/lib/apache/1.3/mod_alias.so
+Directives:
+ Alias
+ Redirect
+ RedirectTemp
+ RedirectPermanent
+ ScriptAlias
+Description: Support for aliases and redirects

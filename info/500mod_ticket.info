@@ -1,0 +1,2 @@
+LoadModule: ticket_module /usr/lib/apache/1.3/mod_ticket.so
+Description: Session Ticket Handling

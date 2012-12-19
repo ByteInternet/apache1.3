@@ -1,0 +1,2 @@
+LoadModule: qs2ssi_module /usr/lib/apache/1.3/mod_qs2ssi.so
+Description: Parse query string to CGI/SSI variables

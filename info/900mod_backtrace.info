@@ -1,0 +1,1 @@
+LoadModule: backtrace_module /usr/lib/apache/1.3/mod_backtrace.so

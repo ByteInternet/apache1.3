@@ -1,0 +1,6 @@
+LoadModule: put_module /usr/lib/apache/1.3/mod_put.so
+Directives:
+ EnablePut
+ EnableDelete
+ umask
+Description: Support for HTTP PUT and DELETE methods

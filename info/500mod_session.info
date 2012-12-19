@@ -1,0 +1,2 @@
+LoadModule: session_module /usr/lib/apache/1.3/mod_session.so
+Description: Session management and tracking through consistent identifiers

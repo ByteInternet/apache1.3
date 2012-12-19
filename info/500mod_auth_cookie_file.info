@@ -1,0 +1,2 @@
+LoadModule: cookie_file_access_module /usr/lib/apache/1.3/mod_auth_cookie_file.so
+Description: Authenticate via cookies; with .htpasswd-like file
