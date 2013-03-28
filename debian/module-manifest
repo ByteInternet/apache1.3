@@ -10,7 +10,6 @@ mod_auth_cache.so
 mod_auth_cookie_file.so
 mod_auth_cookie.so
 mod_auth_dbm.so
-mod_auth_db.so
 mod_auth_digest.so
 mod_auth_external.so
 mod_auth_inst.so

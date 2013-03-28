@@ -85,7 +85,7 @@ CONFARGS =	--target=apache --with-layout=Debian \
 		--enable-shared=max --enable-rule=SHARED_CHAIN \
 		--enable-module=most --enable-module=status \
 		--enable-module=auth_digest --enable-module=log_referer \
-		--enable-module=log_agent --enable-module=auth_db \
+		--enable-module=log_agent \
 		$(EXTRA_CONFARGS) \
 		--activate-module=src/modules/extra/mod_macro.c
 

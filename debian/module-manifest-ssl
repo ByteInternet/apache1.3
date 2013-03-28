@@ -6,7 +6,6 @@ mod_alias.so
 mod_asis.so
 mod_auth_anon.so
 mod_auth_dbm.so
-mod_auth_db.so
 mod_auth_digest.so
 mod_auth.so
 mod_autoindex.so
