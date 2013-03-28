@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Debian Apache Maintainers <debian-apache@lists.debian.org>
 Uploaders: Tollef Fog Heen <tfheen@debian.org>, Thom May <thom@debian.org>, Fabio M. Di Nitto <fabbione@fabbione.net>, Matthew Wilcox <willy@debian.org>, Martin Pitt <mpitt@debian.org>, Adam Conrad <adconrad@0c3.net>
 Standards-Version: 3.6.2
-Build-Depends: debhelper (>= 4.1.16), sharutils, libdb4.6-dev | libdb4.3-dev, libexpat1-dev, imagemagick, libssl-dev, perl (>= 5.8.4-2), libperl-dev (>= 5.8.4-2), libwww-perl, libdevel-symdump-perl, libhtml-parser-perl, lsb-release
+Build-Depends: debhelper (>= 7), sharutils, libdb-dev, libexpat1-dev, imagemagick, libssl-dev, perl (>= 5.8.4-2), libperl-dev (>= 5.8.4-2), libwww-perl, libdevel-symdump-perl, libhtml-parser-perl, lsb-release
 
 Package: apache
 Architecture: any
