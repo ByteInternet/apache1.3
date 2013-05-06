@@ -1,0 +1,61 @@
+diff -urb src/modules/perl/Log.xs src/modules/perl/Log.xs
+--- a/src/modules/perl/Log.xs	2001-01-25 08:43:05.000000000 +0100
++++ b/src/modules/perl/Log.xs	2013-05-06 16:30:23.413524841 +0200
+@@ -10,7 +10,7 @@
+ static void perl_cv_alias(char *to, char *from)
+ {
+     GV *gp = gv_fetchpv(to, TRUE, SVt_PVCV);
+-    GvCV(gp) = perl_get_cv(from, TRUE);
++    GvCV_set(gp, perl_get_cv(from, TRUE));
+ }
+ 
+ static void ApacheLog(int level, SV *sv, SV *msg)
+diff -urb src/modules/perl/mod_perl.c src/modules/perl/mod_perl.c
+--- a/src/modules/perl/mod_perl.c	2013-05-06 16:29:09.330654734 +0200
++++ b/src/modules/perl/mod_perl.c	2013-05-06 16:30:07.733764022 +0200
+@@ -791,7 +791,7 @@
+     /* *CORE::GLOBAL::exit = \&Apache::exit */
+     if(gv_stashpv("CORE::GLOBAL", FALSE)) {
+ 	GV *exitgp = gv_fetchpv("CORE::GLOBAL::exit", TRUE, SVt_PVCV);
+-	GvCV(exitgp) = perl_get_cv("Apache::exit", TRUE);
++	GvCV_set(exitgp, perl_get_cv("Apache::exit", TRUE));
+ 	GvIMPORTED_CV_on(exitgp);
+     }
+ 
+diff -urb src/modules/perl/mod_perl.h src/modules/perl/mod_perl.h
+--- a/src/modules/perl/mod_perl.h	2008-11-20 19:21:18.000000000 +0100
++++ b/src/modules/perl/mod_perl.h	2013-05-06 16:29:48.646055157 +0200
+@@ -193,6 +193,10 @@
+ #define ERRHV GvHV(errgv)
+ #endif
+ 
++#ifndef GvCV_set
++# define GvCV_set(G, C) (GvCV(G) = (C))
++#endif
++
+ #ifndef AvFILLp
+ #define AvFILLp(av)	((XPVAV*)  SvANY(av))->xav_fill
+ #endif
+diff -urb src/modules/perl/perl_config.c src/modules/perl/perl_config.c
+--- a/src/modules/perl/perl_config.c	2003-03-14 05:55:59.000000000 +0100
++++ b/src/modules/perl/perl_config.c	2013-05-06 16:31:07.372854188 +0200
+@@ -1720,7 +1720,7 @@
+ 	if((cv = GvCV((GV*)val)) && (GvSTASH((GV*)val) == GvSTASH(CvGV(cv)))) {
+             GV *gv = CvGV(cv);
+             cv_undef(cv);
+-            CvGV(cv) = gv;
++            CvGV_set(cv, gv);
+             GvCVGEN(gv) = 1; /* invalidate method cache */
+         }
+     }
+--- a/Symbol/Symbol.xs	2000-12-22 07:02:32.000000000 +0100
++++ b/Symbol/Symbol.xs	2013-05-06 16:51:22.194201307 +0200
+@@ -30,7 +30,7 @@
+ 	    has_proto = TRUE;
+ 
+ 	cv_undef(cv);
+-	CvGV(cv) = gv;   /* let user-undef'd sub keep its identity */
++	CvGV_set(cv, gv);   /* let user-undef'd sub keep its identity */
+         if(has_proto) 
+             SvPOK_on(cv); /* otherwise we get `Prototype mismatch:' */
+ 

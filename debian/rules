@@ -123,6 +123,7 @@ $(STAMP_DIR)/source.make:
 	patch -d $(P) -p0 < $(SOURCE_DIR)-apache-perl/pkg.eapi/eapi.patch
 	#libapache-mod-perl
 	patch -d $(D) -p1 < debian/patches/mod-perl/DBD::Pg_mem_leak_workaround.diff
+	patch -d $(D) -p1 < debian/patches/mod-perl/GvCV-isn-t-an-lvalue-since-Perl-5.13.10
 
 $(STAMP_DIR)/configure-stamp: $(STAMP_DIR)/source.make $(STAMP_DIR)/configure-stamp-apache $(STAMP_DIR)/configure-stamp-perl $(STAMP_DIR)/configure-stamp-mod-perl
 	touch $(STAMP_DIR)/configure-stamp
