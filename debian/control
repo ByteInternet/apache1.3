@@ -102,7 +102,7 @@ Package: libapache-mod-perl
 Architecture: any
 Section: perl
 Priority: optional
-Depends: apache-common (>= ${Source-Version}), apache-common (<< ${next:Major}), perl (>= 5.8.4-2), ${perl:Depends}, libwww-perl, libmime-base64-perl, libdevel-symdump-perl, liburi-perl, ${shlibs:Depends}
+Depends: apache-common (>= 1.3.42), apache-common (<< ${next:Major}), perl (>= 5.8.4-2), ${perl:Depends}, libwww-perl, libmime-base64-perl, libdevel-symdump-perl, liburi-perl, ${shlibs:Depends}
 Suggests: apache-dev (>= ${Source-Version}), libapache-mod-perl-doc
 Description: integration of perl with the Apache web server
  mod_perl allows the use of Perl for just about anything
