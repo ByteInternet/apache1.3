@@ -45,6 +45,8 @@ lib=usr/lib/apache/1.3
 doc=usr/share/doc/apache
 man=usr/share/man
 
+archname=$(strip $(shell perl -V::archname: | sed -e "s/'//g"))
+
 # Debian specific
 
 # Uncomment this to turn on verbose modes.
@@ -224,7 +226,7 @@ $(STAMP_DIR)/configure-stamp-mod-perl: $(STAMP_DIR)/source.make $(STAMP_DIR)/con
 	cp debian/local-apxs $(D)/
 	
 	cd $(D) && \
-	$(PERL) Makefile.PL USE_APXS=1 WITH_APXS=`pwd`/local-apxs \
+	$(PERL) Makefile.PL INSTALL_BASE=`pwd`/../debian/libapache-mod-perl/usr/ USE_APXS=1 WITH_APXS=`pwd`/local-apxs \
 		PERL_SECTIONS=1 PERL_SSI=1 PERL_METHOD_HANDLERS=1 ALL_HOOKS=1 \
 		PERL_TIE_TABLES=1 PERL_DIRECTIVE_HANDLERS=1 PERL_STACKED_HANDLERS=1 \
 		PERL_TRACE=0 PERL_LOG_API=1 PERL_URI_API=1 PERL_UTIL_API=1 \
@@ -546,7 +548,7 @@ $(STAMP_DIR)/install-stamp-mod-perl:
 
 	# mod-perl
 	cd $(D) && \
-	$(MAKE) PREFIX=`pwd`/../debian/libapache-mod-perl/usr/ install_vendor
+	$(MAKE) install_vendor
 	install -m 644 $(D)/apaci/libperl.so debian/libapache-mod-perl/usr/lib/apache/1.3/mod_perl.so
 	install -m 644 info/400mod_perl.info debian/libapache-mod-perl/usr/lib/apache/1.3/400mod_perl.info
 
@@ -555,10 +557,10 @@ $(STAMP_DIR)/install-stamp-mod-perl:
 
 	# includes
 	cd debian/libapache-mod-perl && \
-	mv usr/lib/perl5/auto/Apache/include/modules usr/include/apache-1.3/ && \
-	rm -rf usr/lib/perl5/auto/Apache/include && \
-	ln -sf ../../../../include/apache-1.3 usr/lib/perl5/auto/Apache/include
-	cd debian/libapache-mod-perl/usr/lib/perl5/Apache/ && \
+	mv usr/lib/perl5/$(archname)/auto/Apache/include/modules usr/include/apache-1.3/ && \
+	rm -rf usr/lib/perl5/$(archname)/auto/Apache/include && \
+	ln -sf ../../../../../include/apache-1.3 usr/lib/perl5/$(archname)/auto/Apache/include
+	cd debian/libapache-mod-perl/usr/lib/perl5/$(archname)/Apache/ && \
 	sed -e "s,'APXS.*,'APXS' => '/usr/bin/apxs'\,," < MyConfig.pm > MyConfig.pm2 && \
 	mv MyConfig.pm2 MyConfig.pm
 
