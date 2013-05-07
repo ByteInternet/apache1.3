@@ -1,8 +1,12 @@
-apache (1.3.42-2) unstable; urgency=low
+apache (1.3.42-3) unstable; urgency=low
 
-  * Rebuild for wheezy
+  * Install latest Berkeley DB libs
+  * Disable mod_auth_db, it fails to compile and we never use it
+  * Fix build on Perl 5.14
+  * Add dependency on libgdbm-dev to get rid of warnings
+  * Fix installation location in wheezy (includes archname now)
 
- -- Allard Hoeve <allard@byte.nl>  Thu, 28 Mar 2013 11:48:53 +0100
+ -- Allard Hoeve <allard@byte.nl>  Tue, 07 May 2013 11:50:36 +0200
 
 apache (1.3.42-1) stable; urgency=low
 
