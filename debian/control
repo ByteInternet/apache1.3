@@ -69,7 +69,7 @@ Conflicts: apache (<= 1.3b2)
 Suggests: apache, apache-ssl, apache-perl
 Priority: extra
 Section: devel
-Depends: ${shlibs:Depends}, apache-common (>= ${Source-Version}), apache-common (<< ${next:Major}), libdb4.6-dev | libdb4.3-dev, libexpat1-dev
+Depends: ${shlibs:Depends}, apache-common (>= ${Source-Version}), apache-common (<< ${next:Major}), libdb-dev, libexpat1-dev
 Description: development kit for the Apache webserver
  Provides the Apache C headers and the Apache Extension Tool (apxs),
  needed to compile external Apache modules.
